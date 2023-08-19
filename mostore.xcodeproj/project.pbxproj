@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C01D78E42A907F9F0077B714 /* mostoreApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01D78E32A907F9F0077B714 /* mostoreApp.swift */; };
-		C01D78E62A907F9F0077B714 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01D78E52A907F9F0077B714 /* ContentView.swift */; };
+		C01D78E62A907F9F0077B714 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01D78E52A907F9F0077B714 /* LoginView.swift */; };
 		C01D78E82A907FA10077B714 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C01D78E72A907FA10077B714 /* Assets.xcassets */; };
 		C01D78EB2A907FA10077B714 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C01D78EA2A907FA10077B714 /* Preview Assets.xcassets */; };
 		C01D78F52A907FA10077B714 /* mostoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01D78F42A907FA10077B714 /* mostoreTests.swift */; };
@@ -36,7 +36,7 @@
 /* Begin PBXFileReference section */
 		C01D78E02A907F9F0077B714 /* mostore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mostore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C01D78E32A907F9F0077B714 /* mostoreApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mostoreApp.swift; sourceTree = "<group>"; };
-		C01D78E52A907F9F0077B714 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C01D78E52A907F9F0077B714 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C01D78E72A907FA10077B714 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C01D78EA2A907FA10077B714 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C01D78F02A907FA10077B714 /* mostoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = mostoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,9 +94,10 @@
 		C01D78E22A907F9F0077B714 /* mostore */ = {
 			isa = PBXGroup;
 			children = (
-				C01D78E32A907F9F0077B714 /* mostoreApp.swift */,
-				C01D78E52A907F9F0077B714 /* ContentView.swift */,
-				C01D78E72A907FA10077B714 /* Assets.xcassets */,
+				C01D79112A9083F80077B714 /* res */,
+				C01D79102A90808B0077B714 /* controllers */,
+				C01D790F2A9080810077B714 /* models */,
+				C01D790E2A9080790077B714 /* views */,
 				C01D78E92A907FA10077B714 /* Preview Content */,
 			);
 			path = mostore;
@@ -125,6 +126,37 @@
 				C01D79002A907FA10077B714 /* mostoreUITestsLaunchTests.swift */,
 			);
 			path = mostoreUITests;
+			sourceTree = "<group>";
+		};
+		C01D790E2A9080790077B714 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				C01D78E52A907F9F0077B714 /* LoginView.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		C01D790F2A9080810077B714 /* models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		C01D79102A90808B0077B714 /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C01D78E32A907F9F0077B714 /* mostoreApp.swift */,
+			);
+			path = controllers;
+			sourceTree = "<group>";
+		};
+		C01D79112A9083F80077B714 /* res */ = {
+			isa = PBXGroup;
+			children = (
+				C01D78E72A907FA10077B714 /* Assets.xcassets */,
+			);
+			path = res;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,7 +289,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C01D78E62A907F9F0077B714 /* ContentView.swift in Sources */,
+				C01D78E62A907F9F0077B714 /* LoginView.swift in Sources */,
 				C01D78E42A907F9F0077B714 /* mostoreApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -419,6 +451,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"mostore/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Mo Store";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -447,6 +480,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"mostore/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Mo Store";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
