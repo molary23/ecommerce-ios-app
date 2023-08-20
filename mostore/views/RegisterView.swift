@@ -1,21 +1,23 @@
 //
-//  ContentView.swift
+//  RegisterView.swift
 //  mostore
 //
 //  Created by Azeez Adeola Hassan on 2023-08-19.
 //
 
 import SwiftUI
-var loginTuple = (
+
+var registerTuple = (
     "Email Address",
     "Password",
     "Login",
-    "Register"
+    "Register",
+    "Phone Number",
+    "Username",
+    "All fields are compulsory"
 )
 
-struct LoginView: View {
-    @State private var emailAddress: String = ""
-    @State private var password: String = ""
+struct RegisterView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -23,7 +25,7 @@ struct LoginView: View {
                     .resizable()
                     .aspectRatio(geometry.size, contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)
-                VStack(content: {
+                VStack(alignment: .leading, content: {
                     HStack {
                         Circle()
                             .frame(width: 50, height: 50)
@@ -36,31 +38,52 @@ struct LoginView: View {
                     }
                     .frame(maxWidth: .infinity)
 
-                    VStack {
-                        Text(loginTuple.2)
-                            .font(.largeTitle)
-                            .fontWeight(.black)
-                            .fontDesign(.rounded)
-                            .foregroundColor(Color.white)
-                            .frame(maxWidth: .infinity, maxHeight: 20, alignment: .leading)
-                            .padding(.bottom, 20.0)
-                            .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 1)
+                    VStack(spacing: 20, content: {
+                        VStack(spacing: 15, content: {
+                            Text(registerTuple.3)
+                                .font(.largeTitle)
+                                .fontWeight(.black)
+                                .fontDesign(.rounded)
+                                .foregroundColor(Color.white)
+                                .frame(maxWidth: .infinity, maxHeight: 20, alignment: .leading)
+                                .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 1)
+
+                            Text(registerTuple.6)
+                                .font(.body)
+                                .italic()
+                                .foregroundColor(Color.white)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 1)
+                        })
 
                         VStack(spacing: 30, content: {
                             VStack(spacing: 15, content: {
-                                TextField(loginTuple.0, text: $emailAddress)
+                                TextField(registerTuple.5, text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
                                     .textFieldStyle(.roundedBorder)
-                                    .accessibilityLabel(loginTuple.0)
+                                    .accessibilityLabel(registerTuple.5)
+                                    .id("login__username")
+
+                                TextField(registerTuple.4, text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
+                                    .textFieldStyle(.roundedBorder)
+                                    .accessibilityLabel(registerTuple.4)
+                                    .id("login__phone")
+
+                                TextField(registerTuple.0, text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
+                                    .textFieldStyle(.roundedBorder)
+                                    .accessibilityLabel(registerTuple.0)
                                     .id("login__email")
 
-                                SecureField(loginTuple.1, text: $password)
-                                    .accessibilityLabel(loginTuple.1)
-                                    .id("login__password")
+                                TextField("*********", text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
                                     .textFieldStyle(.roundedBorder)
-
+                                    .accessibilityLabel(registerTuple.1)
+                                    .id("login__password")
+                                TextField("*********", text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
+                                    .textFieldStyle(.roundedBorder)
+                                    .accessibilityLabel(registerTuple.1)
+                                    .id("login__confirm__password")
                             })
                             VStack(spacing: 15, content: {
-                                Button(loginTuple.2) {}
+                                Button(registerTuple.3) {}
                                     .padding(.vertical, 8.0)
                                     .frame(maxWidth: .infinity)
                                     .background(Color.blue)
@@ -68,7 +91,7 @@ struct LoginView: View {
                                     .foregroundColor(Color.white)
                                     .fontWeight(.bold)
 
-                                Button(loginTuple.3) {}
+                                Button(registerTuple.2) {}
                                     .padding(.vertical, 8.0)
                                     .frame(maxWidth: .infinity)
                                     .background(Color.white)
@@ -82,11 +105,10 @@ struct LoginView: View {
                         .clipped()
                         .compositingGroup()
                         .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 1)
-                    }
-
+                    })
                     .padding()
                     .padding(.vertical, 20)
-                    .frame(width: .infinity, height: 300)
+                    .frame(width: .infinity, height: 480)
                     .background(
                         RoundedRectangle(cornerRadius: 8, style: .continuous)
                             .fill(Color(#colorLiteral(red: 0.9150597453, green: 0.9150597453, blue: 0.9150597453, alpha: 0.55)))
@@ -101,13 +123,12 @@ struct LoginView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                 .background(Color.black.opacity(0.5))
             }
-
         }.ignoresSafeArea(.keyboard, edges: .all)
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct RegisterView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
+        RegisterView()
     }
 }
