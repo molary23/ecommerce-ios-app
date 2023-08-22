@@ -6,38 +6,45 @@
 //
 
 import SwiftUI
-var loginTuple = (
-    "Email Address",
-    "Password",
-    "Login",
-    "Register"
-)
 
 struct LoginView: View {
+    @Environment(\.verticalSizeClass) private var verticalSizeClass: UserInterfaceSizeClass?
+    
     @State private var emailAddress: String = ""
     @State private var password: String = ""
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                Image("shopping")
+                Image(self.verticalSizeClass != .compact ? "shopping": "shopping-land")
                     .resizable()
                     .aspectRatio(geometry.size, contentMode: .fill)
+                    .clipped()
+                   //  .rotationEffect(.degrees(90))
                     .edgesIgnoringSafeArea(.all)
-                VStack(content: {
-                    HStack {
-                        Circle()
-                            .frame(width: 50, height: 50)
-                            .foregroundColor(Color.red)
-                        Text("Mo Store")
-                            .font(.largeTitle)
-                            .fontWeight(.black)
-                            .foregroundColor(Color.white)
-                            .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 2)
-                    }
-                    .frame(maxWidth: .infinity)
+                
+                VStack(alignment: .center, content: {
+                    Spacer()
+                    Spacer()
+                    
+                       if(self.verticalSizeClass != .compact) {
+                            Spacer()
+                            Spacer()
+                            HStack {
+                                Circle()
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(Color.red)
+                                Text(STRING_TUPLE.8)
+                                    .font(.largeTitle)
+                                    .fontWeight(.black)
+                                    .foregroundColor(Color.white)
+                                    .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 2)
+                            }
+                            .frame(maxWidth: .infinity)
+                        
+                        }
 
-                    VStack {
-                        Text(loginTuple.2)
+                    VStack (alignment: .center){
+                        Text(STRING_TUPLE.2)
                             .font(.largeTitle)
                             .fontWeight(.black)
                             .fontDesign(.rounded)
@@ -48,19 +55,19 @@ struct LoginView: View {
 
                         VStack(spacing: 30, content: {
                             VStack(spacing: 15, content: {
-                                TextField(loginTuple.0, text: $emailAddress)
+                                TextField(STRING_TUPLE.0, text: $emailAddress)
                                     .textFieldStyle(.roundedBorder)
-                                    .accessibilityLabel(loginTuple.0)
+                                    .accessibilityLabel(STRING_TUPLE.0)
                                     .id("login__email")
 
-                                SecureField(loginTuple.1, text: $password)
-                                    .accessibilityLabel(loginTuple.1)
+                                SecureField(STRING_TUPLE.1, text: $password)
+                                    .accessibilityLabel(STRING_TUPLE.1)
                                     .id("login__password")
                                     .textFieldStyle(.roundedBorder)
 
                             })
                             VStack(spacing: 15, content: {
-                                Button(loginTuple.2) {}
+                                Button(STRING_TUPLE.2) {}
                                     .padding(.vertical, 8.0)
                                     .frame(maxWidth: .infinity)
                                     .background(Color.blue)
@@ -68,7 +75,7 @@ struct LoginView: View {
                                     .foregroundColor(Color.white)
                                     .fontWeight(.bold)
 
-                                Button(loginTuple.3) {}
+                                Button(STRING_TUPLE.3) {}
                                     .padding(.vertical, 8.0)
                                     .frame(maxWidth: .infinity)
                                     .background(Color.white)
@@ -83,25 +90,27 @@ struct LoginView: View {
                         .compositingGroup()
                         .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 1)
                     }
-
                     .padding()
                     .padding(.vertical, 20)
-                    .frame(width: .infinity, height: 300)
+                    .frame(
+                        maxWidth: self.verticalSizeClass == .compact ? 500
+                        : .greatestFiniteMagnitude,
+                        minHeight: 300
+                    )
                     .background(
-                        RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .fill(Color(#colorLiteral(red: 0.9150597453, green: 0.9150597453, blue: 0.9150597453, alpha: 0.55)))
-                            .shadow(color: Color.black, radius: 10, x: 10, y: 15)
+                        Color(#colorLiteral(red: 0.9150597453, green: 0.9150597453, blue: 0.9150597453, alpha: 0.55))
+                            .cornerRadius(8)
+                            .shadow(color: Color.black, radius: 5, x: 1, y: 1)
                     )
 
-                    Rectangle()
-                        .frame(height: 80)
-                        .foregroundColor(Color.clear)
+                    Spacer()
                 })
                 .padding()
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
                 .background(Color.black.opacity(0.5))
+                
             }
-
+            .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
         }.ignoresSafeArea(.keyboard, edges: .all)
     }
 }

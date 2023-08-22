@@ -7,15 +7,7 @@
 
 import SwiftUI
 
-var registerTuple = (
-    "Email Address",
-    "Password",
-    "Login",
-    "Register",
-    "Phone Number",
-    "Username",
-    "All fields are compulsory"
-)
+
 
 struct RegisterView: View {
     var body: some View {
@@ -30,7 +22,7 @@ struct RegisterView: View {
                         Circle()
                             .frame(width: 50, height: 50)
                             .foregroundColor(Color.red)
-                        Text("Mo Store")
+                        Text(STRING_TUPLE.8)
                             .font(.largeTitle)
                             .fontWeight(.black)
                             .foregroundColor(Color.white)
@@ -40,7 +32,7 @@ struct RegisterView: View {
 
                     VStack(spacing: 20, content: {
                         VStack(spacing: 15, content: {
-                            Text(registerTuple.3)
+                            Text(STRING_TUPLE.3)
                                 .font(.largeTitle)
                                 .fontWeight(.black)
                                 .fontDesign(.rounded)
@@ -48,7 +40,7 @@ struct RegisterView: View {
                                 .frame(maxWidth: .infinity, maxHeight: 20, alignment: .leading)
                                 .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 1)
 
-                            Text(registerTuple.6)
+                            Text(STRING_TUPLE.6)
                                 .font(.body)
                                 .italic()
                                 .foregroundColor(Color.white)
@@ -58,32 +50,32 @@ struct RegisterView: View {
 
                         VStack(spacing: 30, content: {
                             VStack(spacing: 15, content: {
-                                TextField(registerTuple.5, text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
+                                TextField(STRING_TUPLE.5, text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
                                     .textFieldStyle(.roundedBorder)
-                                    .accessibilityLabel(registerTuple.5)
+                                    .accessibilityLabel(STRING_TUPLE.5)
                                     .id("login__username")
 
-                                TextField(registerTuple.4, text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
+                                TextField(STRING_TUPLE.4, text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
                                     .textFieldStyle(.roundedBorder)
-                                    .accessibilityLabel(registerTuple.4)
+                                    .accessibilityLabel(STRING_TUPLE.4)
                                     .id("login__phone")
 
-                                TextField(registerTuple.0, text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
+                                TextField(STRING_TUPLE.0, text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
                                     .textFieldStyle(.roundedBorder)
-                                    .accessibilityLabel(registerTuple.0)
+                                    .accessibilityLabel(STRING_TUPLE.0)
                                     .id("login__email")
 
                                 TextField("*********", text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
                                     .textFieldStyle(.roundedBorder)
-                                    .accessibilityLabel(registerTuple.1)
+                                    .accessibilityLabel(STRING_TUPLE.1)
                                     .id("login__password")
                                 TextField("*********", text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
                                     .textFieldStyle(.roundedBorder)
-                                    .accessibilityLabel(registerTuple.1)
+                                    .accessibilityLabel(STRING_TUPLE.1)
                                     .id("login__confirm__password")
                             })
                             VStack(spacing: 15, content: {
-                                Button(registerTuple.3) {}
+                                Button(STRING_TUPLE.3) {}
                                     .padding(.vertical, 8.0)
                                     .frame(maxWidth: .infinity)
                                     .background(Color.blue)
@@ -91,7 +83,7 @@ struct RegisterView: View {
                                     .foregroundColor(Color.white)
                                     .fontWeight(.bold)
 
-                                Button(registerTuple.2) {}
+                                Button(STRING_TUPLE.2) {}
                                     .padding(.vertical, 8.0)
                                     .frame(maxWidth: .infinity)
                                     .background(Color.white)

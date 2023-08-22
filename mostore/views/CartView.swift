@@ -17,12 +17,14 @@ struct CartView: View {
                         .fontWeight(.semibold)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                    Text("Clear")
-                        .font(.headline)
-                        .fontWeight(.semibold)
+                    Button("Clear") {}
+                        .padding(.vertical, 4)
                         .frame(maxWidth: .infinity, alignment: .trailing)
+                        .background(Color.white)
+                        .foregroundColor(Color.red)
+                        .fontWeight(.bold)
                 })
-                ForEach(1 ... 9, id: \.self) { _ in
+                ForEach(1 ..< 9, id: \.self) { _ in
 
                     HStack(spacing: 8, content: {
                         RoundedRectangle(cornerRadius: 5)
@@ -33,6 +35,7 @@ struct CartView: View {
                                     .font(.headline)
                                     .fontWeight(.semibold)
                                     .frame(maxWidth: .infinity, alignment: .leading)
+                                   
 
                                 Image(systemName: "trash")
                                     .renderingMode(.original)
@@ -47,13 +50,13 @@ struct CartView: View {
                                     .renderingMode(.original)
                                     .aspectRatio(contentMode: .fit)
                                     .font(.body)
-                                    .foregroundColor(Color.orange)
                                     .frame(alignment: .leading)
                                     .clipped()
 
                                 Text("(4.6)")
                                     .font(.headline)
                                     .fontWeight(.semibold)
+                                    .foregroundColor(Color.indigo)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             }
                             .frame(maxHeight: .greatestFiniteMagnitude, alignment: .leading)
