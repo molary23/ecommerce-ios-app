@@ -7,30 +7,7 @@
 
 import SwiftUI
 
-struct LabelAlignment: UIViewRepresentable {
-    var text: String
-    var textAlignmentStyle: TextAlignmentStyle
-    var width: CGFloat
 
-    func makeUIView(context: Context) -> UILabel {
-        let label = UILabel()
-        label.textAlignment = NSTextAlignment(rawValue: textAlignmentStyle.rawValue)!
-        label.numberOfLines = 0
-        label.preferredMaxLayoutWidth = width
-        label.setContentHuggingPriority(.required, for: .horizontal)
-        label.setContentHuggingPriority(.required, for: .vertical)
-
-        return label
-    }
-
-    func updateUIView(_ uiView: UILabel, context: Context) {
-        uiView.text = text
-    }
-}
-
-enum TextAlignmentStyle: Int {
-    case left = 0, center = 1, right = 2, justified = 3, natural = 4
-}
 
 struct FloatingButton: View {
     let action: () -> Void
@@ -105,7 +82,7 @@ struct DetailsView: View {
                             .fontWeight(.bold)
                             .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
 
-                        LabelAlignment(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit gravida ipsum ac commodo. Cras ultricies lectus vitae purus tempus, sit amet laoreet urna eleifend. Pellentesque molestie convallis nulla vel mattis. Aenean bibendum sem a metus commodo tempus. Integer quis neque sem. Nullam a aliquet augue. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis pellentesque dui nec accumsan. Aliquam et placerat augue. Curabitur at dui enim. Curabitur non ante et urna tristique pellentesque quis vel tortor. Nunc varius mi eu ultricies mollis. Duis vel elit faucibus, molestie felis vitae, imperdiet eros. Vestibulum a tellus id nibh laoreet interdum.", textAlignmentStyle: .justified, width: UIScreen.main.bounds.width - 20).font(.title)
+                        LabelAlignment(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit gravida ipsum ac commodo. Cras ultricies lectus vitae purus tempus, sit amet laoreet urna eleifend. Pellentesque molestie convallis nulla vel mattis. Aenean bibendum sem a metus commodo tempus. Integer quis neque sem. Nullam a aliquet augue. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis pellentesque dui nec accumsan. Aliquam et placerat augue. Curabitur at dui enim. Curabitur non ante et urna tristique pellentesque quis vel tortor. Nunc varius mi eu ultricies mollis. Duis vel elit faucibus, molestie felis vitae, imperdiet eros. Vestibulum a tellus id nibh laoreet interdum.", textAlignmentStyle: .justified, width: UIScreen.main.bounds.width - 20, size: 20.0)
                         
 
                     })
