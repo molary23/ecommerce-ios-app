@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-
-
 struct FloatingButton: View {
     let action: () -> Void
     let icon: String
@@ -38,80 +36,65 @@ struct FloatingButton: View {
 
 struct DetailsView: View {
     var body: some View {
-        ScrollView {
-            VStack {
-                ZStack {
-                    Image("shopping")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(maxHeight: 400)
-                        .clipped()
-                        .overlay(
-                            HStack(content: {
-                                Button(action: {
-                                    print("button pressed")
+        NavigationStack {
+            ZStack {
+                ScrollView {
+                    VStack {
+                        ZStack {
+                            Image("shopping")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(maxHeight: 500)
+                                .clipped()
+                        }
 
-                                }) {
-                                    Image(systemName: "multiply.circle")
-                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                                        .font(.title)
-                                        .foregroundColor(Color.gray)
-                                }
-                                
+                        VStack(spacing: 10, content: {
+                            Text("Tote Bag")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                                .frame(maxWidth: .greatestFiniteMagnitude)
+
+                            Text("$50.77")
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+
+                            VStack(spacing: 10, content: {
+                                Text("Description")
+                                    .font(.title3)
+                                    .fontWeight(.bold)
+                                    .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+
+                                LabelAlignment(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit gravida ipsum ac commodo. Cras ultricies lectus vitae purus tempus, sit amet laoreet urna eleifend. Pellentesque molestie convallis nulla vel mattis. Aenean bibendum sem a metus commodo tempus. Integer quis neque sem. Nullam a aliquet augue. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis pellentesque dui nec accumsan. Aliquam et placerat augue. Curabitur at dui enim. Curabitur non ante et urna tristique pellentesque quis vel tortor. Nunc varius mi eu ultricies mollis. Duis vel elit faucibus, molestie felis vitae, imperdiet eros. Vestibulum a tellus id nibh laoreet interdum.", textAlignmentStyle: .justified, width: UIScreen.main.bounds.width - 20, size: 20.0)
 
                             })
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                            .padding(.vertical, 15)
-                            .padding(.horizontal, 30)
-                        )
-                }
-
-                VStack(spacing: 10, content: {
-                    Text("Tote Bag")
-                        .font(.title2)
-                        .frame(maxWidth: .greatestFiniteMagnitude)
-
-                    Text("$50.77")
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
-
-                    VStack(spacing: 10, content: {
-                        Text("Description")
-                            .font(.title3)
-                            .fontWeight(.bold)
                             .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
 
-                        LabelAlignment(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit gravida ipsum ac commodo. Cras ultricies lectus vitae purus tempus, sit amet laoreet urna eleifend. Pellentesque molestie convallis nulla vel mattis. Aenean bibendum sem a metus commodo tempus. Integer quis neque sem. Nullam a aliquet augue. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis pellentesque dui nec accumsan. Aliquam et placerat augue. Curabitur at dui enim. Curabitur non ante et urna tristique pellentesque quis vel tortor. Nunc varius mi eu ultricies mollis. Duis vel elit faucibus, molestie felis vitae, imperdiet eros. Vestibulum a tellus id nibh laoreet interdum.", textAlignmentStyle: .justified, width: UIScreen.main.bounds.width - 20, size: 20.0)
-                        
-
-                    })
-                    .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
-
-                   
-                })
-                .padding()
-             
+                        })
+                        .padding()
+                    }
+                }
+                .overlay(
+                    FloatingButton(action: { print("Add to Cart") }, icon: "cart.badge.plus", fg: Color.white, bg: Color.blue, label: "Add to cart")
+                )
             }
-           
+            .ignoresSafeArea(edges: .top)
+
+
+            .toolbar {
+                ToolbarItem(placement: .navigation) {
+                    Button(action: {
+                        print("button pressed")
+
+                    }) {
+                        Image(systemName: "multiply.circle")
+                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                            .font(.title2)
+                            .foregroundColor(.red)
+                    }
+                }
+            }
         }
-        .overlay(
-          /*  HStack(content: {
-                Button("Add to Cart") {}
-                    .padding(.vertical, 8.0)
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .cornerRadius(20)
-                    .foregroundColor(Color.white)
-                    .fontWeight(.bold)
-            })
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-            // .padding(.vertical, 15)
-             .padding(.horizontal, 10)*/
-            FloatingButton(action: {print("Add to Cart")}, icon: "cart.badge.plus", fg:Color.white, bg:Color.blue, label: "Add to cart")
-            
-        )
-        .edgesIgnoringSafeArea(.top)
     }
 }
 

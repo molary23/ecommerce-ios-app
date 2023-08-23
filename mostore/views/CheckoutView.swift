@@ -13,7 +13,7 @@ struct CheckoutView: View {
         NavigationStack {
             ScrollView {
                 Spacer()
-                Spacer()
+                Spacer() 
                 VStack(spacing: 50, content: {
                     VStack {
                         Text(STRING_TUPLE.14)

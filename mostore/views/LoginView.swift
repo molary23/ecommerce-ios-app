@@ -20,7 +20,7 @@ struct LoginView: View {
                     .aspectRatio(geometry.size, contentMode: .fill)
                     .clipped()
                    //  .rotationEffect(.degrees(90))
-                    .edgesIgnoringSafeArea(.all)
+                    .ignoresSafeArea()
                 
                 VStack(alignment: .center, content: {
                     Spacer()
@@ -33,7 +33,7 @@ struct LoginView: View {
                                 Circle()
                                     .frame(width: 50, height: 50)
                                     .foregroundColor(Color.red)
-                                Text(STRING_TUPLE.8)
+                                Text(PAGE_TEXT["text"]![0])
                                     .font(.largeTitle)
                                     .fontWeight(.black)
                                     .foregroundColor(Color.white)
@@ -44,7 +44,7 @@ struct LoginView: View {
                         }
 
                     VStack (alignment: .center){
-                        Text(STRING_TUPLE.2)
+                        Text(PAGE_TEXT["title"]![0])
                             .font(.largeTitle)
                             .fontWeight(.black)
                             .fontDesign(.rounded)
@@ -55,19 +55,19 @@ struct LoginView: View {
 
                         VStack(spacing: 30, content: {
                             VStack(spacing: 15, content: {
-                                TextField(STRING_TUPLE.0, text: $emailAddress)
+                                TextField(PAGE_TEXT["input"]![0], text: $emailAddress)
                                     .textFieldStyle(.roundedBorder)
                                     .accessibilityLabel(STRING_TUPLE.0)
                                     .id("login__email")
 
-                                SecureField(STRING_TUPLE.1, text: $password)
+                                SecureField(PAGE_TEXT["input"]![2], text: $password)
                                     .accessibilityLabel(STRING_TUPLE.1)
                                     .id("login__password")
                                     .textFieldStyle(.roundedBorder)
 
                             })
                             VStack(spacing: 15, content: {
-                                Button(STRING_TUPLE.2) {}
+                                Button(PAGE_TEXT["title"]![0]) {}
                                     .padding(.vertical, 8.0)
                                     .frame(maxWidth: .infinity)
                                     .background(Color.blue)
@@ -75,7 +75,7 @@ struct LoginView: View {
                                     .foregroundColor(Color.white)
                                     .fontWeight(.bold)
 
-                                Button(STRING_TUPLE.3) {}
+                                Button(PAGE_TEXT["title"]![1]) {}
                                     .padding(.vertical, 8.0)
                                     .frame(maxWidth: .infinity)
                                     .background(Color.white)

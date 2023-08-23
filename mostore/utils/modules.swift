@@ -30,8 +30,16 @@ let STRING_TUPLE = (
     "CVV",
     "Subtotal",
     "Tax",
-    "Total" // 21
+    "Total",
+    "Settings" // 21
 )
+
+let PAGE_TEXT: [String: [String]] = [
+    "title": ["Login", "Register", "My Cart", "Payment", "Order Confirmation", "Settings"],
+    "button": ["Place Order", "Continue Shopping"],
+    "input": ["Username", "Email Address", "Password", "Phone Number", "Card Number", "MM/YY", "CVV", "Search Products..."],
+    "text": ["Mo Store", "Thank you for your purchase.", "Your order will be shipped in 2-5 days. Tracking info will be sent to you asap.", "Card Number", "Expiration", "Secure Code", "Subtotal", "Tax", "Total", "Best Sellers", "Deals","My Cart", "Clear"],
+]
 
 struct LabelAlignment: UIViewRepresentable {
     var text: String

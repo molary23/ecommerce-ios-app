@@ -8,90 +8,115 @@
 import SwiftUI
 
 struct MainView: View {
+    let columns: [GridItem] = [
+        GridItem(.flexible(), spacing: 10, alignment: nil),
+        // GridItem(.flexible(), spacing: 10, alignment: nil),
+    ]
+   
+    init() {
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.red, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
+        UINavigationBar.appearance().backgroundColor = UIColor.green
+     }
+
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, content: {
-                HStack(alignment: .center, content: {
-                    Image(systemName: "magnifyingglass")
-                        .renderingMode(.original)
-                        .aspectRatio(contentMode: .fit)
-                        .font(.body)
-                        .foregroundColor(Color.orange)
-                        .clipped()
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading,spacing: 20, content: {
+                    HStack(alignment: .center, spacing: 20, content: {
+                        Image(systemName: "magnifyingglass")
+                            .renderingMode(.original)
+                            .aspectRatio(contentMode: .fit)
+                            .font(.body)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color.orange)
+                            .clipped()
+                            .frame(maxWidth: 40)
+                            
 
-                    TextField("Search Products", text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
-                        .textFieldStyle(.plain)
-                        .background(Color.white)
+                        TextField(PAGE_TEXT["input"]![7], text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
+                            .textFieldStyle(.plain)
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity, maxHeight: 50)
+                            
 
-                })
-                .padding()
-                .padding(.horizontal, 40)
-                .frame(width: .infinity, height: 40)
-                .background(Color.cyan)
-
-                VStack(spacing: 20, content: {
-                    ScrollView(.horizontal, showsIndicators: false, content: {
-                        HStack(spacing: 20, content: {
-                            ForEach(1 ... 10, id: \.self) { _ in
-                                VStack(content: {
-                                    Circle()
-                                        .frame(width: 100, height: 100)
-                                        .foregroundColor(Color.yellow)
-                                    Text("Hello World")
-                                        .font(.subheadline)
-                                        .fontWeight(.semibold)
-                                })
-                            }
-
-                        })
                     })
+                    .padding(8)
+                    .padding(.horizontal, 40)
+                    .frame(width: .infinity, height: 40)
+                    .background(Color.white)
 
-                    Text("Best Sellers")
-                        .font(.headline)
+                    VStack(spacing: 20, content: {
+                        ScrollView(.horizontal, showsIndicators: false, content: {
+                            LazyHStack(spacing: 20, content: {
+                                ForEach(1 ... 10, id: \.self) { _ in
+                                    VStack(content: {
+                                        Circle()
+                                            .frame(width: 100, height: 100)
+                                            .foregroundColor(Color.yellow)
+                                        Text("Hello World")
+                                            .font(.subheadline)
+                                            .fontWeight(.semibold)
+                                    })
+                                }
 
-                    ScrollView(.horizontal, showsIndicators: false, content: {
-                        HStack(spacing: 40, content: {
-                            ForEach(1 ... 9, id: \.self) { _ in
-                                VStack(content: {
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .frame(width: 250, height: 300)
-                                        .foregroundColor(Color.brown)
-                                    Text("Hello World")
-                                        .font(.headline)
-                                        .fontWeight(.semibold)
-                                    Text("Hello World")
-                                        .font(.subheadline)
+                            })
+                        })
+
+                        VStack {
+                            Text(PAGE_TEXT["text"]![9])
+                                .font(.headline)
+                            ScrollView(.horizontal, showsIndicators: false, content: {
+                                LazyHGrid(rows: columns, alignment: .center, spacing: 20, pinnedViews: [], content: {
+                                    ForEach(1 ... 9, id: \.self) { _ in
+                                        VStack(content: {
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .frame(width: 250, height: 300)
+                                                .foregroundColor(Color.brown)
+                                            Text("Hello World")
+                                                .font(.headline)
+                                                .fontWeight(.semibold)
+                                            Text("Hello World")
+                                                .font(.subheadline)
+
+                                        })
+                                    }
 
                                 })
-                            }
 
-                        })
-                        
-                    })
-
-                    Text("Deals")
-                        .font(.headline)
-                    VStack(spacing: 40, content: {
-                        ForEach(1 ... 10, id: \.self) { _ in
-                            HStack(spacing: 30, content: {
-                                RoundedRectangle(cornerRadius: 8)
-                                    .frame(width: 150, height: 200)
-                                    .foregroundColor(Color.cyan)
-
-                                RoundedRectangle(cornerRadius: 8)
-                                    .frame(width: 150, height: 200)
-                                    .foregroundColor(Color.cyan)
                             })
                         }
 
+                        VStack {
+                            Text(PAGE_TEXT["text"]![10])
+                                .font(.headline)
+                            LazyVGrid(columns: columns, alignment: .center, spacing: 20, pinnedViews: [], content: {
+                                ForEach(1 ... 10, id: \.self) { _ in
+                                    HStack(spacing: 30, content: {
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .frame(width: 150, height: 200)
+                                            .foregroundColor(Color.cyan)
+
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .frame(width: 150, height: 200)
+                                            .foregroundColor(Color.cyan)
+                                    })
+                                }
+                            })
+                        }
+                        .padding()
+
                     })
 
                 })
+            }
+            .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
+            .background(
+                Color.green
+                    .ignoresSafeArea()
+            )
 
-            })
+            .navigationBarTitle(STRING_TUPLE.10, displayMode: .inline)
         }
-        .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
-        .background(Color.white)
     }
 }
 

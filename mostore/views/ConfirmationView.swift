@@ -78,13 +78,12 @@ struct ConfirmationView: View {
                     Spacer()
 
                 })
-                .compositingGroup()
                 .padding(.vertical, 40)
                 .padding(.horizontal, 20)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                 .background(.white)
                 .roundedCorner(80, corners: [.topLeft, .topRight])
-                .edgesIgnoringSafeArea(.bottom)
+                
             }
             .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
             .background(Color.blue)

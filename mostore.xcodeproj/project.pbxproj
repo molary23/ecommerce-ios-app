@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C019C9AC2A95886A00BF3A55 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C019C9AB2A95886A00BF3A55 /* SettingsView.swift */; };
 		C01D78E42A907F9F0077B714 /* mostoreApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01D78E32A907F9F0077B714 /* mostoreApp.swift */; };
 		C01D78E62A907F9F0077B714 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01D78E52A907F9F0077B714 /* LoginView.swift */; };
 		C01D78E82A907FA10077B714 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C01D78E72A907FA10077B714 /* Assets.xcassets */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C019C9AB2A95886A00BF3A55 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C01D78E02A907F9F0077B714 /* mostore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mostore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C01D78E32A907F9F0077B714 /* mostoreApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mostoreApp.swift; sourceTree = "<group>"; };
 		C01D78E52A907F9F0077B714 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				C0B0FD4C2A931488006FD481 /* CartView.swift */,
 				C0B0FD4E2A932380006FD481 /* CheckoutView.swift */,
 				C04B0CC62A944F7C00EA326D /* ConfirmationView.swift */,
+				C019C9AB2A95886A00BF3A55 /* SettingsView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 				C01D79132A90B4C50077B714 /* RegisterView.swift in Sources */,
 				C0EC503B2A9178EA001C956A /* DetailsView.swift in Sources */,
 				C0B0FD4F2A932380006FD481 /* CheckoutView.swift in Sources */,
+				C019C9AC2A95886A00BF3A55 /* SettingsView.swift in Sources */,
 				C0EC50392A91598C001C956A /* MainView.swift in Sources */,
 				C01D78E62A907F9F0077B714 /* LoginView.swift in Sources */,
 				C04B0CC72A944F7C00EA326D /* ConfirmationView.swift in Sources */,
