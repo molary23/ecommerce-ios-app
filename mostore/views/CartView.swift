@@ -43,16 +43,15 @@ var productData = [
 
 struct CartView: View {
     @State private var allProductData = productData
-
     @State private var productArray = Array(productData.enumerated())
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                if productArray.count > 0 {
+                if !productArray.isEmpty {
                     VStack(spacing: 20, content: {
                         ForEach(productArray, id: \.element) { i, product in
-                            CartItem(product: product, i: i)
+                            CartItem(productArray: $productArray, allProductData: $allProductData, product: product, i: i)
                         }
                     })
                     .padding(12)
@@ -70,9 +69,6 @@ struct CartView: View {
             .overlay(
                 FloatingButton(action: {
                     productArray.removeAll()
-                    print(productArray)
-                    print("Remove all from Cart")
-
                 }, icon: "trash.slash", fg: Color.white, bg: Color.blue, label: "Add to cart")
             )
 
@@ -100,23 +96,26 @@ struct CartView_Previews: PreviewProvider {
 }
 
 struct CartItem: View {
-    @State private var allProductData = productData
+    @Binding var productArray: Array<(offset: Int, element: SimpleProduct)>
+    @Binding var allProductData: [SimpleProduct]
     let product: SimpleProduct
     let i: Int
+
     var body: some View {
         HStack(spacing: 8, content: {
             RoundedRectangle(cornerRadius: 5)
                 .frame(width: 100, height: 100)
             VStack {
                 HStack(spacing: 8, content: {
-                    Text("\(product.name)".capitalized)
+                    Text("\(product.name) + \(i)".capitalized)
                         .font(.headline)
                         .fontWeight(.semibold)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Button(action: {
-                        print(allProductData)
-                        allProductData.removeFirst()
-                        print("Remove all from Cart")
+                        if !productArray.isEmpty {
+                            productArray = productArray.filter({ $0.element != self.allProductData[i] })
+                        }
+
                     }) {
                         Image(systemName: "trash")
                             .renderingMode(.original)

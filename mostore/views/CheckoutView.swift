@@ -33,7 +33,7 @@ struct CheckoutView: View {
                                         .font(.title)
                                 }
 
-                            ExtTextFieldView(placeholder: PAGE_TEXT["input"]![9], placement: .trailing, value: $cardNumber)
+                            ExtTextFieldView(placeholder: PAGE_TEXT["input"]![9], placement: .trailing, id: "cardNumber", value: $cardNumber).textFieldStyle(.plain)
 
                         }).padding()
                             .background(Color("off-white"))
@@ -54,9 +54,9 @@ struct CheckoutView: View {
                         })
 
                         HStack(content: {
-                            ExtTextFieldView(placeholder: PAGE_TEXT["input"]![5], placement: .leading, value: $expiry)
+                            ExtTextFieldView(placeholder: PAGE_TEXT["input"]![5], placement: .leading, id: "expiry", value: $expiry).textFieldStyle(.plain)
 
-                            ExtTextFieldView(placeholder: PAGE_TEXT["input"]![6], placement: .trailing, value: $cvv)
+                            ExtTextFieldView(placeholder: PAGE_TEXT["input"]![6], placement: .trailing, id: "cvv", value: $cvv).textFieldStyle(.plain)
 
                         })
 
@@ -95,36 +95,5 @@ struct CheckoutView: View {
 struct CheckoutView_Previews: PreviewProvider {
     static var previews: some View {
         CheckoutView()
-    }
-}
-
-struct ExtTextFieldView: View {
-    let placeholder: String
-    let placement: TextAlignment
-    @Binding var value: String
-    var body: some View {
-        TextField(placeholder, text: $value)
-            .textFieldStyle(.plain)
-            .fontWeight(.semibold)
-            .frame(maxWidth: .infinity, maxHeight: 50, alignment: .trailing)
-            .multilineTextAlignment(placement)
-    }
-}
-
-struct ExtTotalView: View {
-    var heading: String
-    var amount: Int
-    var body: some View {
-        HStack(content: {
-            Text(heading)
-                .font(.headline)
-                .fontWeight(.bold)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-            Text("$\(amount)")
-                .font(.body)
-                .frame(maxWidth: .infinity, alignment: .trailing)
-        })
-        .frame(width: .infinity, height: .infinity, alignment: .leading)
     }
 }

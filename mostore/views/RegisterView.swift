@@ -7,12 +7,9 @@
 
 import SwiftUI
 
-
-
 // Correct with Login
 struct RegisterView: View {
     @Environment(\.verticalSizeClass) private var verticalSizeClass: UserInterfaceSizeClass?
-    
 
     @State private var emailAddress: String = ""
     @State private var password: String = ""
@@ -21,20 +18,20 @@ struct RegisterView: View {
     @State private var username: String = ""
 
     var body: some View {
-        NavigationStack{
+        NavigationStack {
             GeometryReader { geometry in
                 ZStack {
                     Image(self.verticalSizeClass != .compact ? "shopping" : "shopping-land")
                         .resizable()
                         .aspectRatio(geometry.size, contentMode: .fill)
                         .clipped()
-                    //  .rotationEffect(.degrees(90))
+                        //  .rotationEffect(.degrees(90))
                         .ignoresSafeArea()
-                    
+
                     VStack(alignment: .center, content: {
                         Spacer()
                         Spacer()
-                        
+
                         if self.verticalSizeClass != .compact {
                             Spacer()
                             Spacer()
@@ -50,7 +47,7 @@ struct RegisterView: View {
                             }
                             .frame(maxWidth: .infinity)
                         }
-                        
+
                         VStack(alignment: .center) {
                             VStack(spacing: 15, content: {
                                 Text(PAGE_TEXT["title"]![1])
@@ -58,41 +55,43 @@ struct RegisterView: View {
                                     .fontWeight(.black)
                                     .fontDesign(.rounded)
                                     .frame(maxWidth: .infinity, maxHeight: 20, alignment: .leading)
-                                
+
                                 Text(PAGE_TEXT["text"]![13])
                                     .font(.body)
                                     .italic()
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             }).foregroundColor(Color.white)
                                 .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 1)
-                            
+
                             VStack(spacing: 30, content: {
                                 VStack(spacing: 15, content: {
+                                    ExtTextFieldView(placeholder: PAGE_TEXT["input"]![0], placement: .leading, id: "register__username", value: $username).textFieldStyle(.roundedBorder)
+
                                     TextField(PAGE_TEXT["input"]![0], text: $username)
                                         .textFieldStyle(.roundedBorder)
                                         .accessibilityLabel(PAGE_TEXT["input"]![0])
                                         .id("register__username")
-                                    
+
                                     TextField(PAGE_TEXT["input"]![3], text: $phone)
                                         .textFieldStyle(.roundedBorder)
                                         .accessibilityLabel(PAGE_TEXT["input"]![3])
                                         .id("register__phone")
-                                    
+
                                     TextField(PAGE_TEXT["input"]![1], text: $emailAddress)
                                         .textFieldStyle(.roundedBorder)
                                         .accessibilityLabel(PAGE_TEXT["input"]![0])
                                         .id("register__email")
-                                    
+
                                     SecureField(PAGE_TEXT["input"]![2], text: $password)
                                         .accessibilityLabel(PAGE_TEXT["input"]![2])
                                         .id("register__password")
                                         .textFieldStyle(.roundedBorder)
-                                    
+
                                     TextField(PAGE_TEXT["input"]![8], text: $confirmPassword)
                                         .textFieldStyle(.roundedBorder)
                                         .accessibilityLabel(PAGE_TEXT["input"]![8])
                                         .id("register__confirm__password")
-                                    
+
                                 })
                                 VStack(spacing: 15, content: {
                                     Button(PAGE_TEXT["title"]![1]) {}
@@ -102,7 +101,7 @@ struct RegisterView: View {
                                         .cornerRadius(20)
                                         .foregroundColor(Color.white)
                                         .fontWeight(.bold)
-                                                                        
+
                                     NavigationLink(destination: LoginView(), label: {
                                         Text(PAGE_TEXT["title"]![0])
                                             .padding(.vertical, 8.0)
@@ -113,7 +112,7 @@ struct RegisterView: View {
                                             .fontWeight(.bold)
                                     })
                                 })
-                                
+
                             })
                             .frame(maxWidth: .infinity)
                             .clipped()
@@ -124,7 +123,7 @@ struct RegisterView: View {
                         .padding(.vertical, 20)
                         .frame(
                             maxWidth: self.verticalSizeClass == .compact ? 500
-                            : .greatestFiniteMagnitude,
+                                : .greatestFiniteMagnitude,
                             minHeight: 300
                         )
                         .background(
@@ -132,7 +131,7 @@ struct RegisterView: View {
                         )
                         .cornerRadius(8)
                         .shadow(color: Color.black, radius: 5, x: 1, y: 2)
-                        
+
                         Spacer()
                     })
                     .padding()
@@ -141,7 +140,7 @@ struct RegisterView: View {
                 }
                 .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
             }.ignoresSafeArea(.keyboard, edges: .all)
-            
+
                 .navigationBarBackButtonHidden(true)
                 .navigationBarHidden(true)
         }
