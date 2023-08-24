@@ -9,14 +9,17 @@ import SwiftUI
 
 struct CheckoutView: View {
     var lastFour: Int = 5555
+    @State private var expiry: String = ""
+    @State private var cvv: String = ""
+    @State private var cardNumber: String = ""
     var body: some View {
         NavigationStack {
             ScrollView {
                 Spacer()
-                Spacer() 
+                Spacer()
                 VStack(spacing: 50, content: {
                     VStack {
-                        Text(STRING_TUPLE.14)
+                        Text(PAGE_TEXT["text"]![3])
                             .font(.headline)
                             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -30,10 +33,8 @@ struct CheckoutView: View {
                                         .font(.title)
                                 }
 
-                            Text("*****  *****  *****  \(lastFour)")
-                                .font(.body)
-                                .fontWeight(.semibold)
-                                .frame(maxWidth: .infinity, alignment: .trailing)
+                            ExtTextFieldView(placeholder: PAGE_TEXT["input"]![9], placement: .trailing, value: $cardNumber)
+
                         }).padding()
                             .background(Color("off-white"))
                             .cornerRadius(8)
@@ -42,26 +43,21 @@ struct CheckoutView: View {
 
                     VStack {
                         HStack(content: {
-                            Text(STRING_TUPLE.15)
+                            Text(PAGE_TEXT["text"]![4])
                                 .font(.headline)
                                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                            Text(STRING_TUPLE.16)
+                            Text(PAGE_TEXT["text"]![5])
                                 .font(.headline)
                                 .frame(maxWidth: .infinity, alignment: .trailing)
 
                         })
 
                         HStack(content: {
-                            Text(STRING_TUPLE.17)
-                                .font(.body)
-                                .fontWeight(.semibold)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                            ExtTextFieldView(placeholder: PAGE_TEXT["input"]![5], placement: .leading, value: $expiry)
 
-                            Text(STRING_TUPLE.18.uppercased())
-                                .font(.body)
-                                .fontWeight(.semibold)
-                                .frame(maxWidth: .infinity, alignment: .trailing)
+                            ExtTextFieldView(placeholder: PAGE_TEXT["input"]![6], placement: .trailing, value: $cvv)
+
                         })
 
                         .padding(.vertical, 40)
@@ -71,47 +67,14 @@ struct CheckoutView: View {
                         .frame(width: .infinity, height: .infinity, alignment: .leading)
                     }
                     VStack(spacing: 30) {
-                        HStack(content: {
-                            Text(STRING_TUPLE.19)
-                                .font(.headline)
-                                .fontWeight(.bold)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-
-                            Text("$100".uppercased())
-                                .font(.body)
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                        })
-                        .frame(width: .infinity, height: .infinity, alignment: .leading)
-
-                        HStack(content: {
-                            Text(STRING_TUPLE.20)
-                                .font(.headline)
-                                .fontWeight(.bold)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-
-                            Text("$20".uppercased())
-                                .font(.body)
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                        })
-                        .frame(width: .infinity, height: .infinity, alignment: .leading)
-
-                        HStack(content: {
-                            Text(STRING_TUPLE.21)
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-
-                            Text("$120".uppercased())
-                                .font(.title)
-                                .fontWeight(.bold)
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                        })
-                        .frame(width: .infinity, height: .infinity, alignment: .leading)
+                        ExtTotalView(heading: PAGE_TEXT["text"]![6], amount: 100)
+                        ExtTotalView(heading: PAGE_TEXT["text"]![7], amount: 20)
+                        ExtTotalView(heading: PAGE_TEXT["text"]![8], amount: 120)
                     }
 
                     Spacer()
-                   
-                    Button(STRING_TUPLE.7) {}
+
+                    Button(PAGE_TEXT["button"]![3]) {}
                         .padding(.vertical, 15.0)
                         .frame(maxWidth: .infinity)
                         .background(Color.blue)
@@ -124,21 +87,7 @@ struct CheckoutView: View {
             .padding(.horizontal, 20)
             .padding(.vertical, 10)
 
-            .navigationBarTitle(STRING_TUPLE.13, displayMode: .inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        print("button pressed")
-
-                    }) {
-                        Image(systemName: "arrow.left")
-                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                            .font(.title2)
-                            .frame(maxWidth: 40, alignment: .leading)
-                            .foregroundColor(.blue)
-                    }
-                }
-            }
+            .navigationBarTitle(PAGE_TEXT["title"]![3], displayMode: .inline)
         }
     }
 }
@@ -146,5 +95,36 @@ struct CheckoutView: View {
 struct CheckoutView_Previews: PreviewProvider {
     static var previews: some View {
         CheckoutView()
+    }
+}
+
+struct ExtTextFieldView: View {
+    let placeholder: String
+    let placement: TextAlignment
+    @Binding var value: String
+    var body: some View {
+        TextField(placeholder, text: $value)
+            .textFieldStyle(.plain)
+            .fontWeight(.semibold)
+            .frame(maxWidth: .infinity, maxHeight: 50, alignment: .trailing)
+            .multilineTextAlignment(placement)
+    }
+}
+
+struct ExtTotalView: View {
+    var heading: String
+    var amount: Int
+    var body: some View {
+        HStack(content: {
+            Text(heading)
+                .font(.headline)
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Text("$\(amount)")
+                .font(.body)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        })
+        .frame(width: .infinity, height: .infinity, alignment: .leading)
     }
 }

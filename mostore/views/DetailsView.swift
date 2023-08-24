@@ -35,6 +35,10 @@ struct FloatingButton: View {
 }
 
 struct DetailsView: View {
+    init() {
+       // UINavigationBar.appearance().backgroundColor = UIColor.blue
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -79,19 +83,19 @@ struct DetailsView: View {
                 )
             }
             .ignoresSafeArea(edges: .top)
-
-
+            .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .navigation) {
-                    Button(action: {
-                        print("button pressed")
-
-                    }) {
+                    NavigationLink(destination: MainView(), label: {
                         Image(systemName: "multiply.circle")
-                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                            .font(.title2)
-                            .foregroundColor(.red)
-                    }
+                            .renderingMode(.original)
+                            .aspectRatio(contentMode: .fit)
+                            .font(.body)
+                            .foregroundColor(Color.orange)
+                            .frame(alignment: .trailing)
+                            .clipped()
+
+                    })
                 }
             }
         }

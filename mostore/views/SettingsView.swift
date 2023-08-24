@@ -7,26 +7,38 @@
 
 import SwiftUI
 
+struct SettingRowView : View {
+    var title : String
+    var systemImageName : String
+    
+    var body : some View {
+        HStack (spacing : 15) {
+            Image(systemName: systemImageName)
+            Text (title)
+        }
+    }
+}
+
 struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Text("Hello World")
 
-                .navigationBarTitle(STRING_TUPLE.22, displayMode: .inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: {
-                            print("button pressed")
-                            
-                        }) {
-                            Image(systemName: "arrow.left")
-                                .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                                .font(.title2)
-                                .frame(maxWidth: 40, alignment: .leading)
-                                .foregroundColor(.red)
-                        }
-                    }
-                }
+            List(content: {
+                Section(header: Text("General"), content: {
+                    NavigationLink(destination: MainView(),label: {
+                        
+                        SettingRowView(title: "Profit & Loss",
+                                       systemImageName:"dollarsign.circle")
+                        
+                        
+                    })
+                    
+                })
+            })
+
+            .navigationBarTitle(PAGE_TEXT["title"]![5], displayMode: .inline)
+        
         }
     }
 }

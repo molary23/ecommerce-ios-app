@@ -9,113 +9,142 @@ import SwiftUI
 
 
 
+// Correct with Login
 struct RegisterView: View {
+    @Environment(\.verticalSizeClass) private var verticalSizeClass: UserInterfaceSizeClass?
+    
+
+    @State private var emailAddress: String = ""
+    @State private var password: String = ""
+    @State private var confirmPassword: String = ""
+    @State private var phone: String = ""
+    @State private var username: String = ""
+
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                Image("shopping")
-                    .resizable()
-                    .aspectRatio(geometry.size, contentMode: .fill)
-                    .edgesIgnoringSafeArea(.all)
-                VStack(alignment: .leading, content: {
-                    HStack {
-                        Circle()
-                            .frame(width: 50, height: 50)
-                            .foregroundColor(Color.red)
-                        Text(STRING_TUPLE.8)
-                            .font(.largeTitle)
-                            .fontWeight(.black)
-                            .foregroundColor(Color.white)
-                            .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 2)
-                    }
-                    .frame(maxWidth: .infinity)
-
-                    VStack(spacing: 20, content: {
-                        VStack(spacing: 15, content: {
-                            Text(STRING_TUPLE.3)
-                                .font(.largeTitle)
-                                .fontWeight(.black)
-                                .fontDesign(.rounded)
-                                .foregroundColor(Color.white)
-                                .frame(maxWidth: .infinity, maxHeight: 20, alignment: .leading)
-                                .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 1)
-
-                            Text(STRING_TUPLE.6)
-                                .font(.body)
-                                .italic()
-                                .foregroundColor(Color.white)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 1)
-                        })
-
-                        VStack(spacing: 30, content: {
-                            VStack(spacing: 15, content: {
-                                TextField(STRING_TUPLE.5, text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
-                                    .textFieldStyle(.roundedBorder)
-                                    .accessibilityLabel(STRING_TUPLE.5)
-                                    .id("login__username")
-
-                                TextField(STRING_TUPLE.4, text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
-                                    .textFieldStyle(.roundedBorder)
-                                    .accessibilityLabel(STRING_TUPLE.4)
-                                    .id("login__phone")
-
-                                TextField(STRING_TUPLE.0, text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
-                                    .textFieldStyle(.roundedBorder)
-                                    .accessibilityLabel(STRING_TUPLE.0)
-                                    .id("login__email")
-
-                                TextField("*********", text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
-                                    .textFieldStyle(.roundedBorder)
-                                    .accessibilityLabel(STRING_TUPLE.1)
-                                    .id("login__password")
-                                TextField("*********", text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
-                                    .textFieldStyle(.roundedBorder)
-                                    .accessibilityLabel(STRING_TUPLE.1)
-                                    .id("login__confirm__password")
-                            })
-                            VStack(spacing: 15, content: {
-                                Button(STRING_TUPLE.3) {}
-                                    .padding(.vertical, 8.0)
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color.blue)
-                                    .cornerRadius(20)
-                                    .foregroundColor(Color.white)
-                                    .fontWeight(.bold)
-
-                                Button(STRING_TUPLE.2) {}
-                                    .padding(.vertical, 8.0)
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color.white)
-                                    .cornerRadius(20)
-                                    .foregroundColor(Color.blue)
-                                    .fontWeight(.bold)
-                            })
-
-                        })
-                        .frame(maxWidth: .infinity)
+        NavigationStack{
+            GeometryReader { geometry in
+                ZStack {
+                    Image(self.verticalSizeClass != .compact ? "shopping" : "shopping-land")
+                        .resizable()
+                        .aspectRatio(geometry.size, contentMode: .fill)
                         .clipped()
-                        .compositingGroup()
-                        .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 1)
+                    //  .rotationEffect(.degrees(90))
+                        .ignoresSafeArea()
+                    
+                    VStack(alignment: .center, content: {
+                        Spacer()
+                        Spacer()
+                        
+                        if self.verticalSizeClass != .compact {
+                            Spacer()
+                            Spacer()
+                            HStack {
+                                Circle()
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(Color.red)
+                                Text(PAGE_TEXT["text"]![0])
+                                    .font(.largeTitle)
+                                    .fontWeight(.black)
+                                    .foregroundColor(Color.white)
+                                    .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 2)
+                            }
+                            .frame(maxWidth: .infinity)
+                        }
+                        
+                        VStack(alignment: .center) {
+                            VStack(spacing: 15, content: {
+                                Text(PAGE_TEXT["title"]![1])
+                                    .font(.largeTitle)
+                                    .fontWeight(.black)
+                                    .fontDesign(.rounded)
+                                    .frame(maxWidth: .infinity, maxHeight: 20, alignment: .leading)
+                                
+                                Text(PAGE_TEXT["text"]![13])
+                                    .font(.body)
+                                    .italic()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }).foregroundColor(Color.white)
+                                .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 1)
+                            
+                            VStack(spacing: 30, content: {
+                                VStack(spacing: 15, content: {
+                                    TextField(PAGE_TEXT["input"]![0], text: $username)
+                                        .textFieldStyle(.roundedBorder)
+                                        .accessibilityLabel(PAGE_TEXT["input"]![0])
+                                        .id("register__username")
+                                    
+                                    TextField(PAGE_TEXT["input"]![3], text: $phone)
+                                        .textFieldStyle(.roundedBorder)
+                                        .accessibilityLabel(PAGE_TEXT["input"]![3])
+                                        .id("register__phone")
+                                    
+                                    TextField(PAGE_TEXT["input"]![1], text: $emailAddress)
+                                        .textFieldStyle(.roundedBorder)
+                                        .accessibilityLabel(PAGE_TEXT["input"]![0])
+                                        .id("register__email")
+                                    
+                                    SecureField(PAGE_TEXT["input"]![2], text: $password)
+                                        .accessibilityLabel(PAGE_TEXT["input"]![2])
+                                        .id("register__password")
+                                        .textFieldStyle(.roundedBorder)
+                                    
+                                    TextField(PAGE_TEXT["input"]![8], text: $confirmPassword)
+                                        .textFieldStyle(.roundedBorder)
+                                        .accessibilityLabel(PAGE_TEXT["input"]![8])
+                                        .id("register__confirm__password")
+                                    
+                                })
+                                VStack(spacing: 15, content: {
+                                    Button(PAGE_TEXT["title"]![1]) {}
+                                        .padding(.vertical, 8.0)
+                                        .frame(maxWidth: .infinity)
+                                        .background(Color.blue)
+                                        .cornerRadius(20)
+                                        .foregroundColor(Color.white)
+                                        .fontWeight(.bold)
+                                                                        
+                                    NavigationLink(destination: LoginView(), label: {
+                                        Text(PAGE_TEXT["title"]![0])
+                                            .padding(.vertical, 8.0)
+                                            .frame(maxWidth: .infinity)
+                                            .background(Color.white)
+                                            .cornerRadius(20)
+                                            .foregroundColor(Color.blue)
+                                            .fontWeight(.bold)
+                                    })
+                                })
+                                
+                            })
+                            .frame(maxWidth: .infinity)
+                            .clipped()
+                            .compositingGroup()
+                            .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 1)
+                        }
+                        .padding()
+                        .padding(.vertical, 20)
+                        .frame(
+                            maxWidth: self.verticalSizeClass == .compact ? 500
+                            : .greatestFiniteMagnitude,
+                            minHeight: 300
+                        )
+                        .background(
+                            Color(#colorLiteral(red: 0.9150597453, green: 0.9150597453, blue: 0.9150597453, alpha: 0.55))
+                        )
+                        .cornerRadius(8)
+                        .shadow(color: Color.black, radius: 5, x: 1, y: 2)
+                        
+                        Spacer()
                     })
                     .padding()
-                    .padding(.vertical, 20)
-                    .frame(width: .infinity, height: 480)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .fill(Color(#colorLiteral(red: 0.9150597453, green: 0.9150597453, blue: 0.9150597453, alpha: 0.55)))
-                            .shadow(color: Color.black, radius: 10, x: 10, y: 15)
-                    )
-
-                    Rectangle()
-                        .frame(height: 80)
-                        .foregroundColor(Color.clear)
-                })
-                .padding()
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-                .background(Color.black.opacity(0.5))
-            }
-        }.ignoresSafeArea(.keyboard, edges: .all)
+                    .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
+                    .background(Color.black.opacity(0.5))
+                }
+                .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
+            }.ignoresSafeArea(.keyboard, edges: .all)
+            
+                .navigationBarBackButtonHidden(true)
+                .navigationBarHidden(true)
+        }
     }
 }
 

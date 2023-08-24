@@ -22,117 +22,71 @@ func updateQty(action: String, count: Int) -> Int {
     return qty
 }
 
-struct CartView: View {
-    let qArray: [Int] = [1, 2, 1, 1, 4, 1, 5, 3, 1]
+struct SimpleProduct: Hashable {
+    var id = UUID()
+    var name: String
+    var price: Float
+    var rating: Float
+    var qty: Int = 1
+}
 
-    @State private var qty: Int = 1
+var productData = [
+    SimpleProduct(name: "small top", price: 23.86, rating: 4.7),
+    SimpleProduct(name: "long top", price: 30.98, rating: 3.9),
+    SimpleProduct(name: "medium top", price: 25.00, rating: 5.0),
+    SimpleProduct(name: "small bottom", price: 40.77, rating: 4.9),
+    SimpleProduct(name: "Crop top", price: 20.20, rating: 4.2),
+    SimpleProduct(name: "Dinner top", price: 15.99, rating: 4.8),
+    SimpleProduct(name: "Brunch top", price: 19.90, rating: 3.5),
+    SimpleProduct(name: "Summer top", price: 50.99, rating: 4.6),
+]
+
+struct CartView: View {
+    @State private var allProductData = productData
+
+    @State private var productArray = Array(productData.enumerated())
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 20, content: {
-                    ForEach(qArray, id: \.self) { index in
-                        HStack(spacing: 8, content: {
-                            RoundedRectangle(cornerRadius: 5)
-                                .frame(width: 100, height: 100)
-                            VStack {
-                                HStack(spacing: 8, content: {
-                                    Text("Product Name")
-                                        .font(.headline)
-                                        .fontWeight(.semibold)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
+                if productArray.count > 0 {
+                    VStack(spacing: 20, content: {
+                        ForEach(productArray, id: \.element) { i, product in
+                            CartItem(product: product, i: i)
+                        }
+                    })
+                    .padding(12)
+                    .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
 
-                                    Image(systemName: "trash")
-                                        .renderingMode(.original)
-                                        .aspectRatio(contentMode: .fit)
-                                        .font(.body)
-                                        .foregroundColor(Color.orange)
-                                        .frame(alignment: .trailing)
-                                        .clipped()
-                                }).frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude, alignment: .topLeading)
-                                HStack {
-                                    Image(systemName: "star.fill")
-                                        .renderingMode(.original)
-                                        .aspectRatio(contentMode: .fit)
-                                        .font(.body)
-                                        .frame(alignment: .leading)
-                                        .clipped()
-
-                                    Text("(4.6)")
-                                        .font(.headline)
-                                        .fontWeight(.semibold)
-                                        .foregroundColor(Color.indigo)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                                .frame(maxHeight: .greatestFiniteMagnitude, alignment: .leading)
-
-                                HStack {
-                                    HStack {
-                                        Button("-") {
-                                         //   qty = updateQty(action: "minus", count: qty)
-                                        }
-                                        .padding(.vertical, 4)
-                                        .frame(maxWidth: .infinity)
-                                        .background(Color.white)
-                                        .foregroundColor(Color.red)
-                                        .fontWeight(.bold)
-
-                                        Text("\(qArray[index])")
-                                            .font(.headline)
-                                            .fontWeight(.semibold)
-                                            .frame(maxWidth: .infinity, alignment: .center)
-
-                                        Button("+") {
-                                          //  qty = updateQty(action: "plus", count: qArray[index])
-                                        }
-                                        .padding(.vertical, 4)
-                                        .frame(maxWidth: .infinity)
-                                        .background(Color.white)
-                                        .foregroundColor(Color.blue)
-                                        .fontWeight(.bold)
-                                    }
-                                    .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
-
-                                    Text("$100")
-                                        .font(.body)
-                                        .fontWeight(.bold)
-                                        .frame(maxWidth: .greatestFiniteMagnitude, alignment: .trailing)
-                                }.frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude, alignment: .bottomLeading)
-                            }
-                            .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude, alignment: .leading)
-
-                        })
-                        .padding(8)
-                        .background(Color("off-white"))
-                        .cornerRadius(8)
-                    }
-                })
-                .padding(12)
-                .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
+                } else {
+                    Text(PAGE_TEXT["text"]![15])
+                        .multilineTextAlignment(.center)
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .foregroundColor(.blue)
+                        .frame(maxWidth: .infinity)
+                }
             }
+            .overlay(
+                FloatingButton(action: {
+                    productArray.removeAll()
+                    print(productArray)
+                    print("Remove all from Cart")
+
+                }, icon: "trash.slash", fg: Color.white, bg: Color.blue, label: "Add to cart")
+            )
 
             .navigationBarTitle(PAGE_TEXT["text"]![11], displayMode: .inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        print("button pressed")
-
-                    }) {
-                        Image(systemName: "arrow.left")
-                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                            .font(.title2)
-                            .frame(maxWidth: 40, alignment: .leading)
-                            .foregroundColor(.red)
-                    }
-                }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        print("button pressed")
+                    NavigationLink(destination: CheckoutView(), label: {
+                        HStack {
+                            Text(PAGE_TEXT["button"]![2])
+                                .foregroundColor(Color.blue)
+                                .fontWeight(.bold)
+                        }
 
-                    }) {
-                        Text(PAGE_TEXT["text"]![12])
-                            .foregroundColor(.red)
-                    }
+                    })
                 }
             }
         }
@@ -142,5 +96,92 @@ struct CartView: View {
 struct CartView_Previews: PreviewProvider {
     static var previews: some View {
         CartView()
+    }
+}
+
+struct CartItem: View {
+    @State private var allProductData = productData
+    let product: SimpleProduct
+    let i: Int
+    var body: some View {
+        HStack(spacing: 8, content: {
+            RoundedRectangle(cornerRadius: 5)
+                .frame(width: 100, height: 100)
+            VStack {
+                HStack(spacing: 8, content: {
+                    Text("\(product.name)".capitalized)
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Button(action: {
+                        print(allProductData)
+                        allProductData.removeFirst()
+                        print("Remove all from Cart")
+                    }) {
+                        Image(systemName: "trash")
+                            .renderingMode(.original)
+                            .aspectRatio(contentMode: .fit)
+                            .font(.body)
+                            .foregroundColor(Color.orange)
+                            .frame(alignment: .trailing)
+                            .clipped()
+                    }
+                }).frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude, alignment: .topLeading)
+                HStack {
+                    Image(systemName: product.rating > 4 ? "star.fill" : "star")
+                        .renderingMode(.original)
+                        .aspectRatio(contentMode: .fit)
+                        .font(.body)
+                        .frame(alignment: .leading)
+                        // .foregroundColor(Color.red)
+                        .clipped()
+
+                    Text("\(product.rating, specifier: "%.1f")")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(Color.indigo)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .frame(maxHeight: .greatestFiniteMagnitude, alignment: .leading)
+
+                HStack {
+                    HStack {
+                        Button("-") {
+                            self.allProductData[i].qty = updateQty(action: "minus", count: self.allProductData[i].qty)
+                        }
+                        .padding(.vertical, 4)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.white)
+                        .foregroundColor(Color.red)
+                        .fontWeight(.bold)
+
+                        Text("\(self.allProductData[i].qty)")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity, alignment: .center)
+
+                        Button("+") {
+                            self.allProductData[i].qty = updateQty(action: "plus", count: self.allProductData[i].qty)
+                        }
+                        .padding(.vertical, 4)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.white)
+                        .foregroundColor(Color.blue)
+                        .fontWeight(.bold)
+                    }
+                    .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+
+                    Text("$\(product.price, specifier: "%.2f")")
+                        .font(.body)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .greatestFiniteMagnitude, alignment: .trailing)
+                }.frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude, alignment: .bottomLeading)
+            }
+            .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude, alignment: .leading)
+
+        })
+        .padding(8)
+        .background(Color("off-white"))
+        .cornerRadius(8)
     }
 }

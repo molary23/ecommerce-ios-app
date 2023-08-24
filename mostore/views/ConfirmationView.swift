@@ -33,7 +33,7 @@ struct ConfirmationView: View {
         NavigationStack {
             VStack {
                 VStack {
-                    Text("Thanks")
+                    Text(PAGE_TEXT["text"]![14])
                         .font(.largeTitle)
                         .bold()
                         .foregroundColor(.white)
@@ -42,7 +42,7 @@ struct ConfirmationView: View {
                 VStack(alignment: .center, spacing: 20, content: {
                     Image(systemName: "hand.thumbsup")
                         .renderingMode(.original)
-                        .aspectRatio(contentMode: .fill)
+                        .aspectRatio(contentMode: .fit)
                         .font(.custom("checkmark", fixedSize: 100))
                         .foregroundColor(Color.orange)
                         .clipped()
@@ -50,12 +50,12 @@ struct ConfirmationView: View {
                     Spacer()
 
                     VStack(spacing: 8) {
-                        Text(STRING_TUPLE.11)
+                        Text(PAGE_TEXT["text"]![1])
                             .font(.title2)
                             .bold()
                             .frame(maxWidth: .infinity)
 
-                        Text(STRING_TUPLE.12)
+                        Text(PAGE_TEXT["text"]![2])
                             .font(.title3)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .multilineTextAlignment(.center)
@@ -63,7 +63,7 @@ struct ConfirmationView: View {
                     }
 
                     Spacer()
-                    Button(STRING_TUPLE.9) {}
+                    Button(PAGE_TEXT["button"]![1]) {}
                         .padding(.vertical, 15.0)
                         .frame(maxWidth: .infinity)
                         .background(Color.blue)
@@ -88,7 +88,7 @@ struct ConfirmationView: View {
             .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
             .background(Color.blue)
 
-            .navigationBarTitle(STRING_TUPLE.10, displayMode: .inline)
+            .navigationBarTitle(PAGE_TEXT["title"]![4], displayMode: .inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {

@@ -8,37 +8,12 @@
 import Foundation
 import SwiftUI
 
-let STRING_TUPLE = (
-    "Email Address",
-    "Password",
-    "Login",
-    "Register",
-    "Phone Number",
-    "Username",
-    "All fields are compulsory",
-    "Place Order",
-    "Mo Store",
-    "Continue Shopping",
-    "Order Confirmation",
-    "Thank you for your purchase.",
-    "Your order will be shipped in 2-5 days. Tracking info will be sent to you asap.",
-    "PAYMENT",
-    "Card Number",
-    "Expiration",
-    "Secure Code",
-    "MM/YY",
-    "CVV",
-    "Subtotal",
-    "Tax",
-    "Total",
-    "Settings" // 21
-)
 
 let PAGE_TEXT: [String: [String]] = [
-    "title": ["Login", "Register", "My Cart", "Payment", "Order Confirmation", "Settings"],
-    "button": ["Place Order", "Continue Shopping"],
-    "input": ["Username", "Email Address", "Password", "Phone Number", "Card Number", "MM/YY", "CVV", "Search Products..."],
-    "text": ["Mo Store", "Thank you for your purchase.", "Your order will be shipped in 2-5 days. Tracking info will be sent to you asap.", "Card Number", "Expiration", "Secure Code", "Subtotal", "Tax", "Total", "Best Sellers", "Deals","My Cart", "Clear"],
+    "title": ["Login", "Register", "My Cart", "Payment", "Order Confirmation", "Settings", "Products"],
+    "button": ["Place Order", "Continue Shopping", "Check Out", "Make Payment"],
+    "input": ["Username", "Email Address", "Password", "Phone Number", "Card Number", "MM/YY", "CVV", "Search Products...", "Confirm Password", "**** **** **** 1234"],
+    "text": ["Mo Store", "Thank you for your purchase.", "Your order will be shipped in 2-5 days. Tracking info will be sent to you asap.", "Card Number", "Expiration", "Secure Code", "Subtotal", "Tax", "Total", "Best Sellers", "Deals","My Cart", "Clear","All fields are compulsory", "Thanks", "No Items in the Cart"],
 ]
 
 struct LabelAlignment: UIViewRepresentable {

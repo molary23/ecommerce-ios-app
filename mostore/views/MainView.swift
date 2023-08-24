@@ -12,16 +12,16 @@ struct MainView: View {
         GridItem(.flexible(), spacing: 10, alignment: nil),
         // GridItem(.flexible(), spacing: 10, alignment: nil),
     ]
-   
+    @State private var search: String = ""
     init() {
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.red, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
-        UINavigationBar.appearance().backgroundColor = UIColor.green
-     }
+       // UINavigationBar.appearance().backgroundColor = UIColor.green
+    }
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading,spacing: 20, content: {
+                VStack(alignment: .leading, spacing: 20, content: {
                     HStack(alignment: .center, spacing: 20, content: {
                         Image(systemName: "magnifyingglass")
                             .renderingMode(.original)
@@ -31,13 +31,11 @@ struct MainView: View {
                             .foregroundColor(Color.orange)
                             .clipped()
                             .frame(maxWidth: 40)
-                            
 
-                        TextField(PAGE_TEXT["input"]![7], text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/ .constant("")/*@END_MENU_TOKEN@*/)
+                        TextField(PAGE_TEXT["input"]![7], text: $search)
                             .textFieldStyle(.plain)
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity, maxHeight: 50)
-                            
 
                     })
                     .padding(8)
@@ -115,7 +113,35 @@ struct MainView: View {
                     .ignoresSafeArea()
             )
 
-            .navigationBarTitle(STRING_TUPLE.10, displayMode: .inline)
+            .navigationBarTitle(PAGE_TEXT["title"]![6], displayMode: .inline)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: CartView(), label: {
+                        Image(systemName: "cart")
+                            .renderingMode(.original)
+                            .aspectRatio(contentMode: .fit)
+                            .font(.body)
+                            .foregroundColor(Color.orange)
+                            .frame(alignment: .trailing)
+                            .clipped()
+
+                    })
+                }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: SettingsView(), label: {
+                        Image(systemName: "gear")
+                            .renderingMode(.original)
+                            .aspectRatio(contentMode: .fit)
+                            .font(.body)
+                            .foregroundColor(Color.orange)
+                            .frame(alignment: .trailing)
+                            .clipped()
+
+                    })
+                }
+            }
         }
     }
 }
