@@ -1,3 +1,6 @@
 # Assets Folder
 
-/mostore/res/Assets
+/mostore/res
+
+# Project Details
+/mostore.xcodeproj
