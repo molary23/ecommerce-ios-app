@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct MainView: View {
+    @EnvironmentObject var user: User
+    @StateObject private var product = Product()
+    @State private var gotoDetails: Bool = false
+    @State private var search: String = ""
     let columns: [GridItem] = [
         GridItem(.flexible(), spacing: 10, alignment: nil),
-        // GridItem(.flexible(), spacing: 10, alignment: nil),
     ]
-    @State private var search: String = ""
+
     init() {
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.red, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
-       // UINavigationBar.appearance().backgroundColor = UIColor.green
+        // UINavigationBar.appearance().backgroundColor = UIColor.green
     }
 
     var body: some View {
@@ -40,20 +43,31 @@ struct MainView: View {
                     })
                     .padding(8)
                     .padding(.horizontal, 40)
-                    .frame(width: .infinity, height: 40)
+                    .frame(maxWidth: .infinity, maxHeight: 40)
                     .background(Color.white)
-
                     VStack(spacing: 20, content: {
                         ScrollView(.horizontal, showsIndicators: false, content: {
                             LazyHStack(spacing: 20, content: {
                                 ForEach(1 ... 10, id: \.self) { _ in
                                     VStack(content: {
-                                        Circle()
-                                            .frame(width: 100, height: 100)
-                                            .foregroundColor(Color.yellow)
-                                        Text("Hello World")
-                                            .font(.subheadline)
-                                            .fontWeight(.semibold)
+                                        Button(action: { navigateToDetails() }, label: {
+                                            VStack {
+                                                Image("shopping")
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(width: 100, height: 100)
+                                                    .clipped()
+                                                    .cornerRadius(100)
+
+                                                Text("Hello World \(storedUsername)")
+                                                    .font(.subheadline)
+                                                    .fontWeight(.semibold)
+                                            }
+                                        })
+                                        .navigationDestination(isPresented: $gotoDetails) {
+                                            DetailsView()
+                                        }
+
                                     })
                                 }
 
@@ -66,17 +80,25 @@ struct MainView: View {
                             ScrollView(.horizontal, showsIndicators: false, content: {
                                 LazyHGrid(rows: columns, alignment: .center, spacing: 20, pinnedViews: [], content: {
                                     ForEach(1 ... 9, id: \.self) { _ in
-                                        VStack(content: {
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .frame(width: 250, height: 300)
-                                                .foregroundColor(Color.brown)
-                                            Text("Hello World")
-                                                .font(.headline)
-                                                .fontWeight(.semibold)
-                                            Text("Hello World")
-                                                .font(.subheadline)
 
+                                        Button(action: { navigateToDetails() }, label: {
+                                            VStack {
+                                                Image("shopping")
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(maxHeight: 300)
+                                                    .clipped()
+                                                    .cornerRadius(8)
+                                                Text("Hello World")
+                                                    .font(.headline)
+                                                    .fontWeight(.semibold)
+                                                Text("Hello World")
+                                                    .font(.subheadline)
+                                            }
                                         })
+                                        .navigationDestination(isPresented: $gotoDetails) {
+                                            DetailsView()
+                                        }
                                     }
 
                                 })
@@ -90,13 +112,34 @@ struct MainView: View {
                             LazyVGrid(columns: columns, alignment: .center, spacing: 20, pinnedViews: [], content: {
                                 ForEach(1 ... 10, id: \.self) { _ in
                                     HStack(spacing: 30, content: {
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .frame(width: 150, height: 200)
-                                            .foregroundColor(Color.cyan)
+                                        Button(action: { navigateToDetails() }, label: {
+                                            VStack {
+                                                Image("shopping")
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(maxHeight: 300)
+                                                    .clipped()
+                                                    .cornerRadius(8)
+                                            }
+                                        })
+                                        .navigationDestination(isPresented: $gotoDetails) {
+                                            DetailsView()
+                                        }
 
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .frame(width: 150, height: 200)
-                                            .foregroundColor(Color.cyan)
+                                        Button(action: { navigateToDetails() }, label: {
+                                            VStack {
+                                                Image("shopping")
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(maxHeight: 300)
+                                                    .clipped()
+                                                    .cornerRadius(8)
+                                            }
+                                        })
+                                        .navigationDestination(isPresented: $gotoDetails) {
+                                            DetailsView()
+                                        }
+
                                     })
                                 }
                             })
@@ -143,6 +186,16 @@ struct MainView: View {
                 }
             }
         }
+        .environmentObject(product)
+    }
+
+    func navigateToDetails() {
+        product.product["id"] = "1234"
+        product.product["name"] = "A product"
+        product.product["image"] = "shopping"
+        product.product["desc"] = "A product is a product"
+        product.product["price"] = "114"
+        gotoDetails = true
     }
 }
 

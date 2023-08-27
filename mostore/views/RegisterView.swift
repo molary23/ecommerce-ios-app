@@ -10,6 +10,9 @@ import SwiftUI
 // Correct with Login
 struct RegisterView: View {
     @Environment(\.verticalSizeClass) private var verticalSizeClass: UserInterfaceSizeClass?
+    @EnvironmentObject var user: User
+
+    @State private var response: Any = false
 
     @State private var emailAddress: String = ""
     @State private var password: String = ""
@@ -31,21 +34,14 @@ struct RegisterView: View {
                     VStack(alignment: .center, content: {
                         Spacer()
                         Spacer()
+                        if !user.username.isEmpty {
+                            Text("\(user.username)")
+                        }
 
                         if self.verticalSizeClass != .compact {
                             Spacer()
                             Spacer()
-                            HStack {
-                                Circle()
-                                    .frame(width: 50, height: 50)
-                                    .foregroundColor(Color.red)
-                                Text(PAGE_TEXT["text"]![0])
-                                    .font(.largeTitle)
-                                    .fontWeight(.black)
-                                    .foregroundColor(Color.white)
-                                    .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 2)
-                            }
-                            .frame(maxWidth: .infinity)
+                            ExtBrand()
                         }
 
                         VStack(alignment: .center) {
@@ -94,13 +90,7 @@ struct RegisterView: View {
 
                                 })
                                 VStack(spacing: 15, content: {
-                                    Button(PAGE_TEXT["title"]![1]) {}
-                                        .padding(.vertical, 8.0)
-                                        .frame(maxWidth: .infinity)
-                                        .background(Color.blue)
-                                        .cornerRadius(20)
-                                        .foregroundColor(Color.white)
-                                        .fontWeight(.bold)
+                                    ExtButtonView(name: "\(PAGE_TEXT["title"]![1])", response: $response, onRequestDone: registerUser(), topPadding: 8.0, acColor: .white, bgColor: .blue, corner: 25, size: .body)
 
                                     NavigationLink(destination: LoginView(), label: {
                                         Text(PAGE_TEXT["title"]![0])
@@ -145,10 +135,14 @@ struct RegisterView: View {
                 .navigationBarHidden(true)
         }
     }
+
+    func registerUser() -> Bool {
+        return true
+    }
 }
 
 struct RegisterView_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterView()
+        RegisterView().environmentObject(User())
     }
 }

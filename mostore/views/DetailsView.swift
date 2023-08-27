@@ -7,19 +7,27 @@
 
 import SwiftUI
 
-
 struct DetailsView: View {
+    @EnvironmentObject var product: Product
+    @StateObject private var cart = Cart()
+    @State private var isActive: Bool = false
+    @State private var gotoCart: Bool = false
+    @State private var gotoShop: Bool = false
     init() {
-       // UINavigationBar.appearance().backgroundColor = UIColor.blue
+        // UINavigationBar.appearance().backgroundColor = UIColor.blue
     }
 
     var body: some View {
+        let name: String = product.product["name"] ?? ""
+        let image: String = product.product["image"] ?? "shopping"
+        let desc: String = product.product["desc"] ?? ""
+        let price: String = product.product["price"] ?? ""
         NavigationStack {
             ZStack {
                 ScrollView {
                     VStack {
                         ZStack {
-                            Image("shopping")
+                            Image("\(image)")
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(maxHeight: 500)
@@ -27,12 +35,12 @@ struct DetailsView: View {
                         }
 
                         VStack(spacing: 10, content: {
-                            Text("Tote Bag")
+                            Text("\(name.capitalized)")
                                 .font(.title2)
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .greatestFiniteMagnitude)
 
-                            Text("$50.77")
+                            Text("$\(price)")
                                 .font(.title3)
                                 .fontWeight(.bold)
                                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
@@ -43,7 +51,7 @@ struct DetailsView: View {
                                     .fontWeight(.bold)
                                     .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
 
-                                LabelAlignment(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit gravida ipsum ac commodo. Cras ultricies lectus vitae purus tempus, sit amet laoreet urna eleifend. Pellentesque molestie convallis nulla vel mattis. Aenean bibendum sem a metus commodo tempus. Integer quis neque sem. Nullam a aliquet augue. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis pellentesque dui nec accumsan. Aliquam et placerat augue. Curabitur at dui enim. Curabitur non ante et urna tristique pellentesque quis vel tortor. Nunc varius mi eu ultricies mollis. Duis vel elit faucibus, molestie felis vitae, imperdiet eros. Vestibulum a tellus id nibh laoreet interdum.", textAlignmentStyle: .justified, width: UIScreen.main.bounds.width - 20, size: 20.0)
+                                LabelAlignment(text: "\(desc)", textAlignmentStyle: .justified, width: UIScreen.main.bounds.width - 20, size: 20.0)
 
                             })
                             .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
@@ -53,31 +61,46 @@ struct DetailsView: View {
                     }
                 }
                 .overlay(
-                    FloatingButton(action: { print("Add to Cart") }, icon: "cart.badge.plus", fg: Color.white, bg: Color.blue, label: "Add to cart")
+                    FloatingButton(action: { addToCart() }, icon: "cart.badge.plus", fg: Color.white, bg: Color.blue, label: "Add to cart")
+                        .alert(isPresented: $isActive, content: getAlert)
                 )
-            }
-            .ignoresSafeArea(edges: .top)
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigation) {
-                    NavigationLink(destination: MainView(), label: {
-                        Image(systemName: "multiply.circle")
-                            .renderingMode(.original)
-                            .aspectRatio(contentMode: .fit)
-                            .font(.body)
-                            .foregroundColor(Color.orange)
-                            .frame(alignment: .trailing)
-                            .clipped()
 
-                    })
+                if gotoCart {
+                    NavigationLink(destination: CartView(), label: { EmptyView() })
+                }
+
+                if gotoShop {
+                    NavigationLink(destination: MainView(), label: { EmptyView() })
                 }
             }
+            .ignoresSafeArea(edges: .top)
         }
     }
+
+    func addToCart() {
+        //  cart.cart.append(product)
+        isActive = true
+    }
+
+    func getAlert() -> Alert {
+        return Alert(title: Text("Item added to cart"))
+    }
+
+    /*  func getActionSheet() -> ActionSheet {
+         let toCart: ActionSheet.Button = .default(Text("Go to Cart")) {
+         }
+
+         let toShop: ActionSheet.Button = .default(Text("Continue Shopping")) {
+         }
+
+         let toCancel: ActionSheet.Button = .cancel({ isActive = false })
+
+         return ActionSheet(title: Text("What Next?"), message: Text(""), buttons: [toCart, toShop, toCancel])
+     }*/
 }
 
 struct DetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        DetailsView()
+        DetailsView().environmentObject(Product())
     }
 }

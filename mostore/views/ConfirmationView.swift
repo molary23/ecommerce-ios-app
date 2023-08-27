@@ -24,6 +24,8 @@ extension View {
 }
 
 struct ConfirmationView: View {
+    @State private var goHome: Bool = false
+    @EnvironmentObject var user: User
     init() {
         // Use this if NavigationBarTitle is with displayMode = .inline
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
@@ -35,9 +37,12 @@ struct ConfirmationView: View {
                 VStack {
                     Text(PAGE_TEXT["text"]![14])
                         .font(.largeTitle)
-                        .bold()
-                        .foregroundColor(.white)
+
+                    Text("\(user.username)")
+                        .font(.title3)
                 }.frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude, alignment: .center)
+                    .foregroundColor(.white)
+                    .bold()
 
                 VStack(alignment: .center, spacing: 20, content: {
                     Image(systemName: "hand.thumbsup")
@@ -63,14 +68,8 @@ struct ConfirmationView: View {
                     }
 
                     Spacer()
-                    Button(PAGE_TEXT["button"]![1]) {}
-                        .padding(.vertical, 15.0)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue)
-                        .cornerRadius(40)
-                        .foregroundColor(Color.white)
-                        .fontWeight(.bold)
-                        .font(.title2)
+                   
+                    ExtNavButtonView(name: "\(PAGE_TEXT["button"]![1])", isMovable: $goHome, isActive: continueShopping(), destination: AnyView(MainView()), topPadding: 15.0, acColor: .white, bgColor: .blue, corner: 40, size: .title2)
 
                     Spacer()
                     Spacer()
@@ -83,7 +82,6 @@ struct ConfirmationView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                 .background(.white)
                 .roundedCorner(80, corners: [.topLeft, .topRight])
-                
             }
             .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
             .background(Color.blue)
@@ -105,10 +103,14 @@ struct ConfirmationView: View {
             }
         }
     }
+
+    func continueShopping() -> Bool {
+        return true
+    }
 }
 
 struct ConfirmationView_Previews: PreviewProvider {
     static var previews: some View {
-        ConfirmationView()
+        ConfirmationView().environmentObject(User())
     }
 }

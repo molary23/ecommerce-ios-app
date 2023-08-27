@@ -7,13 +7,9 @@
 
 import SwiftUI
 
-func handleLogin(username: String, password: String) {
-    print(username, password)
-}
-
 struct LoginView: View {
     @Environment(\.verticalSizeClass) private var verticalSizeClass: UserInterfaceSizeClass?
-
+    @StateObject private var user = User()
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var goHome: Bool = false
@@ -25,7 +21,6 @@ struct LoginView: View {
                         .resizable()
                         .aspectRatio(geometry.size, contentMode: .fill)
                         .clipped()
-                        //  .rotationEffect(.degrees(90))
                         .ignoresSafeArea()
 
                     VStack(alignment: .center, content: {
@@ -35,17 +30,7 @@ struct LoginView: View {
                         if self.verticalSizeClass != .compact {
                             Spacer()
                             Spacer()
-                            HStack {
-                                Circle()
-                                    .frame(width: 50, height: 50)
-                                    .foregroundColor(Color.red)
-                                Text(PAGE_TEXT["text"]![0])
-                                    .font(.largeTitle)
-                                    .fontWeight(.black)
-                                    .foregroundColor(Color.white)
-                                    .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 2)
-                            }
-                            .frame(maxWidth: .infinity)
+                            ExtBrand()
                         }
 
                         VStack(alignment: .center) {
@@ -60,10 +45,7 @@ struct LoginView: View {
 
                             VStack(spacing: 30, content: {
                                 VStack(spacing: 15, content: {
-                                    TextField("\(PAGE_TEXT["input"]![0])/\(PAGE_TEXT["input"]![1])", text: $username)
-                                        .textFieldStyle(.roundedBorder)
-                                        .accessibilityLabel(PAGE_TEXT["input"]![0])
-                                        .id("login__email")
+                                    ExtTextFieldView(placeholder: "\(PAGE_TEXT["input"]![0])/\(PAGE_TEXT["input"]![1])", placement: .leading, id: "login__email", value: $username).textFieldStyle(.roundedBorder)
 
                                     SecureField(PAGE_TEXT["input"]![2], text: $password)
                                         .accessibilityLabel(PAGE_TEXT["input"]![2])
@@ -72,15 +54,7 @@ struct LoginView: View {
 
                                 })
                                 VStack(spacing: 15, content: {
-                                    Button(PAGE_TEXT["title"]![0]) {
-                                        handleLogin(username: self.username, password: self.password)
-                                    }
-                                    .padding(.vertical, 8.0)
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color.blue)
-                                    .cornerRadius(20)
-                                    .foregroundColor(Color.white)
-                                    .fontWeight(.bold)
+                                    ExtNavButtonView(name: "\(PAGE_TEXT["title"]![0])", isMovable: $goHome, isActive: handleLogin(username: self.username, password: self.password), destination: AnyView(MainView()), topPadding: 8.0, acColor: .white, bgColor: .blue, corner: 25, size: .body)
 
                                     NavigationLink(destination: RegisterView(), label: {
                                         Text(PAGE_TEXT["title"]![1])
@@ -121,10 +95,15 @@ struct LoginView: View {
                 }
                 .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
             }.ignoresSafeArea(.keyboard, edges: .all)
-            
+
                 .navigationBarBackButtonHidden(true)
                 .navigationBarHidden(true)
         }
+        .environmentObject(user)
+    }
+    func handleLogin(username: String, password: String) -> Bool {
+        preferences.set(username, forKey: usernameKey)
+        return true
     }
 }
 
@@ -133,3 +112,4 @@ struct ContentView_Previews: PreviewProvider {
         LoginView()
     }
 }
+

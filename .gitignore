@@ -3,4 +3,4 @@
 /mostore/res
 
 # Project Details
-/mostore.xcodeproj
+*.xcodeproj/*

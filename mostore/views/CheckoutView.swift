@@ -12,6 +12,7 @@ struct CheckoutView: View {
     @State private var expiry: String = ""
     @State private var cvv: String = ""
     @State private var cardNumber: String = ""
+    @State private var response: Any = false
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -73,15 +74,8 @@ struct CheckoutView: View {
                     }
 
                     Spacer()
-
-                    Button(PAGE_TEXT["button"]![3]) {}
-                        .padding(.vertical, 15.0)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue)
-                        .cornerRadius(40)
-                        .foregroundColor(Color.white)
-                        .fontWeight(.bold)
-                        .font(.title2)
+                    
+                    ExtButtonView(name: "\(PAGE_TEXT["button"]![3])", response: $response, onRequestDone: makePayment(), topPadding: 15.0, acColor: .white, bgColor: .blue, corner: 40, size: .title2)
                 })
             }
             .padding(.horizontal, 20)
@@ -89,6 +83,9 @@ struct CheckoutView: View {
 
             .navigationBarTitle(PAGE_TEXT["title"]![3], displayMode: .inline)
         }
+    }
+    func makePayment()->Bool{
+        return true
     }
 }
 

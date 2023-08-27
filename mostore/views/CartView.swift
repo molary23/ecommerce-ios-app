@@ -47,31 +47,24 @@ struct CartView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
+            ZStack {
                 if !productArray.isEmpty {
-                    VStack(spacing: 20, content: {
-                        ForEach(productArray, id: \.element) { i, product in
-                            CartItem(productArray: $productArray, allProductData: $allProductData, product: product, i: i)
-                        }
-                    })
-                    .padding(12)
-                    .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
-
+                    ScrollView {
+                        VStack(spacing: 20, content: {
+                            ForEach(productArray, id: \.element) { i, product in
+                                CartItem(productArray: $productArray, allProductData: $allProductData, product: product, i: i)
+                            }
+                        })
+                        .padding(12)
+                        .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
+                    }.overlay(
+                        FloatingButton(action: {
+                            productArray.removeAll()
+                        }, icon: "trash.slash", fg: Color.white, bg: Color.red, label: "Remove from cart"))
                 } else {
-                    Text(PAGE_TEXT["text"]![15])
-                        .multilineTextAlignment(.center)
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .foregroundColor(.blue)
-                        .frame(maxWidth: .infinity)
+                    NoItemLayout
                 }
             }
-            .overlay(
-                FloatingButton(action: {
-                    productArray.removeAll()
-                }, icon: "trash.slash", fg: Color.white, bg: Color.blue, label: "Add to cart")
-            )
-
             .navigationBarTitle(PAGE_TEXT["text"]![11], displayMode: .inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -87,6 +80,8 @@ struct CartView: View {
             }
         }
     }
+
+
 }
 
 struct CartView_Previews: PreviewProvider {
@@ -107,7 +102,7 @@ struct CartItem: View {
                 .frame(width: 100, height: 100)
             VStack {
                 HStack(spacing: 8, content: {
-                    Text("\(product.name) + \(i)".capitalized)
+                    Text("\(product.name)".capitalized)
                         .font(.headline)
                         .fontWeight(.semibold)
                         .frame(maxWidth: .infinity, alignment: .leading)
