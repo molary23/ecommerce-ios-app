@@ -39,4 +39,5 @@ enum DifferentViews {
     case SettingsView
     case ConfirmationView
 }
+
 */

@@ -12,6 +12,7 @@ struct MainView: View {
     @StateObject private var product = Product()
     @State private var gotoDetails: Bool = false
     @State private var search: String = ""
+    let imageURL: String = "https://placekitten.com/200/200"
     let columns: [GridItem] = [
         GridItem(.flexible(), spacing: 10, alignment: nil),
     ]
@@ -20,6 +21,8 @@ struct MainView: View {
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.red, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
         // UINavigationBar.appearance().backgroundColor = UIColor.green
     }
+
+    let aspect = 1.5
 
     var body: some View {
         NavigationStack {
@@ -45,6 +48,7 @@ struct MainView: View {
                     .padding(.horizontal, 40)
                     .frame(maxWidth: .infinity, maxHeight: 40)
                     .background(Color.white)
+
                     VStack(spacing: 20, content: {
                         ScrollView(.horizontal, showsIndicators: false, content: {
                             LazyHStack(spacing: 20, content: {
@@ -52,12 +56,14 @@ struct MainView: View {
                                     VStack(content: {
                                         Button(action: { navigateToDetails() }, label: {
                                             VStack {
-                                                Image("shopping")
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                                    .frame(width: 100, height: 100)
-                                                    .clipped()
-                                                    .cornerRadius(100)
+                                                AsyncImage(url: URL(string: imageURL)!, placeholder: {
+                                                    ProgressView()
+
+                                                })
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 100, height: 100)
+                                                .clipped()
+                                                .cornerRadius(100)
 
                                                 Text("Hello World \(storedUsername)")
                                                     .font(.subheadline)
@@ -83,12 +89,13 @@ struct MainView: View {
 
                                         Button(action: { navigateToDetails() }, label: {
                                             VStack {
-                                                Image("shopping")
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                                    .frame(maxHeight: 300)
-                                                    .clipped()
-                                                    .cornerRadius(8)
+                                                AsyncImage(url: URL(string: imageURL)!, placeholder: {
+                                                    ProgressView()
+                                                })
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(maxWidth: 300)
+                                                .clipped()
+                                                .cornerRadius(8)
                                                 Text("Hello World")
                                                     .font(.headline)
                                                     .fontWeight(.semibold)
@@ -114,12 +121,14 @@ struct MainView: View {
                                     HStack(spacing: 30, content: {
                                         Button(action: { navigateToDetails() }, label: {
                                             VStack {
-                                                Image("shopping")
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                                    .frame(maxHeight: 300)
-                                                    .clipped()
-                                                    .cornerRadius(8)
+                                                AsyncImage(url: URL(string: imageURL)!, placeholder: {
+                                                    ProgressView()
+                                                })
+
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 150)
+                                                .clipped()
+                                                .cornerRadius(8)
                                             }
                                         })
                                         .navigationDestination(isPresented: $gotoDetails) {
@@ -128,12 +137,13 @@ struct MainView: View {
 
                                         Button(action: { navigateToDetails() }, label: {
                                             VStack {
-                                                Image("shopping")
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                                    .frame(maxHeight: 300)
-                                                    .clipped()
-                                                    .cornerRadius(8)
+                                                AsyncImage(url: URL(string: imageURL)!, placeholder: {
+                                                    ProgressView()
+                                                })
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 150)
+                                                .clipped()
+                                                .cornerRadius(8)
                                             }
                                         })
                                         .navigationDestination(isPresented: $gotoDetails) {
@@ -147,9 +157,11 @@ struct MainView: View {
                         .padding()
 
                     })
+                    .padding()
 
                 })
             }
+
             .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
             .background(
                 Color.green

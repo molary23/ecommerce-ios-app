@@ -38,6 +38,8 @@ struct ConfirmationView: View {
                     Text(PAGE_TEXT["text"]![14])
                         .font(.largeTitle)
 
+               
+
                     Text("\(user.username)")
                         .font(.title3)
                 }.frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude, alignment: .center)
@@ -68,7 +70,7 @@ struct ConfirmationView: View {
                     }
 
                     Spacer()
-                   
+
                     ExtNavButtonView(name: "\(PAGE_TEXT["button"]![1])", isMovable: $goHome, isActive: continueShopping(), destination: AnyView(MainView()), topPadding: 15.0, acColor: .white, bgColor: .blue, corner: 40, size: .title2)
 
                     Spacer()

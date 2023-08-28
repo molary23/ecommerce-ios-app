@@ -13,6 +13,7 @@ struct LoginView: View {
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var goHome: Bool = false
+
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
@@ -66,6 +67,7 @@ struct LoginView: View {
                                             .fontWeight(.bold)
                                     })
 
+                                   
                                 })
 
                             })
@@ -101,6 +103,7 @@ struct LoginView: View {
         }
         .environmentObject(user)
     }
+
     func handleLogin(username: String, password: String) -> Bool {
         preferences.set(username, forKey: usernameKey)
         return true
@@ -112,4 +115,3 @@ struct ContentView_Previews: PreviewProvider {
         LoginView()
     }
 }
-

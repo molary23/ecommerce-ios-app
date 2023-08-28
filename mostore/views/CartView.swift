@@ -62,6 +62,7 @@ struct CartView: View {
                             productArray.removeAll()
                         }, icon: "trash.slash", fg: Color.white, bg: Color.red, label: "Remove from cart"))
                 } else {
+                   
                     NoItemLayout
                 }
             }
@@ -80,7 +81,7 @@ struct CartView: View {
             }
         }
     }
-
+ 
 
 }
 
@@ -95,7 +96,6 @@ struct CartItem: View {
     @Binding var allProductData: [SimpleProduct]
     let product: SimpleProduct
     let i: Int
-
     var body: some View {
         HStack(spacing: 8, content: {
             RoundedRectangle(cornerRadius: 5)

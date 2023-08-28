@@ -103,13 +103,6 @@ var NoItemLayout: some View {
             .fontWeight(.bold)
             .foregroundColor(.red)
             .frame(maxWidth: .infinity)
-        NavigationLink(destination: MainView(), label: {
-            Text(PAGE_TEXT["button"]![1])
-                .padding(.vertical, 8.0)
-                .frame(maxWidth: .infinity)
-                .foregroundColor(Color.blue)
-                .fontWeight(.bold)
-        })
     }
 }
 
