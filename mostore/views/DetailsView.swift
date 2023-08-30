@@ -18,10 +18,10 @@ struct DetailsView: View {
     }
 
     var body: some View {
-        let name: String = product.product["name"] ?? ""
-        let image: String = product.product["image"] ?? "shopping"
-        let desc: String = product.product["desc"] ?? ""
-        let price: String = product.product["price"] ?? ""
+        let name: String = product.product["name"] as? String ?? ""
+        let image: String = product.product["image"] as? String ?? "shopping"
+        let description: String = product.product["description"] as? String ?? ""
+        let price: Double = product.product["price"] as? Double ?? 0
         NavigationStack {
             ZStack {
                 ScrollView {
@@ -40,7 +40,7 @@ struct DetailsView: View {
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .greatestFiniteMagnitude)
 
-                            Text("$\(price)")
+                            Text("$\(price, specifier: "%.2f")")
                                 .font(.title3)
                                 .fontWeight(.bold)
                                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
@@ -51,7 +51,7 @@ struct DetailsView: View {
                                     .fontWeight(.bold)
                                     .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
 
-                                LabelAlignment(text: "\(desc)", textAlignmentStyle: .justified, width: UIScreen.main.bounds.width - 20, size: 20.0)
+                                LabelAlignment(text: "\(description)", textAlignmentStyle: .justified, width: UIScreen.main.bounds.width - 20, size: 20.0)
 
                             })
                             .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)

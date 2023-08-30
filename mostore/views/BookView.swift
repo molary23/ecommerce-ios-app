@@ -13,11 +13,12 @@ struct BookView: View {
     var body: some View {
         Text("Hello, world!")
             .padding()
-            .onAppear() {
-                Api().loadData { (books) in
+        /*  .onAppear() {
+               Api().loadData { (books) in
                     self.books = books
                 }
-            }.navigationTitle("Book List")
+          }.navigationTitle("Book List")*/
+        
     }
 }
 

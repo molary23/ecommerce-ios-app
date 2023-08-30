@@ -10,15 +10,20 @@ import SwiftUI
 struct MainView: View {
     @EnvironmentObject var user: User
     @StateObject private var product = Product()
+
+    @State var bestProducts = [ProductData]()
+    @State var recProducts = [ProductData]()
+    @State var dealProducts = [ProductData]()
     @State private var gotoDetails: Bool = false
     @State private var search: String = ""
     let imageURL: String = "https://placekitten.com/200/200"
     let columns: [GridItem] = [
         GridItem(.flexible(), spacing: 10, alignment: nil),
+        GridItem(.flexible(), spacing: 10, alignment: nil),
     ]
 
     init() {
-        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.red, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.gray, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
         // UINavigationBar.appearance().backgroundColor = UIColor.green
     }
 
@@ -50,57 +55,77 @@ struct MainView: View {
                     .background(Color.white)
 
                     VStack(spacing: 20, content: {
-                        ScrollView(.horizontal, showsIndicators: false, content: {
-                            LazyHStack(spacing: 20, content: {
-                                ForEach(1 ... 10, id: \.self) { _ in
-                                    VStack(content: {
-                                        Button(action: { navigateToDetails() }, label: {
-                                            VStack {
-                                                AsyncImage(url: URL(string: imageURL)!, placeholder: {
-                                                    ProgressView()
+                        VStack {
+                            Text(PAGE_TEXT["text"]![16])
+                                .font(.title3)
+                                .fontWeight(.bold)
+                            ScrollView(.horizontal, showsIndicators: false, content: {
+                                LazyHStack(spacing: 20, content: {
+                                    ForEach(recProducts) { product in
+                                        VStack(content: {
+                                            Button(action: { navigateToDetails(content: product) }, label: {
+                                                VStack {
+                                                    AsyncImage(url: URL(string: product.image.components(separatedBy: "|")[0])!, placeholder: {
+                                                        ProgressView()
 
-                                                })
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 100, height: 100)
-                                                .clipped()
-                                                .cornerRadius(100)
+                                                    })
+                                                    .frame(maxWidth: 150, maxHeight: 150, alignment: .center)
+                                                    .cornerRadius(100)
+                                                    .scaledToFit()
+                                                    .aspectRatio(contentMode: .fill)
 
-                                                Text("Hello World \(storedUsername)")
-                                                    .font(.subheadline)
-                                                    .fontWeight(.semibold)
+                                                    Text("\(product.name)")
+                                                        .font(.body)
+                                                        .fontWeight(.semibold)
+                                                        .multilineTextAlignment(.center)
+                                                    Spacer()
+
+                                                    Text("$\(product.price, specifier: "%.2f")")
+                                                        .font(.headline)
+                                                        .fontWeight(.bold)
+                                                }
+                                                .frame(width: 150)
+                                            })
+                                            .navigationDestination(isPresented: $gotoDetails) {
+                                                DetailsView()
                                             }
+
                                         })
-                                        .navigationDestination(isPresented: $gotoDetails) {
-                                            DetailsView()
-                                        }
+                                    }
 
-                                    })
-                                }
-
+                                })
                             })
-                        })
+                        }.onAppear {
+                            Api().loadData(page: 1, limit: 5) { products in
+                                self.recProducts = products
+                            }
+                        }
 
                         VStack {
                             Text(PAGE_TEXT["text"]![9])
-                                .font(.headline)
-                            ScrollView(.horizontal, showsIndicators: false, content: {
-                                LazyHGrid(rows: columns, alignment: .center, spacing: 20, pinnedViews: [], content: {
-                                    ForEach(1 ... 9, id: \.self) { _ in
+                                .font(.title3)
+                                .fontWeight(.bold)
 
-                                        Button(action: { navigateToDetails() }, label: {
+                            ScrollView(.horizontal, showsIndicators: false, content: {
+                                LazyHStack(spacing: 20, content: {
+                                    ForEach(bestProducts) { product in
+
+                                        Button(action: { navigateToDetails(content: product) }, label: {
                                             VStack {
-                                                AsyncImage(url: URL(string: imageURL)!, placeholder: {
+                                                AsyncImage(url: URL(string: product.image.components(separatedBy: "|")[0])!, placeholder: {
                                                     ProgressView()
                                                 })
                                                 .aspectRatio(contentMode: .fit)
-                                                .frame(maxWidth: 300)
+                                                .frame(maxWidth: 300, alignment: .center)
                                                 .clipped()
                                                 .cornerRadius(8)
-                                                Text("Hello World")
+                                                Text("\(product.name)")
                                                     .font(.headline)
-                                                    .fontWeight(.semibold)
-                                                Text("Hello World")
-                                                    .font(.subheadline)
+                                                    .fontWeight(.bold)
+
+                                                Text("$\(product.price, specifier: "%.2f")")
+                                                    .font(.headline)
+                                                    .fontWeight(.bold)
                                             }
                                         })
                                         .navigationDestination(isPresented: $gotoDetails) {
@@ -112,36 +137,27 @@ struct MainView: View {
 
                             })
                         }
+                        .onAppear {
+                            Api().loadData(page: 0, limit: 5) { products in
+                                self.bestProducts = products
+                            }
+                        }
 
                         VStack {
                             Text(PAGE_TEXT["text"]![10])
-                                .font(.headline)
+                                .font(.title3)
+                                .fontWeight(.bold)
                             LazyVGrid(columns: columns, alignment: .center, spacing: 20, pinnedViews: [], content: {
-                                ForEach(1 ... 10, id: \.self) { _ in
+                                ForEach(dealProducts) { product in
                                     HStack(spacing: 30, content: {
-                                        Button(action: { navigateToDetails() }, label: {
+                                        Button(action: { navigateToDetails(content: product) }, label: {
                                             VStack {
-                                                AsyncImage(url: URL(string: imageURL)!, placeholder: {
+                                                AsyncImage(url: URL(string: product.image.components(separatedBy: "|")[0])!, placeholder: {
                                                     ProgressView()
                                                 })
 
                                                 .aspectRatio(contentMode: .fit)
-                                                .frame(width: 150)
-                                                .clipped()
-                                                .cornerRadius(8)
-                                            }
-                                        })
-                                        .navigationDestination(isPresented: $gotoDetails) {
-                                            DetailsView()
-                                        }
-
-                                        Button(action: { navigateToDetails() }, label: {
-                                            VStack {
-                                                AsyncImage(url: URL(string: imageURL)!, placeholder: {
-                                                    ProgressView()
-                                                })
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 150)
+                                                .frame(width: 150, height: 150)
                                                 .clipped()
                                                 .cornerRadius(8)
                                             }
@@ -155,6 +171,11 @@ struct MainView: View {
                             })
                         }
                         .padding()
+                        .onAppear {
+                            Api().loadData(page: 2, limit: 10) { products in
+                                self.dealProducts = products
+                            }
+                        }
 
                     })
                     .padding()
@@ -164,7 +185,7 @@ struct MainView: View {
 
             .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
             .background(
-                Color.green
+                Color.gray.opacity(0.1)
                     .ignoresSafeArea()
             )
 
@@ -201,12 +222,12 @@ struct MainView: View {
         .environmentObject(product)
     }
 
-    func navigateToDetails() {
-        product.product["id"] = "1234"
-        product.product["name"] = "A product"
-        product.product["image"] = "shopping"
-        product.product["desc"] = "A product is a product"
-        product.product["price"] = "114"
+    func navigateToDetails(content: ProductData) {
+        product.product["id"] = content.id
+        product.product["name"] = content.name
+        product.product["image"] = content.image
+        product.product["description"] = content.description
+        product.product["price"] = content.price
         gotoDetails = true
     }
 }

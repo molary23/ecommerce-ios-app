@@ -8,7 +8,7 @@
 import Foundation
 
 class Product: ObservableObject {
-    @Published var product: [String: String] = ["id": "", "name": "", "image": "", "desc": "", "price": ""]
+    @Published var product: [String: Any] = ["id": "", "name": "", "image": "", "description": "", "price": 0]
 }
 
 class User: ObservableObject {
