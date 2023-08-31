@@ -10,7 +10,7 @@ import SwiftUI
 struct DetailsView: View {
     @EnvironmentObject var product: Product
     @StateObject private var cart = Cart()
-    @State private var isActive: Bool = false
+    @State private var isAlertActive: Bool = false
     @State private var gotoCart: Bool = false
     @State private var gotoShop: Bool = false
     init() {
@@ -18,21 +18,31 @@ struct DetailsView: View {
     }
 
     var body: some View {
-        let name: String = product.product["name"] as? String ?? ""
-        let image: String = product.product["image"] as? String ?? "shopping"
-        let description: String = product.product["description"] as? String ?? ""
-        let price: Double = product.product["price"] as? Double ?? 0
+      //  let id: String = product.product["id"] as? String ?? "adeola"
+        let name: String = product.product["name"] as? String ?? "adeola"
+        let image: String = /*product.product["image"] as? String ??*/  "https://images-na.ssl-images-amazon.com/images/I/51j3fPQTQkL.jpg|https://images-na.ssl-images-amazon.com/images/I/31hKM3cSoSL.jpg|https://images-na.ssl-images-amazon.com/images/I/51WlHdwghfL.jpg|https://images-na.ssl-images-amazon.com/images/I/51FsyLRBzwL.jpg|https://images-na.ssl-images-amazon.com/images/G/01/x-locale/common/transparent-pixel.jpg"
+        let description: String = product.product["description"] as? String ?? "Welcome to normal description"
+        let price: Double = product.product["price"] as? Double ?? 0.0
+        let images = image.components(separatedBy: "|")
         NavigationStack {
             ZStack {
                 ScrollView {
                     VStack {
-                        ZStack {
-                            Image("\(image)")
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(maxHeight: 500)
-                                .clipped()
-                        }
+                        ScrollView(.horizontal, showsIndicators: false, content: {
+                            LazyHStack(spacing: nil, content: {
+                                ForEach(images, id: \.self) { image in
+                                    ZStack {
+                                        AsyncImage(url: URL(string: image)!, placeholder: {
+                                            ProgressView()
+                                        })
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: 500)
+                                        .clipped()
+                                    }
+                                }
+                            })
+
+                        })
 
                         VStack(spacing: 10, content: {
                             Text("\(name.capitalized)")
@@ -62,7 +72,7 @@ struct DetailsView: View {
                 }
                 .overlay(
                     FloatingButton(action: { addToCart() }, icon: "cart.badge.plus", fg: Color.white, bg: Color.blue, label: "Add to cart")
-                        .alert(isPresented: $isActive, content: getAlert)
+                        .alert(isPresented: $isAlertActive, content: getAlert)
                 )
 
                 if gotoCart {
@@ -79,7 +89,13 @@ struct DetailsView: View {
 
     func addToCart() {
         //  cart.cart.append(product)
-        isActive = true
+        DataPost().postRequest(userId: "64ed3a3efc29f826a41df4c2", productId: /*product.product["id"] as! String*/ "64ed53ecf34e3ac82344a30e", finish: finishPost)
+        
+        func finishPost(result: Int){
+            print("Go-->\(result)")
+        }
+      
+        isAlertActive = true
     }
 
     func getAlert() -> Alert {
