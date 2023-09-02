@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SwiftUI
+
 /*
  struct UserData: Codable, Identifiable {
      let id = UUID()
@@ -28,6 +28,15 @@ struct ProductData: Codable, Identifiable {
     var description: String
     var price: Double
     var image: String
+    var rating: Double
+}
+
+struct CartData: Codable, Identifiable {
+    var id = String()
+    var name: String
+    var price: Double
+    var image: String
+    var rating: Double
 }
 
 /*
@@ -187,6 +196,24 @@ class Api: ObservableObject {
     }
 }
 
+
+class CartApi: ObservableObject {
+    @Published var cart = [CartData]()
+    
+    func loadData(orderId: String, completion: @escaping ([CartData]) -> Void) {
+        guard let url = URL(string: "http://localhost:8080/api/orders/products?orderId=\(orderId)") else {
+            print("Invalid url...")
+            return
+        }
+        URLSession.shared.dataTask(with: url) { data, _, _ in
+            let cart = try! JSONDecoder().decode([CartData].self, from: data!)
+            DispatchQueue.main.async {
+                completion(cart)
+            }
+        }.resume()
+    }
+}
+
 /*
  func postRequest(userId: String, productId: String) {
      // declare the parameter as a dictionary that contains string as key and value combination. considering inputs are valid
@@ -317,3 +344,9 @@ class DataPost: ObservableObject {
         task.resume()
     }
 }
+
+
+
+/*
+
+ */

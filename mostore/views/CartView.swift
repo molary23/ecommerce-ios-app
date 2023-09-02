@@ -22,49 +22,36 @@ func updateQty(action: String, count: Int) -> Int {
     return qty
 }
 
-struct SimpleProduct: Hashable {
-    var id = UUID()
-    var name: String
-    var price: Float
-    var rating: Float
-    var qty: Int = 1
-}
-
-var productData = [
-    SimpleProduct(name: "small top", price: 23.86, rating: 4.7),
-    SimpleProduct(name: "long top", price: 30.98, rating: 3.9),
-    SimpleProduct(name: "medium top", price: 25.00, rating: 5.0),
-    SimpleProduct(name: "small bottom", price: 40.77, rating: 4.9),
-    SimpleProduct(name: "Crop top", price: 20.20, rating: 4.2),
-    SimpleProduct(name: "Dinner top", price: 15.99, rating: 4.8),
-    SimpleProduct(name: "Brunch top", price: 19.90, rating: 3.5),
-    SimpleProduct(name: "Summer top", price: 50.99, rating: 4.6),
-]
-
 struct CartView: View {
-    @State private var allProductData = productData
-    @State private var productArray = Array(productData.enumerated())
+    // @State private var productArray = Array(productData.enumerated())
+    @State var carts = [CartData]()
 
     var body: some View {
         NavigationStack {
             ZStack {
-                if !productArray.isEmpty {
-                    ScrollView {
-                        VStack(spacing: 20, content: {
-                            ForEach(productArray, id: \.element) { i, product in
-                                CartItem(productArray: $productArray, allProductData: $allProductData, product: product, i: i)
-                            }
-                        })
-                        .padding(12)
-                        .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
-                    }.overlay(
-                        FloatingButton(action: {
-                            productArray.removeAll()
-                        }, icon: "trash.slash", fg: Color.white, bg: Color.red, label: "Remove from cart"))
-                } else {
-                   
-                    NoItemLayout
-                }
+                //    if !carts.isEmpty {
+                ScrollView {
+                    VStack(spacing: 20, content: {
+                        ForEach(carts) { item in
+                            CartItem(product: item)
+                        }
+                    })
+                    .padding(12)
+                    .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
+                    .onAppear {
+                        CartApi().loadData(orderId: "64ee5e9cc2670c716019c428") { carts in
+                            self.carts = carts
+                            print(carts)
+                        }
+                    }
+                }.overlay(
+                    FloatingButton(action: {
+                        //  product.removeAll()
+                    }, icon: "trash.slash", fg: Color.white, bg: Color.red, label: "Remove from cart"))
+
+                /*   } else {
+                     NoItemLayout
+                 }*/
             }
             .navigationBarTitle(PAGE_TEXT["text"]![11], displayMode: .inline)
             .toolbar {
@@ -81,8 +68,6 @@ struct CartView: View {
             }
         }
     }
- 
-
 }
 
 struct CartView_Previews: PreviewProvider {
@@ -92,25 +77,36 @@ struct CartView_Previews: PreviewProvider {
 }
 
 struct CartItem: View {
-    @Binding var productArray: Array<(offset: Int, element: SimpleProduct)>
-    @Binding var allProductData: [SimpleProduct]
-    let product: SimpleProduct
-    let i: Int
+    //   @Binding var productArray: Array<(offset: Int, element: SimpleProduct)>
+    //  @Binding var allProductData: [CartData]
+    let product: CartData
     var body: some View {
         HStack(spacing: 8, content: {
-            RoundedRectangle(cornerRadius: 5)
-                .frame(width: 100, height: 100)
+         /*   AsyncImage(url: URL(string: product.image.components(separatedBy: "|")[0])!, placeholder: {
+                ProgressView()
+            })
+            .scaledToFit()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 100, height: 100)
+            .cornerRadius(8.0)*/
+
             VStack {
                 HStack(spacing: 8, content: {
-                    Text("\(product.name)".capitalized)
-                        .font(.headline)
-                        .fontWeight(.semibold)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    Button(action: {
-                        if !productArray.isEmpty {
-                            productArray = productArray.filter({ $0.element != self.allProductData[i] })
-                        }
+                    Text("\(product.name)")
+                        .font(.body)
+                        .fontWeight(.bold)
 
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Button(action: {
+                        /* if !productArray.isEmpty {
+                         productArray = productArray.filter({ $0.element != self.allProductData[i]
+                             */
+                        //    })
+
+                        // }
+                        print(123)
                     }) {
                         Image(systemName: "trash")
                             .renderingMode(.original)
@@ -127,7 +123,6 @@ struct CartItem: View {
                         .aspectRatio(contentMode: .fit)
                         .font(.body)
                         .frame(alignment: .leading)
-                        // .foregroundColor(Color.red)
                         .clipped()
 
                     Text("\(product.rating, specifier: "%.1f")")
@@ -141,7 +136,7 @@ struct CartItem: View {
                 HStack {
                     HStack {
                         Button("-") {
-                            self.allProductData[i].qty = updateQty(action: "minus", count: self.allProductData[i].qty)
+                            //   self.allProductData[i].qty = updateQty(action: "minus", count: self.allProductData[i].qty)
                         }
                         .padding(.vertical, 4)
                         .frame(maxWidth: .infinity)
@@ -149,13 +144,13 @@ struct CartItem: View {
                         .foregroundColor(Color.red)
                         .fontWeight(.bold)
 
-                        Text("\(self.allProductData[i].qty)")
+                        Text("\(1)")
                             .font(.headline)
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity, alignment: .center)
 
                         Button("+") {
-                            self.allProductData[i].qty = updateQty(action: "plus", count: self.allProductData[i].qty)
+                            //  self.allProductData[i].qty = updateQty(action: "plus", count: self.allProductData[i].qty)
                         }
                         .padding(.vertical, 4)
                         .frame(maxWidth: .infinity)

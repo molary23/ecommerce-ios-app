@@ -65,14 +65,7 @@ struct MainView: View {
                                         VStack(content: {
                                             Button(action: { navigateToDetails(content: product) }, label: {
                                                 VStack {
-                                                    AsyncImage(url: URL(string: product.image.components(separatedBy: "|")[0])!, placeholder: {
-                                                        ProgressView()
-
-                                                    })
-                                                    .frame(maxWidth: 150, maxHeight: 150, alignment: .center)
-                                                    .cornerRadius(100)
-                                                    .scaledToFit()
-                                                    .aspectRatio(contentMode: .fill)
+                                                    ExtAsyncImage(imageURL: product.image.components(separatedBy: "|")[0], size: 150, shape: Circle())
 
                                                     Text("\(product.name)")
                                                         .font(.body)
@@ -112,13 +105,8 @@ struct MainView: View {
 
                                         Button(action: { navigateToDetails(content: product) }, label: {
                                             VStack {
-                                                AsyncImage(url: URL(string: product.image.components(separatedBy: "|")[0])!, placeholder: {
-                                                    ProgressView()
-                                                })
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(maxWidth: 300, alignment: .center)
-                                                .clipped()
-                                                .cornerRadius(8)
+                                                ExtAsyncImage(imageURL: product.image.components(separatedBy: "|")[0], size: 500, shape: RoundedRectangle(cornerRadius: 8))
+
                                                 Text("\(product.name)")
                                                     .font(.headline)
                                                     .fontWeight(.bold)
@@ -152,14 +140,7 @@ struct MainView: View {
                                     HStack(spacing: 30, content: {
                                         Button(action: { navigateToDetails(content: product) }, label: {
                                             VStack {
-                                                AsyncImage(url: URL(string: product.image.components(separatedBy: "|")[0])!, placeholder: {
-                                                    ProgressView()
-                                                })
-
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 150, height: 150)
-                                                .clipped()
-                                                .cornerRadius(8)
+                                                ExtAsyncImage(imageURL: product.image.components(separatedBy: "|")[0], size: 150, shape: RoundedRectangle(cornerRadius: 8))
                                             }
                                         })
                                         .navigationDestination(isPresented: $gotoDetails) {
@@ -237,3 +218,5 @@ struct MainView_Previews: PreviewProvider {
         MainView()
     }
 }
+
+

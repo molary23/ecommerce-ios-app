@@ -18,11 +18,12 @@ struct DetailsView: View {
     }
 
     var body: some View {
-      //  let id: String = product.product["id"] as? String ?? "adeola"
-        let name: String = product.product["name"] as? String ?? "adeola"
-        let image: String = /*product.product["image"] as? String ??*/  "https://images-na.ssl-images-amazon.com/images/I/51j3fPQTQkL.jpg|https://images-na.ssl-images-amazon.com/images/I/31hKM3cSoSL.jpg|https://images-na.ssl-images-amazon.com/images/I/51WlHdwghfL.jpg|https://images-na.ssl-images-amazon.com/images/I/51FsyLRBzwL.jpg|https://images-na.ssl-images-amazon.com/images/G/01/x-locale/common/transparent-pixel.jpg"
+        //  let id: String = product.product["id"] as? String ?? "adeola"
+        let name: String? = product.product["name"] as? String ?? "adeola"
+        let image: String = /* product.product["image"] as? String ?? */ "https://images-na.ssl-images-amazon.com/images/I/51j3fPQTQkL.jpg|https://images-na.ssl-images-amazon.com/images/I/31hKM3cSoSL.jpg|https://images-na.ssl-images-amazon.com/images/I/51WlHdwghfL.jpg|https://images-na.ssl-images-amazon.com/images/I/51FsyLRBzwL.jpg|https://images-na.ssl-images-amazon.com/images/G/01/x-locale/common/transparent-pixel.jpg"
         let description: String = product.product["description"] as? String ?? "Welcome to normal description"
         let price: Double = product.product["price"] as? Double ?? 0.0
+        let rating: Double = product.product["rating"] as? Double ?? 4.0
         let images = image.components(separatedBy: "|")
         NavigationStack {
             ZStack {
@@ -32,12 +33,7 @@ struct DetailsView: View {
                             LazyHStack(spacing: nil, content: {
                                 ForEach(images, id: \.self) { image in
                                     ZStack {
-                                        AsyncImage(url: URL(string: image)!, placeholder: {
-                                            ProgressView()
-                                        })
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: 500)
-                                        .clipped()
+                                        ExtAsyncImage(imageURL: image, size: 500, shape: Rectangle())
                                     }
                                 }
                             })
@@ -45,10 +41,17 @@ struct DetailsView: View {
                         })
 
                         VStack(spacing: 10, content: {
-                            Text("\(name.capitalized)")
+                            Text("\(name!.capitalized)adeola")
                                 .font(.title2)
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .greatestFiniteMagnitude)
+
+                            Image(systemName: rating > 4 ? "star.fill" : "star")
+                                .renderingMode(.original)
+                                .aspectRatio(contentMode: .fit)
+                                .font(.body)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .clipped()
 
                             Text("$\(price, specifier: "%.2f")")
                                 .font(.title3)
@@ -89,12 +92,12 @@ struct DetailsView: View {
 
     func addToCart() {
         //  cart.cart.append(product)
-        DataPost().postRequest(userId: "64ed3a3efc29f826a41df4c2", productId: /*product.product["id"] as! String*/ "64ed53ecf34e3ac82344a30e", finish: finishPost)
-        
-        func finishPost(result: Int){
+        DataPost().postRequest(userId: "64ed3a3efc29f826a41df4c2", productId: product.product["id"] as! String, finish: finishPost)
+
+        func finishPost(result: Int) {
             print("Go-->\(result)")
         }
-      
+
         isAlertActive = true
     }
 
