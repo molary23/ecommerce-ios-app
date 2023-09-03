@@ -7,14 +7,18 @@
 
 import SwiftUI
 
+
 struct LoginView: View {
     @Environment(\.verticalSizeClass) private var verticalSizeClass: UserInterfaceSizeClass?
     @StateObject private var user = User()
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var goHome: Bool = false
+    
+    
 
     var body: some View {
+        
         NavigationStack {
             GeometryReader { geometry in
                 ZStack {
@@ -114,4 +118,6 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()
     }
+    
+    
 }

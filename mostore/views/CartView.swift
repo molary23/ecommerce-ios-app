@@ -23,45 +23,42 @@ func updateQty(action: String, count: Int) -> Int {
 }
 
 struct CartView: View {
-    // @State private var productArray = Array(productData.enumerated())
+    //  @State private var productArray = Array(carts.enumerated())
     @State var carts = [CartData]()
 
     var body: some View {
         NavigationStack {
             ZStack {
-                //    if !carts.isEmpty {
+                if carts.isEmpty {
+                    NoItemLayout
+                }
                 ScrollView {
                     VStack(spacing: 20, content: {
-                        ForEach(carts) { item in
-                            CartItem(product: item)
+                        ForEach(carts, id: \.self) { item in
+                            CartItem(cart: item, carts: $carts)
                         }
                     })
                     .padding(12)
                     .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
                     .onAppear {
-                        CartApi().loadData(orderId: "64ee5e9cc2670c716019c428") { carts in
+                        CartApi().loadData(orderId: "64f2a35e89ece621daa0a330") { carts in
                             self.carts = carts
-                            print(carts)
                         }
                     }
                 }.overlay(
                     FloatingButton(action: {
                         //  product.removeAll()
-                    }, icon: "trash.slash", fg: Color.white, bg: Color.red, label: "Remove from cart"))
-
-                /*   } else {
-                     NoItemLayout
-                 }*/
+                    }, icon: "chevron.right", fg: Color.white, bg: Color.blue, label: "Proceed to Checkout"))
             }
             .navigationBarTitle(PAGE_TEXT["text"]![11], displayMode: .inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: CheckoutView(), label: {
-                        HStack {
-                            Text(PAGE_TEXT["button"]![2])
-                                .foregroundColor(Color.blue)
-                                .fontWeight(.bold)
-                        }
+                    Button(action: {
+                        carts.removeAll()
+                    }, label: {
+                        Text(PAGE_TEXT["button"]![4])
+                            .foregroundColor(Color.red)
+                            .fontWeight(.bold)
 
                     })
                 }
@@ -77,22 +74,15 @@ struct CartView_Previews: PreviewProvider {
 }
 
 struct CartItem: View {
-    //   @Binding var productArray: Array<(offset: Int, element: SimpleProduct)>
-    //  @Binding var allProductData: [CartData]
-    let product: CartData
+    var cart: CartData
+    @Binding var carts: [CartData]
     var body: some View {
         HStack(spacing: 8, content: {
-         /*   AsyncImage(url: URL(string: product.image.components(separatedBy: "|")[0])!, placeholder: {
-                ProgressView()
-            })
-            .scaledToFit()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 100, height: 100)
-            .cornerRadius(8.0)*/
+            ExtAsyncImage(imageURL: cart.product.image.components(separatedBy: "|")[0], size: 100, shape: RoundedRectangle(cornerRadius: 8))
 
             VStack {
                 HStack(spacing: 8, content: {
-                    Text("\(product.name)")
+                    Text("\(cart.product.name)")
                         .font(.body)
                         .fontWeight(.bold)
 
@@ -100,13 +90,8 @@ struct CartItem: View {
                         .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
                     Button(action: {
-                        /* if !productArray.isEmpty {
-                         productArray = productArray.filter({ $0.element != self.allProductData[i]
-                             */
-                        //    })
+                        carts = carts.filter({ $0.product.id != cart.product.id })
 
-                        // }
-                        print(123)
                     }) {
                         Image(systemName: "trash")
                             .renderingMode(.original)
@@ -118,14 +103,14 @@ struct CartItem: View {
                     }
                 }).frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude, alignment: .topLeading)
                 HStack {
-                    Image(systemName: product.rating > 4 ? "star.fill" : "star")
+                    Image(systemName: cart.product.rating > 4 ? "star.fill" : "star")
                         .renderingMode(.original)
                         .aspectRatio(contentMode: .fit)
                         .font(.body)
                         .frame(alignment: .leading)
                         .clipped()
 
-                    Text("\(product.rating, specifier: "%.1f")")
+                    Text("\(cart.product.rating, specifier: "%.1f")")
                         .font(.headline)
                         .fontWeight(.semibold)
                         .foregroundColor(Color.indigo)
@@ -144,13 +129,14 @@ struct CartItem: View {
                         .foregroundColor(Color.red)
                         .fontWeight(.bold)
 
-                        Text("\(1)")
+                        Text("\(cart.quantity)")
                             .font(.headline)
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity, alignment: .center)
 
                         Button("+") {
-                            //  self.allProductData[i].qty = updateQty(action: "plus", count: self.allProductData[i].qty)
+                            if var row = carts.first(where: { $0.product.id != cart.product.id }) {
+                            }
                         }
                         .padding(.vertical, 4)
                         .frame(maxWidth: .infinity)
@@ -160,7 +146,7 @@ struct CartItem: View {
                     }
                     .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
 
-                    Text("$\(product.price, specifier: "%.2f")")
+                    Text("$\(cart.product.price, specifier: "%.2f")")
                         .font(.body)
                         .fontWeight(.bold)
                         .frame(maxWidth: .greatestFiniteMagnitude, alignment: .trailing)
