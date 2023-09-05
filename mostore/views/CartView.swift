@@ -23,19 +23,20 @@ func updateQty(action: String, count: Int) -> Int {
 }
 
 struct CartView: View {
-    //  @State private var productArray = Array(carts.enumerated())
     @State var carts = [CartData]()
+    @State var isCartEmpty: Bool = false
+    @State var quantity: Int = 0
 
     var body: some View {
         NavigationStack {
             ZStack {
-                if carts.isEmpty {
+                if isCartEmpty && carts.isEmpty {
                     NoItemLayout
                 }
                 ScrollView {
                     VStack(spacing: 20, content: {
                         ForEach(carts, id: \.self) { item in
-                            CartItem(cart: item, carts: $carts)
+                            CartItem(cart: item, carts: $carts, isCartEmpty: $isCartEmpty)
                         }
                     })
                     .padding(12)
@@ -55,6 +56,7 @@ struct CartView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         carts.removeAll()
+                        isCartEmpty = true
                     }, label: {
                         Text(PAGE_TEXT["button"]![4])
                             .foregroundColor(Color.red)
@@ -76,7 +78,9 @@ struct CartView_Previews: PreviewProvider {
 struct CartItem: View {
     var cart: CartData
     @Binding var carts: [CartData]
+    @Binding var isCartEmpty: Bool
     var body: some View {
+       var itemQty = carts.first(where: {$0.product.id == cart.product.id})!.quantity
         HStack(spacing: 8, content: {
             ExtAsyncImage(imageURL: cart.product.image.components(separatedBy: "|")[0], size: 100, shape: RoundedRectangle(cornerRadius: 8))
 
@@ -91,6 +95,9 @@ struct CartItem: View {
                         .fixedSize(horizontal: false, vertical: true)
                     Button(action: {
                         carts = carts.filter({ $0.product.id != cart.product.id })
+                        if carts.isEmpty {
+                            isCartEmpty = true
+                        }
 
                     }) {
                         Image(systemName: "trash")
@@ -121,7 +128,9 @@ struct CartItem: View {
                 HStack {
                     HStack {
                         Button("-") {
-                            //   self.allProductData[i].qty = updateQty(action: "minus", count: self.allProductData[i].qty)
+                            //  getQty(quantity: cart.quantity, opt: "-")
+                          //  var item = carts.first(where: {$0.product.id == cart.product.id})
+                            itemQty -= 1
                         }
                         .padding(.vertical, 4)
                         .frame(maxWidth: .infinity)
@@ -129,14 +138,15 @@ struct CartItem: View {
                         .foregroundColor(Color.red)
                         .fontWeight(.bold)
 
-                        Text("\(cart.quantity)")
+                        Text("\(itemQty)")
                             .font(.headline)
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity, alignment: .center)
 
                         Button("+") {
-                            if var row = carts.first(where: { $0.product.id != cart.product.id }) {
-                            }
+                            //   getQty(quantity: cart.quantity, opt: "+")
+                           // var item = carts.first(where: {$0.product.id == cart.product.id})
+                            itemQty += 1
                         }
                         .padding(.vertical, 4)
                         .frame(maxWidth: .infinity)
@@ -159,4 +169,50 @@ struct CartItem: View {
         .background(Color("off-white"))
         .cornerRadius(8)
     }
+
+    /*   func getQty(quantity: Int, opt: String) -> Void{
+         qty = quantity
+         if(opt == "+"){
+             qty = quantity + 1
+         }else if(opt == "-"){
+             qty = quantity - 1
+         }
+     }*/
 }
+
+/*
+ struct ExtQuantityView: View {
+     var cart: CartData
+     var qty: Int
+     var carts: [CartData]
+     var qt: Int = carts.first(where: {$0.product.id == cart.product.id})!.quantity
+     var body: some View {
+         HStack {
+             Button("-") {
+                 //   self.allProductData[i].qty = updateQty(action: "minus", count: self.allProductData[i].qty)
+               //  cart.quantity - 1
+             }
+             .padding(.vertical, 4)
+             .frame(maxWidth: .infinity)
+             .background(Color.white)
+             .foregroundColor(Color.red)
+             .fontWeight(.bold)
+
+             Text("\(qt)")
+                 .font(.headline)
+                 .fontWeight(.semibold)
+                 .frame(maxWidth: .infinity, alignment: .center)
+
+             Button("+") {
+                 print(456)
+             }
+             .padding(.vertical, 4)
+             .frame(maxWidth: .infinity)
+             .background(Color.white)
+             .foregroundColor(Color.blue)
+             .fontWeight(.bold)
+         }
+         .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+     }
+ }
+ */

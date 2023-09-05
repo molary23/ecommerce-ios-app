@@ -59,7 +59,21 @@ struct LoginView: View {
 
                                 })
                                 VStack(spacing: 15, content: {
-                                    ExtNavButtonView(name: "\(PAGE_TEXT["title"]![0])", isMovable: $goHome, isActive: handleLogin(username: self.username, password: self.password), destination: AnyView(MainView()), topPadding: 8.0, acColor: .white, bgColor: .blue, corner: 25, size: .body)
+                                 /*   ExtNavButtonView(name: "\(PAGE_TEXT["title"]![0])", isMovable: $goHome, isActive: handleLogin(username: self.username, password: self.password), destination: AnyView(MainView()), topPadding: 8.0, acColor: .white, bgColor: .blue, corner: 25, size: .body)
+                                    */
+                                    Button(action: {
+                                        handleLogin(username: self.username, password: self.password)
+                                    }, label: {
+                                        Text("\(PAGE_TEXT["title"]![0])")
+                                            .frame(maxWidth: .infinity)
+                                    })
+                                    .padding(.vertical, 8)
+                                    .accentColor(.white)
+                                    .background(.blue)
+                                    .cornerRadius(20)
+                                    .fontWeight(.bold)
+                                    .frame(maxWidth: .infinity)
+                                    .navigationDestination(isPresented: $goHome, destination: { MainView() })
 
                                     NavigationLink(destination: RegisterView(), label: {
                                         Text(PAGE_TEXT["title"]![1])
@@ -108,9 +122,12 @@ struct LoginView: View {
         .environmentObject(user)
     }
 
-    func handleLogin(username: String, password: String) -> Bool {
+    func handleLogin(username: String, password: String) -> Void {
+        UserApi().loginRequest(username: username, password: password, completion: { user in
+            print(user)
+        })
         preferences.set(username, forKey: usernameKey)
-        return true
+        goHome = true
     }
 }
 

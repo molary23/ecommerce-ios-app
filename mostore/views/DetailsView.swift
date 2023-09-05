@@ -92,7 +92,7 @@ struct DetailsView: View {
 
     func addToCart() {
         //  cart.cart.append(product)
-        DataPost().postRequest(userId: "64ed3a3efc29f826a41df4c2", productId: product.product["id"] as! String, finish: finishPost)
+        DataPost().addToCart(userId: "64ed3a3efc29f826a41df4c2", productId: product.product["id"] as! String, finish: finishPost)
 
         func finishPost(result: Int) {
             print("Go-->\(result)")
@@ -104,18 +104,6 @@ struct DetailsView: View {
     func getAlert() -> Alert {
         return Alert(title: Text("Item added to cart"))
     }
-
-    /*  func getActionSheet() -> ActionSheet {
-         let toCart: ActionSheet.Button = .default(Text("Go to Cart")) {
-         }
-
-         let toShop: ActionSheet.Button = .default(Text("Continue Shopping")) {
-         }
-
-         let toCancel: ActionSheet.Button = .cancel({ isActive = false })
-
-         return ActionSheet(title: Text("What Next?"), message: Text(""), buttons: [toCart, toShop, toCancel])
-     }*/
 }
 
 struct DetailsView_Previews: PreviewProvider {

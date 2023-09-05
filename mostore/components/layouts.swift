@@ -25,7 +25,7 @@ struct ExtTextFieldView: View {
 
 struct ExtTotalView: View {
     var heading: String
-    var amount: Int
+    var amount: Double
     var body: some View {
         HStack(content: {
             Text(heading)
@@ -33,7 +33,7 @@ struct ExtTotalView: View {
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            Text("$\(amount)")
+            Text("$\(amount, specifier: "%0.2f")")
                 .font(.body)
                 .frame(maxWidth: .infinity, alignment: .trailing)
         })

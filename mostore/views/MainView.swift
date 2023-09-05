@@ -16,7 +16,6 @@ struct MainView: View {
     @State var dealProducts = [ProductData]()
     @State private var gotoDetails: Bool = false
     @State private var search: String = ""
-    let imageURL: String = "https://placekitten.com/200/200"
     let columns: [GridItem] = [
         GridItem(.flexible(), spacing: 10, alignment: nil),
         GridItem(.flexible(), spacing: 10, alignment: nil),
@@ -68,13 +67,12 @@ struct MainView: View {
                                                     ExtAsyncImage(imageURL: product.image.components(separatedBy: "|")[0], size: 150, shape: Circle())
 
                                                     Text("\(product.name)")
-                                                        .font(.body)
-                                                        .fontWeight(.semibold)
+                                                        .font(.caption)
                                                         .multilineTextAlignment(.center)
                                                     Spacer()
 
                                                     Text("$\(product.price, specifier: "%.2f")")
-                                                        .font(.headline)
+                                                        .font(.body)
                                                         .fontWeight(.bold)
                                                 }
                                                 .frame(width: 150)

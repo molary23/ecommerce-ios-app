@@ -25,7 +25,7 @@ extension View {
 
 struct ConfirmationView: View {
     @State private var goHome: Bool = false
-    @EnvironmentObject var user: User
+ //   @EnvironmentObject var user: User
     init() {
         // Use this if NavigationBarTitle is with displayMode = .inline
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
@@ -37,11 +37,6 @@ struct ConfirmationView: View {
                 VStack {
                     Text(PAGE_TEXT["text"]![14])
                         .font(.largeTitle)
-
-               
-
-                    Text("\(user.username)")
-                        .font(.title3)
                 }.frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude, alignment: .center)
                     .foregroundColor(.white)
                     .bold()
@@ -89,20 +84,7 @@ struct ConfirmationView: View {
             .background(Color.blue)
 
             .navigationBarTitle(PAGE_TEXT["title"]![4], displayMode: .inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        print("button pressed")
-
-                    }) {
-                        Image(systemName: "arrow.left")
-                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                            .font(.title2)
-                            .frame(maxWidth: 40, alignment: .leading)
-                            .foregroundColor(.white)
-                    }
-                }
-            }
+            .navigationBarBackButtonHidden(true)
         }
     }
 
@@ -113,6 +95,8 @@ struct ConfirmationView: View {
 
 struct ConfirmationView_Previews: PreviewProvider {
     static var previews: some View {
-        ConfirmationView().environmentObject(User())
+        ConfirmationView()
+            
+            //.environmentObject(User())
     }
 }
