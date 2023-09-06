@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct mostoreApp: App {
+    @StateObject private var product = Product()
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            if storedEmail.isEmpty {
+                LoginView()
+            } else {
+                MainView()
+            }
+                
         }
     }
 }

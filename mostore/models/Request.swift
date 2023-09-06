@@ -14,19 +14,28 @@ import Foundation
      var username: String
      var card: String
  }*/
+struct Address {
+    var id: String
+    var number: Int
+    var street: String
+    var city: String
+    var zip: String
+    var country: String
+}
+
+struct Card {
+    var id: String
+    var number: String
+    var month: String
+    var year: String
+    var cvv: String
+}
 
 struct Book: Codable, Identifiable {
     var id = Int()
     var title: String
     var body: String
     var userId: Int
-}
-
-struct UserRequestData: Codable {
-    var id: String
-    var username: String
-    var email: String
-    
 }
 
 struct ProductData: Codable, Identifiable {
@@ -150,7 +159,7 @@ class CheckApi: ObservableObject {
 }
 
 class DataPost: ObservableObject {
-    func addToCart(userId: String, productId: String, finish: @escaping (Int) -> Void) {
+    func addToCart(userId: String, productId: String, finish: @escaping (Bool) -> Void) {
         let data: Data = "userId=\(userId)&productId=\(productId)".data(using: .utf8)!
 
         var request = URLRequest(url: URL(string: "http://localhost:8080/api/orders/add")!)
@@ -163,7 +172,11 @@ class DataPost: ObservableObject {
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { _, response, _ in
             let httpResponse = response as? HTTPURLResponse
-            finish(httpResponse!.statusCode)
+            if httpResponse!.statusCode == 200 {
+                finish(true)
+            } else {
+                finish(false)
+            }
 
         })
 
@@ -171,26 +184,39 @@ class DataPost: ObservableObject {
     }
 }
 
+struct UserRequestData: Codable, Identifiable {
+    var id: String
+    var username: String
+    var email: String
+}
+
 class UserApi: ObservableObject {
-    
-    @Published var userRequest = [UserRequestData]()
-    
-    func loginRequest (username: String, password: String, completion: @escaping ([UserRequestData]) -> Void){
+    func loginRequest(username: String, password: String, completion: @escaping (Any) -> Void) {
         let data: Data = "username=\(username)&password=\(password)".data(using: .utf8)!
-        
+
         var request = URLRequest(url: URL(string: "http://localhost:8080/api/auth")!)
         request.httpMethod = "POST"
         request.httpBody = data
-        
+
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.setValue(NSLocalizedString("lang", comment: ""), forHTTPHeaderField: "Accept-Language")
-        
-        URLSession.shared.dataTask(with: request) { body, _, _ in
-            let userRequest = try! JSONDecoder().decode([UserRequestData].self, from: body!)
-            DispatchQueue.main.async {
-                completion(userRequest)
+
+        URLSession.shared.dataTask(with: request) { body, response, _ in
+            let httpResponse = response as? HTTPURLResponse
+            if httpResponse?.statusCode == 200 {
+                let userRequest = try! JSONDecoder().decode(UserRequestData.self, from: body!)
+                preferences.set(userRequest.username, forKey: usernameKey)
+                preferences.set(userRequest.email, forKey: emailKey)
+                DispatchQueue.main.async {
+                    completion(true)
+                }
+            } else {
+                print("Failed request!")
+                DispatchQueue.main.async {
+                    completion(false)
+                }
             }
-            
+
         }.resume()
     }
 }

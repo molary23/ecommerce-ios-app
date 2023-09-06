@@ -7,18 +7,14 @@
 
 import SwiftUI
 
-
 struct LoginView: View {
     @Environment(\.verticalSizeClass) private var verticalSizeClass: UserInterfaceSizeClass?
-    @StateObject private var user = User()
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var goHome: Bool = false
-    
-    
-
+    @State private var isAlertActive: Bool = false
+    @State private var alertMessage: String = ""
     var body: some View {
-        
         NavigationStack {
             GeometryReader { geometry in
                 ZStack {
@@ -59,8 +55,6 @@ struct LoginView: View {
 
                                 })
                                 VStack(spacing: 15, content: {
-                                 /*   ExtNavButtonView(name: "\(PAGE_TEXT["title"]![0])", isMovable: $goHome, isActive: handleLogin(username: self.username, password: self.password), destination: AnyView(MainView()), topPadding: 8.0, acColor: .white, bgColor: .blue, corner: 25, size: .body)
-                                    */
                                     Button(action: {
                                         handleLogin(username: self.username, password: self.password)
                                     }, label: {
@@ -85,7 +79,6 @@ struct LoginView: View {
                                             .fontWeight(.bold)
                                     })
 
-                                   
                                 })
 
                             })
@@ -113,21 +106,37 @@ struct LoginView: View {
                     .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
                     .background(Color.black.opacity(0.5))
                 }
+                .alert(isPresented: $isAlertActive, content: getAlert)
                 .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
             }.ignoresSafeArea(.keyboard, edges: .all)
 
                 .navigationBarBackButtonHidden(true)
                 .navigationBarHidden(true)
         }
-        .environmentObject(user)
     }
 
-    func handleLogin(username: String, password: String) -> Void {
-        UserApi().loginRequest(username: username, password: password, completion: { user in
-            print(user)
-        })
-        preferences.set(username, forKey: usernameKey)
-        goHome = true
+    func handleLogin(username: String, password: String) {
+        if username.isEmpty {
+            alertMessage = "Username can't be empty"
+            isAlertActive = true
+        } else if password.isEmpty {
+            alertMessage = "Password can't be empty"
+            isAlertActive = true
+        } else {
+            UserApi().loginRequest(username: username.lowercased(), password: password, completion: { status in
+                var status = status as! Bool
+                if !status {
+                    alertMessage = "Unable to login. Try again later"
+                    isAlertActive = true
+                }
+                goHome = status
+
+            })
+        }
+    }
+
+    func getAlert() -> Alert {
+        return Alert(title: Text("\(alertMessage)"))
     }
 }
 
@@ -135,6 +144,4 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()
     }
-    
-    
 }

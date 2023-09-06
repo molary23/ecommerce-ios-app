@@ -18,10 +18,9 @@ struct DetailsView: View {
     }
 
     var body: some View {
-        //  let id: String = product.product["id"] as? String ?? "adeola"
-        let name: String? = product.product["name"] as? String ?? "adeola"
-        let image: String = /* product.product["image"] as? String ?? */ "https://images-na.ssl-images-amazon.com/images/I/51j3fPQTQkL.jpg|https://images-na.ssl-images-amazon.com/images/I/31hKM3cSoSL.jpg|https://images-na.ssl-images-amazon.com/images/I/51WlHdwghfL.jpg|https://images-na.ssl-images-amazon.com/images/I/51FsyLRBzwL.jpg|https://images-na.ssl-images-amazon.com/images/G/01/x-locale/common/transparent-pixel.jpg"
-        let description: String = product.product["description"] as? String ?? "Welcome to normal description"
+        let name: String? = product.product["name"] as? String ?? ""
+        let image: String = product.product["image"] as? String ?? ""
+        let description: String = product.product["description"] as? String ?? ""
         let price: Double = product.product["price"] as? Double ?? 0.0
         let rating: Double = product.product["rating"] as? Double ?? 4.0
         let images = image.components(separatedBy: "|")
@@ -41,17 +40,25 @@ struct DetailsView: View {
                         })
 
                         VStack(spacing: 10, content: {
-                            Text("\(name!.capitalized)adeola")
+                            Text("\(name!.capitalized)")
                                 .font(.title2)
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .greatestFiniteMagnitude)
 
-                            Image(systemName: rating > 4 ? "star.fill" : "star")
-                                .renderingMode(.original)
-                                .aspectRatio(contentMode: .fit)
-                                .font(.body)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .clipped()
+                            HStack(spacing: 4) {
+                                Image(systemName: rating >= 4 ? "star.fill" : "star")
+                                    .renderingMode(.original)
+                                    .aspectRatio(contentMode: .fit)
+                                    .font(.title3)
+                                    .frame(alignment: .center)
+                                    .clipped()
+
+                                Text("\(rating, specifier: "%.1f")")
+                                    .font(.body)
+                                    .fontWeight(.bold)
+                                    .frame(alignment: .center)
+                            }
+                            .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
 
                             Text("$\(price, specifier: "%.2f")")
                                 .font(.title3)
@@ -94,11 +101,11 @@ struct DetailsView: View {
         //  cart.cart.append(product)
         DataPost().addToCart(userId: "64ed3a3efc29f826a41df4c2", productId: product.product["id"] as! String, finish: finishPost)
 
-        func finishPost(result: Int) {
-            print("Go-->\(result)")
+        func finishPost(result: Bool) {
+            isAlertActive = result
         }
 
-        isAlertActive = true
+       
     }
 
     func getAlert() -> Alert {

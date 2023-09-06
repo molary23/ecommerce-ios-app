@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @State private var isLogOut: Bool = false
     var body: some View {
         NavigationStack {
             List(content: {
@@ -17,6 +18,14 @@ struct SettingsView: View {
                                        systemImageName: "dollarsign.circle")
 
                     })
+                    
+                    Button(action: { logOut() }, label: {
+                        SettingRowView(title: "Log Out",
+                                       systemImageName: "power")
+                        
+                    })
+                    .navigationDestination(isPresented: $isLogOut, destination: {LoginView()})
+                    .accentColor(.red)
 
                 })
 
@@ -26,13 +35,18 @@ struct SettingsView: View {
                                        systemImageName: "moonphase.last.quarter")
 
                     })
-                    .accentColor(.red)
+                    .accentColor(.blue)
 
                 })
             })
 
             .navigationBarTitle(PAGE_TEXT["title"]![5], displayMode: .inline)
         }
+    }
+    func logOut(){
+        preferences.removeObject(forKey: usernameKey)
+        preferences.removeObject(forKey: emailKey)
+        isLogOut = true
     }
 }
 

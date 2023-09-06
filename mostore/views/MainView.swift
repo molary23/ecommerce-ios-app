@@ -15,7 +15,7 @@ struct MainView: View {
     @State var recProducts = [ProductData]()
     @State var dealProducts = [ProductData]()
     @State private var gotoDetails: Bool = false
-    @State private var search: String = ""
+    @State private var toSearch: Bool = false
     let columns: [GridItem] = [
         GridItem(.flexible(), spacing: 10, alignment: nil),
         GridItem(.flexible(), spacing: 10, alignment: nil),
@@ -26,31 +26,31 @@ struct MainView: View {
         // UINavigationBar.appearance().backgroundColor = UIColor.green
     }
 
-    let aspect = 1.5
-
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20, content: {
-                    HStack(alignment: .center, spacing: 20, content: {
-                        Image(systemName: "magnifyingglass")
-                            .renderingMode(.original)
-                            .aspectRatio(contentMode: .fit)
-                            .font(.body)
-                            .fontWeight(.bold)
-                            .foregroundColor(Color.orange)
-                            .clipped()
-                            .frame(maxWidth: 40)
+                    Button(action: {}, label: {
+                        HStack(alignment: .center, spacing: 40, content: {
+                            Image(systemName: "magnifyingglass")
+                                .renderingMode(.original)
+                                .aspectRatio(contentMode: .fit)
+                                .font(.body)
+                                .fontWeight(.bold)
+                                .clipped()
+                                .frame(maxWidth: 40)
 
-                        TextField(PAGE_TEXT["input"]![7], text: $search)
-                            .textFieldStyle(.plain)
-                            .fontWeight(.semibold)
-                            .frame(maxWidth: .infinity, maxHeight: 50)
+                            Text("\(PAGE_TEXT["input"]![7])")
+                                .fontWeight(.thin)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
+                        })
 
                     })
                     .padding(8)
                     .padding(.horizontal, 40)
                     .frame(maxWidth: .infinity, maxHeight: 40)
+                    .accentColor(Color.gray.opacity(0.7))
                     .background(Color.white)
 
                     VStack(spacing: 20, content: {
@@ -207,6 +207,7 @@ struct MainView: View {
         product.product["image"] = content.image
         product.product["description"] = content.description
         product.product["price"] = content.price
+        product.product["rating"] = content.rating
         gotoDetails = true
     }
 }
@@ -214,7 +215,6 @@ struct MainView: View {
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
         MainView()
+        //   .environmentObject(product)
     }
 }
-
-
