@@ -58,8 +58,15 @@ struct LoginView: View {
                                     Button(action: {
                                         handleLogin(username: self.username, password: self.password)
                                     }, label: {
-                                        Text("\(PAGE_TEXT["title"]![0])")
-                                            .frame(maxWidth: .infinity)
+                                        if goHome {
+                                            ProgressView()
+                                                .tint(.white)
+                                                .frame(maxWidth: .infinity)
+                                        } else {
+                                            Text("\(PAGE_TEXT["title"]![0])")
+                                                .frame(maxWidth: .infinity)
+                                        }
+
                                     })
                                     .padding(.vertical, 8)
                                     .accentColor(.white)
@@ -68,6 +75,7 @@ struct LoginView: View {
                                     .fontWeight(.bold)
                                     .frame(maxWidth: .infinity)
                                     .navigationDestination(isPresented: $goHome, destination: { MainView() })
+                                    .disabled(self.username.count < 5 || self.password.count < 5)
 
                                     NavigationLink(destination: RegisterView(), label: {
                                         Text(PAGE_TEXT["title"]![1])
@@ -124,7 +132,7 @@ struct LoginView: View {
             isAlertActive = true
         } else {
             UserApi().loginRequest(username: username.lowercased(), password: password, completion: { status in
-                var status = status as! Bool
+                let status = status as! Bool
                 if !status {
                     alertMessage = "Unable to login. Try again later"
                     isAlertActive = true

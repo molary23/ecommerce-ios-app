@@ -10,7 +10,6 @@ import SwiftUI
 struct MainView: View {
     @EnvironmentObject var user: User
     @StateObject private var product = Product()
-
     @State var bestProducts = [ProductData]()
     @State var recProducts = [ProductData]()
     @State var dealProducts = [ProductData]()
@@ -30,7 +29,9 @@ struct MainView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20, content: {
-                    Button(action: {}, label: {
+                    Button(action: {
+                        toSearch = true
+                    }, label: {
                         HStack(alignment: .center, spacing: 40, content: {
                             Image(systemName: "magnifyingglass")
                                 .renderingMode(.original)
@@ -43,6 +44,14 @@ struct MainView: View {
                             Text("\(PAGE_TEXT["input"]![7])")
                                 .fontWeight(.thin)
                                 .frame(maxWidth: .infinity, alignment: .leading)
+                                .onAppear {
+                                    product.product["id"] = ""
+                                    product.product["name"] = ""
+                                    product.product["image"] = ""
+                                    product.product["description"] = ""
+                                    product.product["price"] = 0
+                                    product.product["rating"] = 0
+                                }
 
                         })
 
@@ -52,6 +61,9 @@ struct MainView: View {
                     .frame(maxWidth: .infinity, maxHeight: 40)
                     .accentColor(Color.gray.opacity(0.7))
                     .background(Color.white)
+                    .navigationDestination(isPresented: $toSearch, destination: {
+                        SearchView()
+                    })
 
                     VStack(spacing: 20, content: {
                         VStack {
@@ -161,7 +173,7 @@ struct MainView: View {
 
                 })
             }
-
+            
             .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
             .background(
                 Color.gray.opacity(0.1)
@@ -177,7 +189,7 @@ struct MainView: View {
                             .renderingMode(.original)
                             .aspectRatio(contentMode: .fit)
                             .font(.body)
-                            .foregroundColor(Color.orange)
+                            .fontWeight(.semibold)
                             .frame(alignment: .trailing)
                             .clipped()
 
@@ -190,7 +202,7 @@ struct MainView: View {
                             .renderingMode(.original)
                             .aspectRatio(contentMode: .fit)
                             .font(.body)
-                            .foregroundColor(Color.orange)
+                            .fontWeight(.semibold)
                             .frame(alignment: .trailing)
                             .clipped()
 
@@ -214,7 +226,6 @@ struct MainView: View {
 
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView()
-        //   .environmentObject(product)
+        MainView().environmentObject(Product())
     }
 }

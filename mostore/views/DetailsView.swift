@@ -13,17 +13,18 @@ struct DetailsView: View {
     @State private var isAlertActive: Bool = false
     @State private var gotoCart: Bool = false
     @State private var gotoShop: Bool = false
+    @State private var name: String = ""
+    @State private var description: String = ""
+    @State private var images: [String] = []
+    @State private var image: String = ""
+    @State private var price: Double = 0
+    @State private var rating: Double = 0
     init() {
         // UINavigationBar.appearance().backgroundColor = UIColor.blue
     }
 
     var body: some View {
-        let name: String? = product.product["name"] as? String ?? ""
-        let image: String = product.product["image"] as? String ?? ""
-        let description: String = product.product["description"] as? String ?? ""
-        let price: Double = product.product["price"] as? Double ?? 0.0
-        let rating: Double = product.product["rating"] as? Double ?? 4.0
-        let images = image.components(separatedBy: "|")
+     
         NavigationStack {
             ZStack {
                 ScrollView {
@@ -40,7 +41,7 @@ struct DetailsView: View {
                         })
 
                         VStack(spacing: 10, content: {
-                            Text("\(name!.capitalized)")
+                            Text("\(name.capitalized)")
                                 .font(.title2)
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .greatestFiniteMagnitude)
@@ -79,12 +80,19 @@ struct DetailsView: View {
                         })
                         .padding()
                     }
+                    .onAppear{                       
+                        name = product.product["name"] as? String ?? ""
+                        image = product.product["image"] as? String ?? ""
+                        description = product.product["description"] as? String ?? ""
+                        price = product.product["price"] as? Double ?? 0.0
+                        rating = product.product["rating"] as? Double ?? 4.0
+                        images = image.components(separatedBy: "|")
+                    }
                 }
                 .overlay(
                     FloatingButton(action: { addToCart() }, icon: "cart.badge.plus", fg: Color.white, bg: Color.blue, label: "Add to cart")
-                        .alert(isPresented: $isAlertActive, content: getAlert)
                 )
-
+                .alert(isPresented: $isAlertActive, content: getAlert)
                 if gotoCart {
                     NavigationLink(destination: CartView(), label: { EmptyView() })
                 }
@@ -98,14 +106,10 @@ struct DetailsView: View {
     }
 
     func addToCart() {
-        //  cart.cart.append(product)
-        DataPost().addToCart(userId: "64ed3a3efc29f826a41df4c2", productId: product.product["id"] as! String, finish: finishPost)
-
+        DataPost().addToCart(userId: storedId, productId: product.product["id"] as! String, finish: finishPost)
         func finishPost(result: Bool) {
             isAlertActive = result
         }
-
-       
     }
 
     func getAlert() -> Alert {

@@ -19,9 +19,6 @@ struct RegisterView: View {
     @State private var confirmPassword: String = ""
     @State private var phone: String = ""
     @State private var username: String = ""
-    
-    
-
 
     var body: some View {
         NavigationStack {
@@ -37,9 +34,6 @@ struct RegisterView: View {
                     VStack(alignment: .center, content: {
                         Spacer()
                         Spacer()
-                        if !user.username.isEmpty {
-                            Text("\(user.username)")
-                        }
                         if self.verticalSizeClass != .compact {
                             Spacer()
                             Spacer()

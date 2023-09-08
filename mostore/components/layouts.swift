@@ -35,9 +35,9 @@ struct ExtTotalView: View {
 
             Text("$\(amount, specifier: "%0.2f")")
                 .font(.body)
-                .frame(maxWidth: .infinity, alignment: .trailing)
+                .frame(maxWidth: .greatestFiniteMagnitude, alignment: .trailing)
         })
-        .frame(width: .infinity, height: .infinity, alignment: .leading)
+        .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude, alignment: .leading)
     }
 }
 
@@ -95,14 +95,17 @@ enum TextAlignmentStyle: Int {
     case left = 0, center = 1, right = 2, justified = 3, natural = 4
 }
 
-var NoItemLayout: some View {
-    VStack {
-        Text(PAGE_TEXT["text"]![15])
-            .multilineTextAlignment(.center)
-            .font(.title3)
-            .fontWeight(.bold)
-            .foregroundColor(.red)
-            .frame(maxWidth: .infinity)
+struct NotFoundLayout: View {
+    let text: String
+    var body: some View {
+        VStack {
+            Text(text)
+                .multilineTextAlignment(.center)
+                .font(.title3)
+                .fontWeight(.bold)
+                .foregroundColor(.red)
+                .frame(maxWidth: .infinity)
+        }
     }
 }
 
@@ -192,21 +195,19 @@ struct ExtNavButtonView: View {
     }
 }
 
-
 extension UINavigationController {
     // Remove back button text
-    open override func viewWillLayoutSubviews() {
+    override open func viewWillLayoutSubviews() {
         navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
-    }
-
+}
 
 struct ExtAsyncImage: View {
     var imageURL: String
     var size: CGFloat
     var shape: any Shape
     var body: some View {
-        AsyncImage(url: URL(string: imageURL)!) { phase in
+        AsyncImage(url: URL(string: imageURL)) { phase in
             switch phase {
             case .empty:
                 Image(systemName: "photo")
@@ -218,7 +219,7 @@ struct ExtAsyncImage: View {
                     .aspectRatio(contentMode: .fit)
                     .transition(.scale(scale: 0.1, anchor: .center))
                     .frame(maxWidth: size, maxHeight: size)
-                
+
             case .failure:
                 Image(systemName: "photo")
                     .frame(width: size, height: size)

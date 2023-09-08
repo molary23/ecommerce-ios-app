@@ -9,7 +9,6 @@ import SwiftUI
 
 @main
 struct mostoreApp: App {
-    @StateObject private var product = Product()
     var body: some Scene {
         WindowGroup {
             if storedEmail.isEmpty {
@@ -17,7 +16,6 @@ struct mostoreApp: App {
             } else {
                 MainView()
             }
-                
         }
     }
 }
