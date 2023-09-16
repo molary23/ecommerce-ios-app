@@ -11,11 +11,7 @@ import SwiftUI
 struct mostoreApp: App {
     var body: some Scene {
         WindowGroup {
-            if storedEmail.isEmpty {
-                LoginView()
-            } else {
-                MainView()
-            }
+           HomeView()
         }
     }
 }
