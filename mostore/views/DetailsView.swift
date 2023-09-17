@@ -10,18 +10,18 @@ import SwiftUI
 struct DetailsView: View {
     @EnvironmentObject var product: Product
     @StateObject private var cart = Cart()
-    @State private var isAlertActive: Bool = false
-    @State private var gotoCart: Bool = false
-    @State private var gotoShop: Bool = false
+    
+    @StateObject var detailsController = DetailsController()
+    
     private let name: String
     private let description: String
     private let image: String
     private let price: Double
     private let rating: Double
-
-    private let productDetails: [String: Any]
+    private let id: String
+    
     init(productDetails: [String: Any]) {
-        self.productDetails = productDetails
+        id = productDetails["id"] as! String
         name = productDetails["name"] as! String
         description = productDetails["description"] as! String
         image = productDetails["image"] as! String
@@ -92,28 +92,17 @@ struct DetailsView: View {
                 }
                 .overlay(
                     FloatingButton(icon: "cart.badge.plus", fg: Color.white, bg: Color.blue, label: "Add to cart") {
-                        addToCart()
+                        detailsController.addToCart(id: id)
                     }
                 )
-                .alert(isPresented: $isAlertActive, content: getAlert)
-                if gotoCart {
-                    NavigationLink(destination: CartView(), label: { EmptyView() })
-                }
-
-                if gotoShop {
-                    NavigationLink(destination: MainView(), label: { EmptyView() })
-                }
+                .alert(isPresented: $detailsController.showAlert, content: getAlert)
+              
             }
             .ignoresSafeArea(edges: .top)
         }
     }
 
-    func addToCart() {
-        DataPost().addToCart(userId: storedId, productId: product.product["id"] as! String, finish: finishPost)
-        func finishPost(result: Bool) {
-            isAlertActive = result
-        }
-    }
+   
 
     func getAlert() -> Alert {
         return Alert(title: Text("Item added to cart"))
@@ -125,7 +114,5 @@ struct DetailsView_Previews: PreviewProvider {
         DetailsView(
             productDetails: ["id": "", "name": "", "image": "", "description": "", "price": 0.0, "rating": 0.0]
         )
-
-        // .environmentObject(Product())
     }
 }

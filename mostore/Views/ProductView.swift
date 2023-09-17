@@ -69,7 +69,7 @@ struct ProductView: View {
                                     ForEach(recProducts) { product in
                                         VStack(content: {
                                             ProductLink(name: product.name, price: product.price, image: product.image, size: 150, shape: Circle(), action: { productController.viewProductDetails(content: product, section: "recommended") })
-                                                .navigationDestination(isPresented: $productController.bestDetails) {
+                                                .navigationDestination(isPresented: $productController.recommendedDetails) {
                                                     DetailsView(productDetails: productController.product)
                                                 }
                                         })
@@ -92,7 +92,7 @@ struct ProductView: View {
                                 LazyHStack(spacing: 20, content: {
                                     ForEach(bestProducts) { product in
 
-                                        ProductLink(name: product.name, price: product.price, image: product.image, size: 400, shape: RoundedRectangle(cornerRadius: 8), action: { productController.viewProductDetails(content: product, section: "best") })
+                                        ProductLink(name: product.name, price: product.price, image: product.image, size: 350, shape: RoundedRectangle(cornerRadius: 8), action: { productController.viewProductDetails(content: product, section: "best") })
                                             .navigationDestination(isPresented: $productController.bestDetails) {
                                                 DetailsView(productDetails: productController.product)
                                             }
@@ -116,7 +116,7 @@ struct ProductView: View {
                                 ForEach(dealProducts) { product in
                                     HStack(spacing: 30, content: {
                                         ProductLink(name: product.name, price: product.price, image: product.image, size: 150, shape: RoundedRectangle(cornerRadius: 8), action: { productController.viewProductDetails(content: product, section: "deal") })
-                                            .navigationDestination(isPresented: $productController.bestDetails) {
+                                            .navigationDestination(isPresented: $productController.dealDetails) {
                                                 DetailsView(productDetails: productController.product)
                                             }
                                     })

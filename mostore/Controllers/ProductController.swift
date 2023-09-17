@@ -29,5 +29,6 @@ class ProductController: ObservableObject {
         } else {
             dealDetails = true
         }
+       
     }
 }
