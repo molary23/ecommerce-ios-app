@@ -13,13 +13,20 @@ struct DetailsView: View {
     @State private var isAlertActive: Bool = false
     @State private var gotoCart: Bool = false
     @State private var gotoShop: Bool = false
-    @State private var name: String = ""
-    @State private var description: String = ""
-    @State private var images: [String] = []
-    @State private var image: String = ""
-    @State private var price: Double = 0
-    @State private var rating: Double = 0
-    init() {
+    private let name: String
+    private let description: String
+    private let image: String
+    private let price: Double
+    private let rating: Double
+
+    private let productDetails: [String: Any]
+    init(productDetails: [String: Any]) {
+        self.productDetails = productDetails
+        name = productDetails["name"] as! String
+        description = productDetails["description"] as! String
+        image = productDetails["image"] as! String
+        price = productDetails["price"] as! Double
+        rating = productDetails["rating"] as! Double
         // UINavigationBar.appearance().backgroundColor = UIColor.blue
     }
 
@@ -28,19 +35,22 @@ struct DetailsView: View {
             ZStack {
                 ScrollView {
                     VStack {
-                        ScrollView(.horizontal, showsIndicators: false, content: {
-                            LazyHStack(spacing: nil, content: {
-                                ForEach(images, id: \.self) { image in
-                                    ZStack {
-                                        DataImage(imageURL: image, size: 500, shape: Rectangle())
+                        if !image.isEmpty {
+                            let images = image.components(separatedBy: "|")
+                            ScrollView(.horizontal, showsIndicators: false, content: {
+                                LazyHStack(spacing: nil, content: {
+                                    ForEach(images, id: \.self) { image in
+                                        ZStack {
+                                            DataImage(imageURL: image, size: 500, shape: Rectangle())
+                                        }
                                     }
-                                }
-                            })
+                                })
 
-                        })
+                            })
+                        }
 
                         VStack(spacing: 10, content: {
-                            Text("\(name.capitalized)")
+                            Text("\(name)")
                                 .font(.title2)
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .greatestFiniteMagnitude)
@@ -79,14 +89,6 @@ struct DetailsView: View {
                         })
                         .padding()
                     }
-                    .onAppear {
-                        name = product.product["name"] as? String ?? ""
-                        image = product.product["image"] as? String ?? ""
-                        description = product.product["description"] as? String ?? ""
-                        price = product.product["price"] as? Double ?? 0.0
-                        rating = product.product["rating"] as? Double ?? 4.0
-                        images = image.components(separatedBy: "|")
-                    } 
                 }
                 .overlay(
                     FloatingButton(icon: "cart.badge.plus", fg: Color.white, bg: Color.blue, label: "Add to cart") {
@@ -120,6 +122,10 @@ struct DetailsView: View {
 
 struct DetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        DetailsView().environmentObject(Product())
+        DetailsView(
+            productDetails: ["id": "", "name": "", "image": "", "description": "", "price": 0.0, "rating": 0.0]
+        )
+
+        // .environmentObject(Product())
     }
 }

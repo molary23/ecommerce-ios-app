@@ -7,9 +7,12 @@
 
 import SwiftUI
 
-struct MainView: View {
+struct ProductView: View {
     @EnvironmentObject var user: User
     @StateObject private var product = Product()
+
+    @StateObject var productController = ProductController()
+
     @State var bestProducts = [ProductData]()
     @State var recProducts = [ProductData]()
     @State var dealProducts = [ProductData]()
@@ -44,15 +47,6 @@ struct MainView: View {
                             Text("\(PAGE_TEXT["input"]![7])")
                                 .fontWeight(.thin)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .onAppear {
-                                    product.product["id"] = ""
-                                    product.product["name"] = ""
-                                    product.product["image"] = ""
-                                    product.product["description"] = ""
-                                    product.product["price"] = 0
-                                    product.product["rating"] = 0
-                                }
-
                         })
 
                     })
@@ -74,25 +68,10 @@ struct MainView: View {
                                 LazyHStack(spacing: 20, content: {
                                     ForEach(recProducts) { product in
                                         VStack(content: {
-                                            Button(action: { navigateToDetails(content: product) }, label: {
-                                                VStack {
-                                                    DataImage(imageURL: product.image.components(separatedBy: "|")[0], size: 150, shape: Circle())
-
-                                                    Text("\(product.name)")
-                                                        .font(.caption)
-                                                        .multilineTextAlignment(.center)
-                                                    Spacer()
-
-                                                    Text("$\(product.price, specifier: "%.2f")")
-                                                        .font(.body)
-                                                        .fontWeight(.bold)
+                                            ProductLink(name: product.name, price: product.price, image: product.image, size: 150, shape: Circle(), action: { productController.viewProductDetails(content: product, section: "recommended") })
+                                                .navigationDestination(isPresented: $productController.bestDetails) {
+                                                    DetailsView(productDetails: productController.product)
                                                 }
-                                                .frame(width: 150)
-                                            })
-                                            .navigationDestination(isPresented: $gotoDetails) {
-                                                DetailsView()
-                                            }
-
                                         })
                                     }
 
@@ -113,22 +92,10 @@ struct MainView: View {
                                 LazyHStack(spacing: 20, content: {
                                     ForEach(bestProducts) { product in
 
-                                        Button(action: { navigateToDetails(content: product) }, label: {
-                                            VStack {
-                                                DataImage(imageURL: product.image.components(separatedBy: "|")[0], size: 500, shape: RoundedRectangle(cornerRadius: 8))
-
-                                                Text("\(product.name)")
-                                                    .font(.headline)
-                                                    .fontWeight(.bold)
-
-                                                Text("$\(product.price, specifier: "%.2f")")
-                                                    .font(.headline)
-                                                    .fontWeight(.bold)
+                                        ProductLink(name: product.name, price: product.price, image: product.image, size: 400, shape: RoundedRectangle(cornerRadius: 8), action: { productController.viewProductDetails(content: product, section: "best") })
+                                            .navigationDestination(isPresented: $productController.bestDetails) {
+                                                DetailsView(productDetails: productController.product)
                                             }
-                                        })
-                                        .navigationDestination(isPresented: $gotoDetails) {
-                                            DetailsView()
-                                        }
                                     }
 
                                 })
@@ -148,15 +115,10 @@ struct MainView: View {
                             LazyVGrid(columns: columns, alignment: .center, spacing: 20, pinnedViews: [], content: {
                                 ForEach(dealProducts) { product in
                                     HStack(spacing: 30, content: {
-                                        Button(action: { navigateToDetails(content: product) }, label: {
-                                            VStack {
-                                                DataImage(imageURL: product.image.components(separatedBy: "|")[0], size: 150, shape: RoundedRectangle(cornerRadius: 8))
+                                        ProductLink(name: product.name, price: product.price, image: product.image, size: 150, shape: RoundedRectangle(cornerRadius: 8), action: { productController.viewProductDetails(content: product, section: "deal") })
+                                            .navigationDestination(isPresented: $productController.bestDetails) {
+                                                DetailsView(productDetails: productController.product)
                                             }
-                                        })
-                                        .navigationDestination(isPresented: $gotoDetails) {
-                                            DetailsView()
-                                        }
-
                                     })
                                 }
                             })
@@ -173,7 +135,7 @@ struct MainView: View {
 
                 })
             }
-            
+
             .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
             .background(
                 Color.gray.opacity(0.1)
@@ -210,22 +172,24 @@ struct MainView: View {
                 }
             }
         }
-        .environmentObject(product)
+        // .environmentObject(product)
     }
-
-    func navigateToDetails(content: ProductData) {
-        product.product["id"] = content.id
-        product.product["name"] = content.name
-        product.product["image"] = content.image
-        product.product["description"] = content.description
-        product.product["price"] = content.price
-        product.product["rating"] = content.rating
-        gotoDetails = true
-    }
+    /*
+     func navigateToDetails(content: ProductData) {
+         product.product["id"] = content.id
+         product.product["name"] = content.name
+         product.product["image"] = content.image
+         product.product["description"] = content.description
+         product.product["price"] = content.price
+         product.product["rating"] = content.rating
+         gotoDetails = true
+     }*/
 }
 
-struct MainView_Previews: PreviewProvider {
+struct ProductView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView().environmentObject(Product())
+        ProductView()
+
+        // .environmentObject(Product())
     }
 }

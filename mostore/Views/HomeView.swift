@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct HomeView: View {
+    @StateObject var homeController = HomeController()
     var body: some View {
-        if storedEmail.isEmpty {
-            LoginView()
+        if !homeController.currentUserId.isEmpty && homeController.isSignedIn {
+            ProductView()
         } else {
-            MainView()
+            LoginView()
         }
     }
 }

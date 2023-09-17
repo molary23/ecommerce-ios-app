@@ -9,11 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @Environment(\.verticalSizeClass) private var verticalSizeClass: UserInterfaceSizeClass?
-    @State private var username: String = ""
-    @State private var password: String = ""
-    @State private var goHome: Bool = false
-    @State private var isAlertActive: Bool = false
-    @State private var alertMessage: String = ""
+    @StateObject var loginController = LoginController()
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
@@ -46,9 +42,12 @@ struct LoginView: View {
 
                             VStack(spacing: 30, content: {
                                 VStack(spacing: 15, content: {
-                                    ExtTextFieldView(placeholder: "\(PAGE_TEXT["input"]![0])/\(PAGE_TEXT["input"]![1])", placement: .leading, id: "login__email", value: $username).textFieldStyle(.roundedBorder)
+                                    ExtTextFieldView(placeholder: "\(PAGE_TEXT["input"]![0])/\(PAGE_TEXT["input"]![1])", placement: .leading, id: "login__email", value: $loginController.username)
+                                        .textFieldStyle(.roundedBorder)
+                                        .autocapitalization(.none)
+                                        .autocorrectionDisabled()
 
-                                    SecureField(PAGE_TEXT["input"]![2], text: $password)
+                                    SecureField(PAGE_TEXT["input"]![2], text: $loginController.password)
                                         .accessibilityLabel(PAGE_TEXT["input"]![2])
                                         .id("login__password")
                                         .textFieldStyle(.roundedBorder)
@@ -56,9 +55,9 @@ struct LoginView: View {
                                 })
                                 VStack(spacing: 15, content: {
                                     Button(action: {
-                                        handleLogin(username: self.username, password: self.password)
+                                        loginController.login()
                                     }, label: {
-                                        if goHome {
+                                        if loginController.isSignedIn {
                                             ProgressView()
                                                 .tint(.white)
                                                 .frame(maxWidth: .infinity)
@@ -74,16 +73,13 @@ struct LoginView: View {
                                     .cornerRadius(20)
                                     .fontWeight(.bold)
                                     .frame(maxWidth: .infinity)
-                                    .navigationDestination(isPresented: $goHome, destination: { MainView() })
-                                    .disabled(self.username.count < 5 || self.password.count < 5)
+                                    .navigationDestination(isPresented: $loginController.isSignedIn, destination: { MainView() })
 
                                     NavigationLink(destination: RegisterView(), label: {
                                         Text(PAGE_TEXT["title"]![1])
                                             .padding(.vertical, 8.0)
                                             .frame(maxWidth: .infinity)
-                                            .background(Color.white)
-                                            .cornerRadius(20)
-                                            .foregroundColor(Color.blue)
+                                            .accentColor(.white)
                                             .fontWeight(.bold)
                                     })
 
@@ -114,7 +110,7 @@ struct LoginView: View {
                     .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
                     .background(Color.black.opacity(0.5))
                 }
-                .alert(isPresented: $isAlertActive, content: getAlert)
+                .alert(isPresented: $loginController.showAlert, content: getAlert)
                 .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
             }.ignoresSafeArea(.keyboard, edges: .all)
 
@@ -122,29 +118,8 @@ struct LoginView: View {
                 .navigationBarHidden(true)
         }
     }
-
-    func handleLogin(username: String, password: String) {
-        if username.isEmpty {
-            alertMessage = "Username can't be empty"
-            isAlertActive = true
-        } else if password.isEmpty {
-            alertMessage = "Password can't be empty"
-            isAlertActive = true
-        } else {
-            UserApi().loginRequest(username: username.lowercased(), password: password, completion: { status in
-                let status = status as! Bool
-                if !status {
-                    alertMessage = "Unable to login. Try again later"
-                    isAlertActive = true
-                }
-                goHome = status
-
-            })
-        }
-    }
-
     func getAlert() -> Alert {
-        return Alert(title: Text("\(alertMessage)"))
+        return Alert(title: Text("\(loginController.errorMessage)"))
     }
 }
 
