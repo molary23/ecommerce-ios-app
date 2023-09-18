@@ -36,16 +36,7 @@ struct Book: Codable, Identifiable {
     var userId: Int
 }
 
-struct ProductData: Codable, Identifiable {
-    var id = String()
-    var name: String
-    var description: String
-    var price: Double
-    var image: String
-    var rating: Double
-    var createdAt: String?
-    var updatedAt: String?
-}
+
 
 struct ProductJSON: Codable {
     var id: String
@@ -71,7 +62,7 @@ struct CartData: Codable, Identifiable {
     var product: ProductJSON
     var quantity: Int
 }
-
+/*
 class Api: ObservableObject {
     @Published var products = [ProductData]()
 
@@ -118,7 +109,7 @@ class Api: ObservableObject {
     }
     
 }
-
+*/
 class CartApi: ObservableObject {
     @Published var cart = [CartData]()
     @Published var qty = Int()
