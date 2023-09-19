@@ -17,3 +17,4 @@ struct ProductModel: Codable, Identifiable {
     let createdAt: String?
     let updatedAt: String?
 }
+

@@ -13,7 +13,7 @@ struct SettingsView: View {
         NavigationStack {
             List(content: {
                 Section(header: Text("General"), content: {
-                    NavigationLink(destination: MainView(), label: {
+                    NavigationLink(destination: ProductView(), label: {
                         SettingsRow(title: "Account",
                                        systemImageName: "dollarsign.circle")
 

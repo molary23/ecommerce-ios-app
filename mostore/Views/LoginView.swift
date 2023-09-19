@@ -73,7 +73,7 @@ struct LoginView: View {
                                     .cornerRadius(20)
                                     .fontWeight(.bold)
                                     .frame(maxWidth: .infinity)
-                                    .navigationDestination(isPresented: $loginController.isSignedIn, destination: { MainView() })
+                                    .navigationDestination(isPresented: $loginController.isSignedIn, destination: { ProductView() })
 
                                     NavigationLink(destination: RegisterView(), label: {
                                         Text(PAGE_TEXT["title"]![1])

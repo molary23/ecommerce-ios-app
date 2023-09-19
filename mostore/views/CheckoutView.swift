@@ -22,6 +22,7 @@ struct CheckoutView: View {
     @State private var isFailed: Bool = false
     @State private var card: Card = Card()
 
+    @StateObject var checkController = CheckController()
     init() {
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.gray, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
         // UINavigationBar.appearance().backgroundColor = UIColor.green
@@ -46,7 +47,7 @@ struct CheckoutView: View {
                                         .font(.title)
                                 }
 
-                            ExtTextFieldView(placeholder: PAGE_TEXT["input"]![9], placement: .trailing, id: "cardNumber", value: $cardNumber).textFieldStyle(.plain)
+                            ExtTextFieldView(placeholder: PAGE_TEXT["input"]![9], placement: .trailing, id: "cardNumber", value: $checkController.cardNumber).textFieldStyle(.plain)
 
                         }).padding()
                             .background(Color("off-white"))
@@ -67,7 +68,17 @@ struct CheckoutView: View {
                         })
 
                         HStack(content: {
-                            ExtTextFieldView(placeholder: PAGE_TEXT["input"]![5], placement: .leading, id: "expiry", value: $expiry).textFieldStyle(.plain)
+                            HStack(spacing: 2) {
+                                ExtTextFieldView(placeholder: PAGE_TEXT["input"]![5], placement: .leading, id: "month", value: $checkController.month).textFieldStyle(.plain)
+                                    .frame(maxWidth: 30)
+                                    
+                                Text("/")
+                                    .foregroundColor(.gray)
+                                ExtTextFieldView(placeholder: PAGE_TEXT["input"]![10], placement: .leading, id: "year", value: $checkController.year).textFieldStyle(.plain)
+                                    .frame(maxWidth: 30)
+                            }
+                            
+
                             ExtTextFieldView(placeholder: PAGE_TEXT["input"]![6], placement: .trailing, id: "cvv", value: $cvv).textFieldStyle(.plain)
 
                         })
@@ -91,9 +102,9 @@ struct CheckoutView: View {
                     }
 
                     VStack(spacing: 30) {
-                        TotalRow(heading: PAGE_TEXT["text"]![6], amount: amount)
-                        TotalRow(heading: PAGE_TEXT["text"]![7], amount: tax)
-                        TotalRow(heading: PAGE_TEXT["text"]![8], amount: total)
+                        TotalRow(heading: PAGE_TEXT["text"]![6], amount: checkController.amount)
+                        TotalRow(heading: PAGE_TEXT["text"]![7], amount: checkController.tax)
+                        TotalRow(heading: PAGE_TEXT["text"]![8], amount: checkController.total)
                     }
 
                 })
@@ -101,12 +112,7 @@ struct CheckoutView: View {
 
                 .alert(isPresented: $isFailed, content: getAlert)
                 .onAppear {
-                    CheckApi().loadTotal(userId: storedId) { amount in
-
-                        self.amount = amount
-                        self.tax = (amount * 13) / 100
-                        self.total = amount + tax
-                    }
+                    checkController.getAmount()
 
                     if storedNumber.isEmpty {
                         CheckApi().loadCard(userId: storedId) { card in

@@ -62,54 +62,7 @@ struct CartData: Codable, Identifiable {
     var product: ProductJSON
     var quantity: Int
 }
-/*
-class Api: ObservableObject {
-    @Published var products = [ProductData]()
 
-    func loadData(page: Int, limit: Int, completion: @escaping ([ProductData]) -> Void) {
-        guard let url = URL(string: "http://localhost:8080/api/products?page=\(page)&limit=\(limit)") else {
-            print("Invalid url...")
-            return
-        }
-
-        URLSession.shared.dataTask(with: url) { [self] data, response, _ in
-            let httpResponse = response as? HTTPURLResponse
-            if httpResponse!.statusCode == 200 {
-                let products = try! JSONDecoder().decode([ProductData].self, from: data!)
-                DispatchQueue.main.async {
-                    completion(products)
-                }
-            } else {
-                completion(products)
-            }
-
-        }.resume()
-    }
-    
-    
-    func searchProduct(search: String, /*page: Int, limit: Int,*/ completion: @escaping ([ProductData]) -> Void) {
-        guard let url = URL(string: "http://localhost:8080/api/products/product?search=\(search)") else {
-            print("Invalid url...")
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { [self] data, response, _ in
-            let httpResponse = response as? HTTPURLResponse
-            if httpResponse!.statusCode == 200 {
-                let products = try! JSONDecoder().decode([ProductData].self, from: data!)
-                print(products)
-                DispatchQueue.main.async {
-                    completion(products)
-                }
-            } else {
-                completion(products)
-            }
-            
-        }.resume()
-    }
-    
-}
-*/
 class CartApi: ObservableObject {
     @Published var cart = [CartData]()
     @Published var qty = Int()
@@ -250,29 +203,7 @@ class CheckApi: ObservableObject {
 }
 
 class DataPost: ObservableObject {
-    func addToCart(userId: String, productId: String, finish: @escaping (Bool) -> Void) {
-        let data: Data = "userId=\(userId)&productId=\(productId)".data(using: .utf8)!
-
-        var request = URLRequest(url: URL(string: "http://localhost:8080/api/orders/add")!)
-        request.httpMethod = "POST"
-        request.httpBody = data
-
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.setValue(NSLocalizedString("lang", comment: ""), forHTTPHeaderField: "Accept-Language")
-
-        let session = URLSession.shared
-        let task = session.dataTask(with: request, completionHandler: { _, response, _ in
-            let httpResponse = response as? HTTPURLResponse
-            if httpResponse!.statusCode == 200 {
-                finish(true)
-            } else {
-                finish(false)
-            }
-
-        })
-
-        task.resume()
-    }
+  
 
     func removeFromCart(userId: String, productId: String, finish: @escaping (Bool) -> Void) {
         let data: Data = "userId=\(userId)&productId=\(productId)".data(using: .utf8)!

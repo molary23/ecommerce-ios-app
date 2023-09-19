@@ -9,9 +9,11 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var homeController = HomeController()
+    @StateObject var cartManager = CartManager()
     var body: some View {
         if !homeController.currentUserId.isEmpty && homeController.isSignedIn {
             ProductView()
+                .environmentObject(CartManager())
         } else {
             LoginView()
         }

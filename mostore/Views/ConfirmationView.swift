@@ -66,7 +66,7 @@ struct ConfirmationView: View {
 
                     Spacer()
 
-                    ExtNavButtonView(name: "\(PAGE_TEXT["button"]![1])", isMovable: $goHome, isActive: continueShopping(), destination: AnyView(MainView()), topPadding: 15.0, acColor: .white, bgColor: .blue, corner: 40, size: .title2)
+                    ExtNavButtonView(name: "\(PAGE_TEXT["button"]![1])", isMovable: $goHome, isActive: continueShopping(), destination: AnyView(ProductView()), topPadding: 15.0, acColor: .white, bgColor: .blue, corner: 40, size: .title2)
 
                     Spacer()
                     Spacer()

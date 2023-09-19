@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DetailsView: View {
     @EnvironmentObject var product: Product
-    @StateObject private var cart = Cart()
+    @EnvironmentObject var cartManager : CartManager
     
     @StateObject var detailsController = DetailsController()
     
@@ -19,14 +19,15 @@ struct DetailsView: View {
     private let price: Double
     private let rating: Double
     private let id: String
-    
-    init(productDetails: [String: Any]) {
-        id = productDetails["id"] as! String
-        name = productDetails["name"] as! String
-        description = productDetails["description"] as! String
-        image = productDetails["image"] as! String
-        price = productDetails["price"] as! Double
-        rating = productDetails["rating"] as! Double
+    private let productDetails: ProductModel
+    init(productDetails: ProductModel) {
+        self.productDetails = productDetails
+        id = productDetails.id
+        name = productDetails.name
+        description = productDetails.description
+        image = productDetails.image
+        price = productDetails.price
+        rating = productDetails.rating
         // UINavigationBar.appearance().backgroundColor = UIColor.blue
     }
 
@@ -92,7 +93,9 @@ struct DetailsView: View {
                 }
                 .overlay(
                     FloatingButton(icon: "cart.badge.plus", fg: Color.white, bg: Color.blue, label: "Add to cart") {
+                        cartManager.addToCart(product: productDetails)
                         detailsController.addToCart(id: id)
+                       
                     }
                 )
                 .alert(isPresented: $detailsController.showAlert, content: getAlert)
@@ -112,7 +115,8 @@ struct DetailsView: View {
 struct DetailsView_Previews: PreviewProvider {
     static var previews: some View {
         DetailsView(
-            productDetails: ["id": "", "name": "", "image": "", "description": "", "price": 0.0, "rating": 0.0]
+            productDetails: .init(id: "", name: "", description: "", price: 0.0, image: "", rating: 0.0, createdAt: "", updatedAt: "")
         )
+        .environmentObject(CartManager())
     }
 }

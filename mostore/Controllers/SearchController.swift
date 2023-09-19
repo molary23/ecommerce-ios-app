@@ -12,7 +12,7 @@ class SearchController: ObservableObject {
     @Published var search: String = ""
     @Published var isSearchEmpty: Bool = false
     @Published var viewDetails: Bool = false
-    @Published var product: [String: Any] = ["id": "", "name": "", "image": "", "description": "", "price": 0.0, "rating": 0.0]
+    @Published var product = ProductModel(id: "", name: "", description: "", price: 0.0, image: "", rating: 0.0, createdAt: "", updatedAt: "")
 
     init() {
     }
@@ -45,12 +45,13 @@ class SearchController: ObservableObject {
     }
 
     func viewProductDetails(content: ProductModel) {
-        product["id"] = content.id
+       /* product["id"] = content.id
         product["name"] = content.name
         product["image"] = content.image
         product["description"] = content.description
         product["price"] = content.price
-        product["rating"] = content.rating
+        product["rating"] = content.rating*/
+        product = content
         viewDetails = true
     }
 }
