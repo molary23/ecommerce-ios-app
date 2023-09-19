@@ -25,7 +25,7 @@ struct CheckoutView: View {
     @StateObject var checkController = CheckController()
     init() {
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.gray, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
-        // //UINavigationBar.appearance().backgroundColor = UIColor.green
+         //UINavigationBar.appearance().backgroundColor = UIColor.green
     }
 
     var body: some View {
@@ -186,7 +186,7 @@ struct CheckoutView: View {
     }
 
     func getAlert() -> Alert {
-        return Alert(title: Text("Payment failed. Try again later."))
+        return Alert(title: Text("Payment failed! Try again later."))
     }
 }
 
