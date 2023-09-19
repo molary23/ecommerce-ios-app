@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+/*
 class Product: ObservableObject {
     @Published var product: [String: Any] = ["id": "", "name": "", "image": "", "description": "", "price": 0, "rating": 0]
 }
@@ -22,7 +22,7 @@ class Cart: ObservableObject {
     @Published var cart: [Product] = []
 }
 
-/*
+
  class NavigationModelView: ObservableObject {
      @Published var currentView = DifferentViews.LoginView
 

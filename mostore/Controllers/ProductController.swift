@@ -8,7 +8,7 @@
 import Foundation
 
 class ProductController: ObservableObject {
-    @Published var product =  ProductModel(id: "", name: "", description: "", price: 0.0, image: "", rating: 0.0, createdAt: "", updatedAt: "")//["id": "", "name": "", "image": "", "description": "", "price": 0.0, "rating": 0.0]
+    @Published var product =  ProductModel(id: "", name: "", description: "", price: 0.0, image: "", rating: 0.0, createdAt: "", updatedAt: "")
     @Published var recommendedDetails: Bool = false
     @Published var bestDetails: Bool = false
     @Published var dealDetails: Bool = false
@@ -22,14 +22,7 @@ class ProductController: ObservableObject {
     }
 
     func viewProductDetails(content: ProductModel, section: String) {
-     /*   product["id"] = content.id
-        product["name"] = content.name
-        product["image"] = content.image
-        product["description"] = content.description
-        product["price"] = content.price
-        product["rating"] = content.rating
-*/
-        product = content
+         product = content
         if section == "recommended" {
             recommendedDetails = true
         } else if section == "best" {
@@ -52,7 +45,7 @@ class ProductController: ObservableObject {
     }
 
     func getProduct(page: Int, limit: Int, completion: @escaping ([ProductModel]) -> Void) {
-        guard let url = URL(string: "http://localhost:8080/api/products?page=\(page)&limit=\(limit)") else {
+        guard let url = URL(string: "\(API_URL)products?page=\(page)&limit=\(limit)") else {
             print("Invalid url...")
             return
         }

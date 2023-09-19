@@ -36,7 +36,7 @@ class LoginController: ObservableObject {
     func loginRequest() {
         let data: Data = "username=\(username)&password=\(password)".data(using: .utf8)!
 
-        var request = URLRequest(url: URL(string: "http://localhost:8080/api/auth")!)
+        var request = URLRequest(url: URL(string: "\(API_URL)auth")!)
         request.httpMethod = "POST"
         request.httpBody = data
 

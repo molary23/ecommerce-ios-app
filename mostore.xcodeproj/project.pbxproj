@@ -33,6 +33,7 @@
 		C03684242AB6A83800D7BAA0 /* DeailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03684232AB6A83800D7BAA0 /* DeailsController.swift */; };
 		C04B0CC52A944BFD00EA326D /* modules.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04B0CC42A944BFD00EA326D /* modules.swift */; };
 		C04B0CC72A944F7C00EA326D /* ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04B0CC62A944F7C00EA326D /* ConfirmationView.swift */; };
+		C0650D582ABA407400FB07D4 /* CardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0650D572ABA407300FB07D4 /* CardModel.swift */; };
 		C0812A682AA81E4100C7194E /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0812A672AA81E4100C7194E /* SearchView.swift */; };
 		C0B0FD4D2A931488006FD481 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B0FD4C2A931488006FD481 /* CartView.swift */; };
 		C0B0FD4F2A932380006FD481 /* CheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B0FD4E2A932380006FD481 /* CheckoutView.swift */; };
@@ -104,6 +105,7 @@
 		C03684232AB6A83800D7BAA0 /* DeailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeailsController.swift; sourceTree = "<group>"; };
 		C04B0CC42A944BFD00EA326D /* modules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = modules.swift; sourceTree = "<group>"; };
 		C04B0CC62A944F7C00EA326D /* ConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationView.swift; sourceTree = "<group>"; };
+		C0650D572ABA407300FB07D4 /* CardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModel.swift; sourceTree = "<group>"; };
 		C0812A672AA81E4100C7194E /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		C0B0FD4C2A931488006FD481 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
 		C0B0FD4E2A932380006FD481 /* CheckoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutView.swift; sourceTree = "<group>"; };
@@ -243,6 +245,7 @@
 				C03684172AB66B2700D7BAA0 /* UserModel.swift */,
 				C0EF1EBA2AB7CCC300B08990 /* ProductModel.swift */,
 				C0E0D2962AB8BACE008A3ECA /* CartModel.swift */,
+				C0650D572ABA407300FB07D4 /* CardModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -446,6 +449,7 @@
 				C03684142AB6637300D7BAA0 /* LoginController.swift in Sources */,
 				C0E0D2A52AB938AE008A3ECA /* CartButton.swift in Sources */,
 				C0EC503B2A9178EA001C956A /* DetailsView.swift in Sources */,
+				C0650D582ABA407400FB07D4 /* CardModel.swift in Sources */,
 				C0B0FD4F2A932380006FD481 /* CheckoutView.swift in Sources */,
 				C0EF1EBD2AB7FCAF00B08990 /* SearchController.swift in Sources */,
 				C019C9AC2A95886A00BF3A55 /* SettingsView.swift in Sources */,
@@ -641,7 +645,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"mostore/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Mo Store";
+				INFOPLIST_KEY_CFBundleDisplayName = Mattire;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -671,7 +675,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"mostore/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Mo Store";
+				INFOPLIST_KEY_CFBundleDisplayName = Mattire;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

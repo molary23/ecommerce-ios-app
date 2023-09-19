@@ -20,7 +20,7 @@ class DetailsController: ObservableObject {
     func addProductToCart(productId: String, finish: @escaping (Bool) -> Void) {
         let data: Data = "userId=\(storedId)&productId=\(productId)".data(using: .utf8)!
 
-        var request = URLRequest(url: URL(string: "http://localhost:8080/api/orders/add")!)
+        var request = URLRequest(url: URL(string: "\(API_URL)orders/add")!)
         request.httpMethod = "POST"
         request.httpBody = data
 

@@ -8,24 +8,24 @@
 import SwiftUI
 
 struct CheckoutView: View {
-    @State private var expiry: String = ""
-    @State private var cvv: String = ""
-    @State private var cardNumber: String = ""
-    @State private var response: Any = false
-    @State private var total: Double = 0
-    @State private var tax: Double = 0
-    @State private var amount: Double = 0
-    @State private var savePayment: Bool = false
-    @State private var isSheetActive: Bool = false
-    @State private var alreadySaved: Bool = false
-    @State private var isPaid: Bool = false
-    @State private var isFailed: Bool = false
-    @State private var card: Card = Card()
+    /*  @State private var expiry: String = ""
+     @State private var cvv: String = ""
+     @State private var cardNumber: String = ""
+     @State private var response: Any = false
+     @State private var total: Double = 0
+     @State private var tax: Double = 0
+     @State private var amount: Double = 0
+     @State private var savePayment: Bool = false
+     @State private var isSheetActive: Bool = false
+     @State private var alreadySaved: Bool = false
+     @State private var isPaid: Bool = false
+     @State private var isFailed: Bool = false
+     @State private var card: Card = Card()*/
 
     @StateObject var checkController = CheckController()
     init() {
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.gray, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
-         //UINavigationBar.appearance().backgroundColor = UIColor.green
+        // UINavigationBar.appearance().backgroundColor = UIColor.green
     }
 
     var body: some View {
@@ -71,15 +71,14 @@ struct CheckoutView: View {
                             HStack(spacing: 2) {
                                 ExtTextFieldView(placeholder: PAGE_TEXT["input"]![5], placement: .leading, id: "month", value: $checkController.month).textFieldStyle(.plain)
                                     .frame(maxWidth: 30)
-                                    
+
                                 Text("/")
                                     .foregroundColor(.gray)
                                 ExtTextFieldView(placeholder: PAGE_TEXT["input"]![10], placement: .leading, id: "year", value: $checkController.year).textFieldStyle(.plain)
                                     .frame(maxWidth: 30)
                             }
-                            
 
-                            ExtTextFieldView(placeholder: PAGE_TEXT["input"]![6], placement: .trailing, id: "cvv", value: $cvv).textFieldStyle(.plain)
+                            ExtTextFieldView(placeholder: PAGE_TEXT["input"]![6], placement: .trailing, id: "cvv", value: $checkController.cvv).textFieldStyle(.plain)
 
                         })
 
@@ -90,12 +89,12 @@ struct CheckoutView: View {
                         .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude, alignment: .leading)
 
                         HStack(alignment: .center, content: {
-                            Toggle(isOn: $savePayment) {
+                            Toggle(isOn: $checkController.savePayment) {
                                 Text("Save Payment")
                                     .font(.headline)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             }
-                            .disabled(alreadySaved)
+                            .disabled(checkController.alreadySaved)
 
                         })
                         .padding(.horizontal, 4)
@@ -108,21 +107,16 @@ struct CheckoutView: View {
                     }
 
                 })
-                .actionSheet(isPresented: $isSheetActive, content: getActionSheet)
+                .actionSheet(isPresented: $checkController.isSheetActive, content: getActionSheet)
 
-                .alert(isPresented: $isFailed, content: getAlert)
+                .alert(isPresented: $checkController.isFailed, content: getAlert)
                 .onAppear {
                     checkController.getAmount()
 
                     if storedNumber.isEmpty {
-                        CheckApi().loadCard(userId: storedId) { card in
-                            self.card = card
-                            if card.number != nil {
-                                isSheetActive = true
-                            }
-                        }
+                        checkController.getCard()
                     } else {
-                        isSheetActive = true
+                        checkController.isSheetActive = true
                     }
                 }
 
@@ -131,7 +125,7 @@ struct CheckoutView: View {
             .padding(.vertical, 10)
             .overlay(
                 Button(action: {
-                    makePayment()
+                    checkController.makePayment()
 
                 }, label: {
                     Text("\(PAGE_TEXT["button"]![3])")
@@ -144,43 +138,45 @@ struct CheckoutView: View {
                 .fontWeight(.bold)
                 .font(.title2)
                 .frame(maxWidth: .greatestFiniteMagnitude)
-                .navigationDestination(isPresented: $isPaid, destination: { ConfirmationView() })
+                .navigationDestination(isPresented: $checkController.isPaid, destination: { ConfirmationView() })
                 .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude, alignment: .bottom)
                 .padding(.horizontal, 20)
-                .disabled(cardNumber.count < 16 || expiry.count < 5 || cvv.count < 3)
+                .disabled(!checkController.validateCard())
             )
             .navigationBarTitle(PAGE_TEXT["title"]![3], displayMode: .inline)
         }
     }
 
-    func makePayment() {
-        if savePayment {
-            CheckApi().saveCard(userId: storedId, number: cardNumber, month: expiry.components(separatedBy: "/")[0], year: expiry.components(separatedBy: "/")[1], cvv: cvv) { card in
-                print(card)
-            }
-            CheckApi().makePayment(userId: storedId, amount: total, lastFour: "1234") { paid in
-                isPaid = paid
-            }
-        } else {
-            CheckApi().makePayment(userId: storedId, amount: total, lastFour: "1234") { paid in
-                isPaid = paid
-            }
-        }
-    }
-
+    /*
+     func makePayment() {
+         if savePayment {
+             CheckApi().saveCard(userId: storedId, number: cardNumber, month: expiry.components(separatedBy: "/")[0], year: expiry.components(separatedBy: "/")[1], cvv: cvv) { card in
+                 print(card)
+             }
+             CheckApi().makePayment(userId: storedId, amount: total, lastFour: "1234") { paid in
+                 isPaid = paid
+             }
+         } else {
+             CheckApi().makePayment(userId: storedId, amount: total, lastFour: "1234") { paid in
+                 isPaid = paid
+             }
+         }
+     }
+     */
     func getActionSheet() -> ActionSheet {
         let useSaved: ActionSheet.Button = .default(Text("Use Saved Card")) {
-            cardNumber = card.number ?? ""
-            expiry = "\(card.month ?? "")\\\(card.year ?? "")"
-            cvv = card.cvv ?? ""
-            alreadySaved = true
+            checkController.cardNumber = checkController.card.number ?? ""
+            checkController.month = "\(checkController.card.month ?? "")"
+            checkController.year = "\(checkController.card.year ?? "")"
+            checkController.cvv = checkController.card.cvv ?? ""
+            checkController.alreadySaved = true
         }
 
         let useNew: ActionSheet.Button = .default(Text("Use New Card")) {
-            isSheetActive = false
+            checkController.isSheetActive = false
         }
 
-        let useCancel: ActionSheet.Button = .cancel({ isSheetActive = false })
+        let useCancel: ActionSheet.Button = .cancel({ checkController.isSheetActive = false })
 
         return ActionSheet(title: Text("Payment Method"), message: Text("You have a saved Payment Card"), buttons: [useSaved, useNew, useCancel])
     }

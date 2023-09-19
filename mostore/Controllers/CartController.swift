@@ -8,32 +8,25 @@
 import Foundation
 
 class CartController: ObservableObject {
-    @Published var cart : [CartModel] = []
+    @Published var cart: [CartModel] = []
     @Published var isAgree: Bool = true
-    
-    
-    @Published var carts: [CartData] = []
+
+    @Published var carts: [CartModel] = []
     @Published var isCartEmpty: Bool = true
-    @Published  var quantity: String = ""
-  //  @Published  var hasCartUpdate: Bool = true
-  //  @Published  var gotoCheckout: Bool = true
+    @Published var quantity: String = ""
     @Published var showAlert: Bool = true
     init() {
-       // getCartItems()
+        // getCartItems()
     }
 
-   
     func getCartItems() {
         loadCartData(userId: storedId) { carts in
-            
-                self.cart = carts
-            
+            self.cart = carts
         }
-       
     }
 
     func loadCartData(userId: String, completion: @escaping ([CartModel]) -> Void) {
-        guard let url = URL(string: "http://localhost:8080/api/orders/user/products?userId=\(userId)") else {
+        guard let url = URL(string: "\(API_URL)api/orders/user/products?userId=\(userId)") else {
             print("Invalid url...")
             return
         }
@@ -52,11 +45,30 @@ class CartController: ObservableObject {
         }.resume()
     }
 
-    
     func deleteAllOrder() {
         let data: Data = "userId=\(storedId)".data(using: .utf8)!
+
+        var request = URLRequest(url: URL(string: "\(API_URL)orders/delete")!)
+        request.httpMethod = "DELETE"
+        request.httpBody = data
+
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.setValue(NSLocalizedString("lang", comment: ""), forHTTPHeaderField: "Accept-Language")
+
+        URLSession.shared.dataTask(with: request) { _, response, _ in
+            let httpResponse = response as? HTTPURLResponse
+            if httpResponse!.statusCode == 200 {
+                print("deleted")
+            }
+
+        }.resume()
+    }
+    
+    
+    func removeProductFromCart(productId: String) {
+        let data: Data = "userId=\(storedId)&productId=\(productId)".data(using: .utf8)!
         
-        var request = URLRequest(url: URL(string: "http://localhost:8080/api/orders/delete")!)
+        var request = URLRequest(url: URL(string: "\(API_URL)orders/delete/product")!)
         request.httpMethod = "DELETE"
         request.httpBody = data
         
@@ -71,5 +83,4 @@ class CartController: ObservableObject {
             
         }.resume()
     }
- 
 }

@@ -21,7 +21,7 @@ class CheckController: ObservableObject {
     @Published var alreadySaved: Bool = false
     @Published var isPaid: Bool = false
     @Published var isFailed: Bool = false
-    @Published var card: Card = Card()
+    @Published var card: CardModel = CardModel()
 
     @Published var isSaved = Bool()
 
@@ -42,15 +42,26 @@ class CheckController: ObservableObject {
         }
     }
 
-    func loadCard(userId: String, completion: @escaping (Card) -> Void) {
-        guard let url = URL(string: "http://localhost:8080/api/user/card?userId=\(userId)") else {
+    func getCard() {
+        loadCard { card in
+            if card.number != nil {
+                self.card = card
+                self.isSheetActive = true
+            } else {
+                self.isSheetActive = false
+            }
+        }
+    }
+
+    func loadCard(completion: @escaping (CardModel) -> Void) {
+        guard let url = URL(string: "\(API_URL)user/card?userId=\(storedId)") else {
             print("Invalid url...")
             return
         }
         URLSession.shared.dataTask(with: url) { body, response, _ in
             let httpResponse = response as? HTTPURLResponse
             if httpResponse!.statusCode == 200 {
-                let card = try! JSONDecoder().decode(Card.self, from: body!)
+                let card = try! JSONDecoder().decode(CardModel.self, from: body!)
                 preferences.set(card.number, forKey: storedNumber)
                 preferences.set(card.month, forKey: storedMonth)
                 preferences.set(card.year, forKey: storedYear)
@@ -66,7 +77,7 @@ class CheckController: ObservableObject {
     func saveCard(completion: @escaping (Bool) -> Void) {
         let data: Data = "number=\(cardNumber)&month=\(month)&year=\(year)&cvv=\(cvv)".data(using: .utf8)!
 
-        var request = URLRequest(url: URL(string: "http://localhost:8080/api/card?userId=\(storedId)")!)
+        var request = URLRequest(url: URL(string: "\(API_URL)card?userId=\(storedId)")!)
         request.httpMethod = "PUT"
         request.httpBody = data
 
@@ -85,7 +96,7 @@ class CheckController: ObservableObject {
     }
 
     func loadTotal(completion: @escaping (Double) -> Void) {
-        guard let url = URL(string: "http://localhost:8080/api/orders/total?userId=\(storedId)") else {
+        guard let url = URL(string: "\(API_URL)orders/total?userId=\(storedId)") else {
             print("Invalid url...")
             return
         }
@@ -97,22 +108,47 @@ class CheckController: ObservableObject {
         }.resume()
     }
 
-    func makePayment(userId: String, amount: Double, lastFour: String, completion: @escaping (Bool) -> Void) {
-        let data: Data = "userId=\(userId)&amount=\(amount)&lastFour=\(lastFour)".data(using: .utf8)!
+    func makePayment() {
+        guard validateCard() else {
+            return
+        }
+        let index = cardNumber.index(cardNumber.endIndex, offsetBy: -4)
+        pay(amount: amount, lastFour: String(cardNumber.suffix(from: index))) { status in
+            self.isPaid = status
+        }
+    }
 
-        var request = URLRequest(url: URL(string: "http://localhost:8080/api/pay")!)
+    func pay(amount: Double, lastFour: String, completion: @escaping (Bool) -> Void) {
+        let data: Data = "userId=\(storedId)&amount=\(amount)&lastFour=\(lastFour)".data(using: .utf8)!
+
+        var request = URLRequest(url: URL(string: "\(API_URL)pay")!)
         request.httpMethod = "POST"
         request.httpBody = data
 
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.setValue(NSLocalizedString("lang", comment: ""), forHTTPHeaderField: "Accept-Language")
 
-        URLSession.shared.dataTask(with: request) { body, _, _ in
+        URLSession.shared.dataTask(with: request) { body, response, _ in
             let isPaid = try! JSONDecoder().decode(Bool.self, from: body!)
-            DispatchQueue.main.async {
-                completion(isPaid)
+            let httpResponse = response as? HTTPURLResponse
+            if httpResponse!.statusCode == 200 {
+                DispatchQueue.main.async {
+                    completion(isPaid)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion(false)
+                }
             }
 
         }.resume()
+    }
+
+    func validateCard() -> Bool {
+        guard cardNumber.count == 16 && month.count == 2 && year.count == 2 && cvv.count == 3 else {
+            return false
+        }
+        print(true)
+        return true
     }
 }

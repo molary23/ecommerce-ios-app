@@ -10,7 +10,7 @@ import SwiftUI
 // Correct with Login
 struct RegisterView: View {
     @Environment(\.verticalSizeClass) private var verticalSizeClass: UserInterfaceSizeClass?
-    @EnvironmentObject var user: User
+  //  @EnvironmentObject var user: User
 
     @State private var response: Any = false
 
@@ -139,6 +139,7 @@ struct RegisterView: View {
 
 struct RegisterView_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterView().environmentObject(User())
+        RegisterView()
+            
     }
 }

@@ -11,36 +11,33 @@ struct CartSubTotal: View {
     let total: Double
 
     var body: some View {
-        HStack(spacing: 30) {
-            HStack {
-                Text("Subtotal:")
-                    .bold()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                Text("$\(total, specifier: "%.2f")")
-                    .bold()
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-            }
-            .frame(maxWidth: .infinity)
+        HStack(spacing: 10) {
+            Text("Subtotal:")
+                .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+            
+            Text("$\(total, specifier: "%.2f")")
+                .bold()
+                .frame(maxWidth: .greatestFiniteMagnitude, alignment: .trailing)
+
             NavigationLink(destination: CheckoutView(), label: {
                 Text(PAGE_TEXT["button"]![2])
                     .padding(.vertical, 10)
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .greatestFiniteMagnitude)
                     .background(Color.blue)
                     .cornerRadius(40)
                     .foregroundColor(Color.white)
                     .fontWeight(.bold)
             })
-
             .disabled(total <= 0)
         }
-        .padding(.horizontal, 20)
-        .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: 100, alignment: .center)
+        .padding(.horizontal, 10)
+        .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: 80, alignment: .center)
         .background(.white)
 
         .clipped()
         .compositingGroup()
-        .shadow(color: Color.black.opacity(0.4), radius: 1, x: 0, y: -2)
-        .frame(maxHeight: .greatestFiniteMagnitude, alignment: .bottom)
+        .shadow(color: Color.black.opacity(0.5), radius: 3, x: 0, y: -3)
+        .frame(alignment: .bottom)
         .ignoresSafeArea(edges: .bottom)
     }
 }

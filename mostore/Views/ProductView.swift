@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ProductView: View {
-    @EnvironmentObject var user: User
-    @StateObject private var product = Product()
+  //  @EnvironmentObject var user: User
+//    @StateObject private var product = Product()
 
     @StateObject private var cartManager = CartManager()
 
@@ -134,7 +134,7 @@ struct ProductView: View {
                     NavigationLink(destination:
                         CartView(), label: {
                         
-                        CartButton(numberOfProduct: cartManager.products.count)
+                        CartButton(numberOfProduct: cartManager.singleProductOccurence.count)
 
                         })
                 }

@@ -16,12 +16,14 @@ let numberKey = "cardNumber"
 let monthKey = "cardMonth"
 let yearKey = "cardYear"
 let cvvKey = "cardCVV"
+
 var storedUsername = preferences.string(forKey: usernameKey) ?? ""
 var storedEmail = preferences.string(forKey: emailKey) ?? ""
-var storedId = preferences.string(forKey: idKey) ?? "64f17793033bd22637553a57"
+var storedId = preferences.string(forKey: idKey) ?? ""
 var storedNumber = preferences.string(forKey: numberKey) ?? ""
 var storedMonth = preferences.string(forKey: monthKey) ?? ""
 var storedYear = preferences.string(forKey: yearKey) ?? ""
 var storedCVV = preferences.string(forKey: cvvKey) ?? ""
 
 
+let API_URL = "http://localhost:8080/api/"

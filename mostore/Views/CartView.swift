@@ -20,11 +20,19 @@ struct CartView: View {
                     NoItemsFound(text: PAGE_TEXT["text"]![15])
                 }
 
-                List(cartManager.products) { item in
+                List(cartManager.singleProductOccurence) { item in
                     CartItem(item: item, quantity: cartManager.products.filter { $0.id == item.id }.count)
                         .buttonStyle(.borderless)
                         .padding(.bottom, 8)
                         .listRowBackground(Color.clear)
+
+                        .swipeActions(content: {
+                            Button("Delete") {
+                                cartManager.removeProductFromCart(product: item)
+                                cartController.removeProductFromCart(productId: item.id)
+                            }.tint(.red)
+
+                        })
 
                         .listRowSeparator(.hidden)
                         .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
@@ -33,8 +41,8 @@ struct CartView: View {
                 .frame(maxHeight: .greatestFiniteMagnitude)
 
                 CartSubTotal(total: cartManager.products.map({ $0.price }).reduce(0, +))
-                
-                    .alert(isPresented: $cartController.showAlert, content: getAlert)
+
+                //   .alert(isPresented: $cartController.showAlert, content: getAlert)
             }
 
             .navigationBarTitle(PAGE_TEXT["text"]![11], displayMode: .inline)
@@ -55,12 +63,12 @@ struct CartView: View {
 
     func getAlert() -> Alert {
         let primaryButton: Alert.Button = .cancel()
-        let secondaryButton: Alert.Button = .destructive(Text("Clear All")){
+        let secondaryButton: Alert.Button = .destructive(Text("Clear All")) {
             cartManager.removeAllFromCart()
             cartController.deleteAllOrder()
             cartController.isCartEmpty = true
         }
-        
+
         return Alert(title: Text("Clear Cart"), message: Text("Are you sure you want to clear all items in Cart?"), primaryButton: primaryButton, secondaryButton: secondaryButton)
     }
 }

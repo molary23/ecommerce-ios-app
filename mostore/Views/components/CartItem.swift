@@ -86,8 +86,10 @@ struct CartItem: View {
             .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
         })
         .padding()
-        .background(Color("off-white"))
+        .background(.white)
+        .border(Color("off-white"))
         .cornerRadius(8)
+       // .shadow(color: Color.black.opacity(0.5), radius: 3, x: 0, y: 2)
     }
 }
 

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DetailsView: View {
-    @EnvironmentObject var product: Product
+   // @EnvironmentObject var product: Product
     @EnvironmentObject var cartManager : CartManager
     
     @StateObject var detailsController = DetailsController()

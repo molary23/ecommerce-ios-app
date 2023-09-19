@@ -27,7 +27,7 @@ class SearchController: ObservableObject {
     }
 
     func searchProduct(search: String, /* page: Int, limit: Int, */ completion: @escaping ([ProductModel]) -> Void) {
-        guard let url = URL(string: "http://localhost:8080/api/products/product?search=\(search)") else {
+        guard let url = URL(string: "\(API_URL)products/product?search=\(search)") else {
             print("Invalid url...")
             return
         }
@@ -45,12 +45,6 @@ class SearchController: ObservableObject {
     }
 
     func viewProductDetails(content: ProductModel) {
-       /* product["id"] = content.id
-        product["name"] = content.name
-        product["image"] = content.image
-        product["description"] = content.description
-        product["price"] = content.price
-        product["rating"] = content.rating*/
         product = content
         viewDetails = true
     }

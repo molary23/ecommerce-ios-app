@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+/*
 /*
  struct UserData: Codable, Identifiable {
      let id = UUID()
@@ -21,13 +21,13 @@ struct Address {
     var zip: String
     var country: String
 }
-
+/*
 struct Card: Codable {
     var number: String?
     var month: String?
     var year: String?
     var cvv: String?
-}
+}*/
 
 struct Book: Codable, Identifiable {
     var id = Int()
@@ -229,3 +229,4 @@ class DataPost: ObservableObject {
         task.resume()
     }
 }
+*/
