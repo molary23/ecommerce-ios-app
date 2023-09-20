@@ -14,6 +14,7 @@ struct HomeView: View {
         if !homeController.currentUserId.isEmpty && homeController.isSignedIn {
             ProductView()
                 .environmentObject(CartManager())
+            
         } else {
             LoginView()
         }

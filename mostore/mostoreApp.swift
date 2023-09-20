@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct mostoreApp: App {
+    @AppStorage("appTheme") private var isDarkModeOn = false
     var body: some Scene {
         WindowGroup {
            HomeView()
+                .preferredColorScheme(isDarkModeOn ? .dark : .light)
         }
     }
 }
