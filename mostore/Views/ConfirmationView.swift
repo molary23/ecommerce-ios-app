@@ -7,14 +7,9 @@
 
 import SwiftUI
 
-
-
-
 struct ConfirmationView: View {
     @State private var goHome: Bool = false
- //   @EnvironmentObject var user: User
     init() {
-        // Use this if NavigationBarTitle is with displayMode = .inline
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
     }
 
@@ -50,15 +45,14 @@ struct ConfirmationView: View {
                             .multilineTextAlignment(.center)
                             .fixedSize(horizontal: false, vertical: true)
                     }
+                    .foregroundColor(.gray)
 
                     Spacer()
 
-                  /*  ExtNavButtonView(name: "\(PAGE_TEXT["button"]![1])", isMovable: $goHome, isActive: continueShopping(), destination: AnyView(ProductView()), topPadding: 15.0, acColor: .white, bgColor: .blue, corner: 40, size: .title2)
-                    */
                     Button(action: {
                         goHome = true
                     }, label: {
-                       Text("\(PAGE_TEXT["button"]![1])")
+                        Text("\(PAGE_TEXT["button"]![1])")
                             .frame(maxWidth: .infinity)
                     })
                     .padding(.vertical, 15)
@@ -89,14 +83,12 @@ struct ConfirmationView: View {
             .navigationBarBackButtonHidden(true)
         }
     }
-
-    
 }
 
 struct ConfirmationView_Previews: PreviewProvider {
     static var previews: some View {
         ConfirmationView()
-            
-            //.environmentObject(User())
+
+        // .environmentObject(User())
     }
 }

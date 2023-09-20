@@ -28,14 +28,12 @@ struct SettingsView: View {
                 })
 
                 Section(header: Text("Display"), content: {
-                    Button(action: {
-                        showSheet = true
-                    }, label: {
-                        SettingsRow(title: "Display Mode",
-                                    systemImageName: "moonphase.first.quarter")
-
+                    Toggle(isOn: $isDarkModeOn, label: {
+                        HStack(spacing: 15) {
+                            Image(systemName: "moonphase.first.quarter")
+                            Text("Dark Mode")
+                        }
                     })
-                    .accentColor(.blue)
                 })
 
                 Section(header: Text("Account"), content: {
@@ -48,7 +46,7 @@ struct SettingsView: View {
                     .accentColor(.red)
                 })
             })
-            .actionSheet(isPresented: $showSheet, content: getActionSheet)
+            
 
             .navigationBarTitle(PAGE_TEXT["title"]![5], displayMode: .inline)
         }
@@ -59,6 +57,7 @@ struct SettingsView: View {
         preferences.removeObject(forKey: emailKey)
         preferences.removeObject(forKey: idKey)
         removeCard()
+        isDarkModeOn = true
         isLogOut = true
     }
 
@@ -69,23 +68,7 @@ struct SettingsView: View {
         preferences.removeObject(forKey: cvvKey)
     }
 
-    func getActionSheet() -> ActionSheet {
-        let darkMode: ActionSheet.Button = .default(
-            Text("Dark Mode")
-        ) {
-            isDarkModeOn = true
-        }
-
-        let lightMode: ActionSheet.Button = .default(
-            Text("Light Mode")
-        ) {
-            isDarkModeOn = false
-        }
-
-        let useCancel: ActionSheet.Button = .cancel({ showSheet = false })
-
-        return ActionSheet(title: Text("Display Mode"), message: Text("You can change the Display Mode"), buttons: [darkMode, lightMode, useCancel])
-    }
+    
 }
 
 struct SettingsView_Previews: PreviewProvider {

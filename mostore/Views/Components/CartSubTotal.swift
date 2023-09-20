@@ -14,10 +14,12 @@ struct CartSubTotal: View {
         HStack(spacing: 10) {
             Text("Subtotal:")
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+               // .foregroundColor(.gray)
             
             Text("$\(total, specifier: "%.2f")")
                 .bold()
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .trailing)
+               // .foregroundColor(.black)
 
             NavigationLink(destination: CheckoutView(), label: {
                 Text(PAGE_TEXT["button"]![2])
@@ -32,7 +34,7 @@ struct CartSubTotal: View {
         }
         .padding(.horizontal, 10)
         .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: 80, alignment: .center)
-        .background(.white)
+        .background(Color("off-white"))
 
         .clipped()
         .compositingGroup()

@@ -53,7 +53,8 @@ struct ProductView: View {
                     .padding(.horizontal, 40)
                     .frame(maxWidth: .infinity, maxHeight: 40)
                     .accentColor(Color.gray.opacity(0.7))
-                    .background(Color.white)
+                    .background(Color("off-white"))
+                   
                     .navigationDestination(isPresented: $toSearch, destination: {
                         SearchView()
                     })
