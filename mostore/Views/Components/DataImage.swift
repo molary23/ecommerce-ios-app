@@ -35,7 +35,7 @@ struct DataImage: View {
             }
         }
         .frame(maxWidth: size, maxHeight: size)
-        .background(Color("off-white"))
+        .background(.white)
         .clipShape(AnyShape(shape))
     }
 }

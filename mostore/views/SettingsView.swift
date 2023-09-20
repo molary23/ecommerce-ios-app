@@ -57,7 +57,7 @@ struct SettingsView: View {
         preferences.removeObject(forKey: emailKey)
         preferences.removeObject(forKey: idKey)
         removeCard()
-        isDarkModeOn = true
+        isDarkModeOn = false
         isLogOut = true
     }
 
