@@ -13,12 +13,13 @@ class LoginController: ObservableObject {
     @Published var showAlert: Bool = false
     @Published var errorMessage: String = ""
     @Published var isSignedIn: Bool = false
+    @Published var isLoading: Bool = false
 
     init() {}
 
     private func validate() -> Bool {
         errorMessage = ""
-        guard !username.trimmingCharacters(in: .whitespaces).isEmpty, !username.trimmingCharacters(in: .whitespaces).isEmpty else {
+        guard !username.trimmingCharacters(in: .whitespaces).isEmpty, !password.trimmingCharacters(in: .whitespaces).isEmpty else {
             errorMessage = "Please fill all fields"
             showAlert = true
             return false
@@ -34,6 +35,7 @@ class LoginController: ObservableObject {
     }
 
     func loginRequest() {
+        isLoading = true
         let data: Data = "username=\(username)&password=\(password)".data(using: .utf8)!
 
         var request = URLRequest(url: URL(string: "\(API_URL)auth")!)
@@ -52,6 +54,7 @@ class LoginController: ObservableObject {
                     preferences.set(user.email, forKey: emailKey)
                     preferences.set(user.id, forKey: idKey)
                     self.isSignedIn = true
+                    self.isLoading = false
                 }
             }
         }.resume()

@@ -10,15 +10,14 @@ import SwiftUI
 // Correct with Login
 struct RegisterView: View {
     @Environment(\.verticalSizeClass) private var verticalSizeClass: UserInterfaceSizeClass?
-  //  @EnvironmentObject var user: User
+    @StateObject var registerController = RegisterController()
 
-    @State private var response: Any = false
-
-    @State private var emailAddress: String = ""
-    @State private var password: String = ""
-    @State private var confirmPassword: String = ""
-    @State private var phone: String = ""
-    @State private var username: String = ""
+    /*
+     @State private var emailAddress: String = ""
+     @State private var password: String = ""
+     @State private var confirmPassword: String = ""
+     @State private var phone: String = ""
+     @State private var username: String = ""*/
 
     var body: some View {
         NavigationStack {
@@ -57,46 +56,72 @@ struct RegisterView: View {
 
                             VStack(spacing: 30, content: {
                                 VStack(spacing: 15, content: {
-                                    ExtTextFieldView(placeholder: PAGE_TEXT["input"]![0], placement: .leading, id: "register__username", value: $username).textFieldStyle(.roundedBorder)
-
-                                    TextField(PAGE_TEXT["input"]![0], text: $username)
+                                    TextField(PAGE_TEXT["input"]![0], text: $registerController.username)
                                         .textFieldStyle(.roundedBorder)
                                         .accessibilityLabel(PAGE_TEXT["input"]![0])
                                         .id("register__username")
+                                        .autocapitalization(.none)
+                                        .autocorrectionDisabled()
 
-                                    TextField(PAGE_TEXT["input"]![3], text: $phone)
+                                    TextField(PAGE_TEXT["input"]![3], text: $registerController.phone)
                                         .textFieldStyle(.roundedBorder)
                                         .accessibilityLabel(PAGE_TEXT["input"]![3])
                                         .id("register__phone")
+                                        .autocapitalization(.none)
+                                        .autocorrectionDisabled()
 
-                                    TextField(PAGE_TEXT["input"]![1], text: $emailAddress)
+                                    TextField(PAGE_TEXT["input"]![1], text: $registerController.emailAddress)
                                         .textFieldStyle(.roundedBorder)
                                         .accessibilityLabel(PAGE_TEXT["input"]![0])
                                         .id("register__email")
+                                        .autocapitalization(.none)
+                                        .autocorrectionDisabled()
 
-                                    SecureField(PAGE_TEXT["input"]![2], text: $password)
+                                    SecureField(PAGE_TEXT["input"]![2], text: $registerController.password)
                                         .accessibilityLabel(PAGE_TEXT["input"]![2])
                                         .id("register__password")
                                         .textFieldStyle(.roundedBorder)
 
-                                    TextField(PAGE_TEXT["input"]![8], text: $confirmPassword)
+                                    SecureField(PAGE_TEXT["input"]![8], text: $registerController.confirmPassword)
                                         .textFieldStyle(.roundedBorder)
                                         .accessibilityLabel(PAGE_TEXT["input"]![8])
                                         .id("register__confirm__password")
 
                                 })
                                 VStack(spacing: 15, content: {
-                                    ExtButtonView(name: "\(PAGE_TEXT["title"]![1])", response: $response, onRequestDone: registerUser(), topPadding: 8.0, acColor: .white, bgColor: .blue, corner: 25, size: .body)
+                                    Button(action: {
+                                        registerController.registerUser()
+                                    }, label: {
+                                        if registerController.isLoading {
+                                            ProgressView()
+                                                .tint(.white)
+                                                .frame(maxWidth: .infinity)
+                                        } else {
+                                            Text("\(PAGE_TEXT["title"]![1])")
+                                                .frame(maxWidth: .infinity)
+                                        }
 
-                                    NavigationLink(destination: LoginView(), label: {
-                                        Text(PAGE_TEXT["title"]![0])
-                                            .padding(.vertical, 8.0)
-                                            .frame(maxWidth: .infinity)
-                                            .background(Color.white)
-                                            .cornerRadius(20)
-                                            .foregroundColor(Color.blue)
-                                            .fontWeight(.bold)
                                     })
+                                    .padding(.vertical, 8)
+                                    .accentColor(.white)
+                                    .background(.blue)
+                                    .cornerRadius(20)
+                                    .fontWeight(.bold)
+                                    .frame(maxWidth: .infinity)
+                                    .navigationDestination(isPresented: $registerController.navigate, destination: { HomeView() })
+
+                                    VStack {
+                                        Text("Already a member?")
+                                            .foregroundColor(.white)
+                                            .bold()
+                                        NavigationLink(destination: LoginView(), label: {
+                                            Text(PAGE_TEXT["title"]![0])
+                                                .frame(maxWidth: .infinity)
+                                                .accentColor(.white)
+                                                .fontWeight(.bold)
+                                        })
+                                    }
+
                                 })
 
                             })
@@ -123,6 +148,8 @@ struct RegisterView: View {
                     .padding()
                     .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
                     .background(Color.black.opacity(0.5))
+
+                    .alert(isPresented: $registerController.showAlert, content: getAlert)
                 }
                 .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
             }.ignoresSafeArea(.keyboard, edges: .all)
@@ -132,14 +159,21 @@ struct RegisterView: View {
         }
     }
 
-    func registerUser() -> Bool {
-        return true
+    func getAlert() -> Alert {
+        if registerController.status == "warning" {
+            return Alert(title: Text("\(registerController.errorMessage)"))
+        } else {
+            let primaryButton: Alert.Button = .cancel()
+            let secondaryButton: Alert.Button = .default(Text("Proceed")) {
+                registerController.navigate = true
+            }
+            return Alert(title: Text("Registration Successful"), message: Text("Welcome to Mattire! You can start shopping with us."), primaryButton: primaryButton, secondaryButton: secondaryButton)
+        }
     }
 }
 
 struct RegisterView_Previews: PreviewProvider {
     static var previews: some View {
         RegisterView()
-            
     }
 }

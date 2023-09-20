@@ -57,7 +57,7 @@ struct LoginView: View {
                                     Button(action: {
                                         loginController.login()
                                     }, label: {
-                                        if loginController.isSignedIn {
+                                        if loginController.isLoading {
                                             ProgressView()
                                                 .tint(.white)
                                                 .frame(maxWidth: .infinity)
@@ -74,14 +74,18 @@ struct LoginView: View {
                                     .fontWeight(.bold)
                                     .frame(maxWidth: .infinity)
                                     .navigationDestination(isPresented: $loginController.isSignedIn, destination: { ProductView() })
+                                    VStack {
+                                        Text("Are you new here?")
+                                            .bold()
+                                            .foregroundColor(.white)
 
-                                    NavigationLink(destination: RegisterView(), label: {
-                                        Text(PAGE_TEXT["title"]![1])
-                                            .padding(.vertical, 8.0)
-                                            .frame(maxWidth: .infinity)
-                                            .accentColor(.white)
-                                            .fontWeight(.bold)
-                                    })
+                                        NavigationLink(destination: RegisterView(), label: {
+                                            Text(PAGE_TEXT["title"]![1])
+                                                .frame(maxWidth: .infinity)
+                                                .accentColor(.white)
+                                                .fontWeight(.bold)
+                                        })
+                                    }
 
                                 })
 
@@ -118,6 +122,7 @@ struct LoginView: View {
                 .navigationBarHidden(true)
         }
     }
+
     func getAlert() -> Alert {
         return Alert(title: Text("\(loginController.errorMessage)"))
     }

@@ -14,39 +14,51 @@ struct SettingsView: View {
             List(content: {
                 Section(header: Text("General"), content: {
                     NavigationLink(destination: ProductView(), label: {
-                        SettingsRow(title: "Account",
-                                       systemImageName: "dollarsign.circle")
+                        SettingsRow(title: "Payment Details",
+                                    systemImageName: "dollarsign.circle")
 
                     })
-                    
-                    Button(action: { logOut() }, label: {
-                        SettingsRow(title: "Log Out",
-                                       systemImageName: "power")
-                        
-                    })
-                    .navigationDestination(isPresented: $isLogOut, destination: {LoginView()})
-                    .accentColor(.red)
 
                 })
 
                 Section(header: Text("Display"), content: {
                     Button(action: { print(123) }, label: {
                         SettingsRow(title: "Display Mode",
-                                       systemImageName: "moonphase.last.quarter")
+                                    systemImageName: "moonphase.last.quarter")
 
                     })
                     .accentColor(.blue)
 
+                })
+
+                Section(header: Text("Account"), content: {
+                    Button(action: { logOut() }, label: {
+                        SettingsRow(title: "Log Out",
+                                    systemImageName: "power")
+
+                    })
+                    .navigationDestination(isPresented: $isLogOut, destination: { LoginView() })
+                    .accentColor(.red)
                 })
             })
 
             .navigationBarTitle(PAGE_TEXT["title"]![5], displayMode: .inline)
         }
     }
-    func logOut(){
+
+    func logOut() {
         preferences.removeObject(forKey: usernameKey)
         preferences.removeObject(forKey: emailKey)
+        preferences.removeObject(forKey: idKey)
+        removeCard()
         isLogOut = true
+    }
+
+    func removeCard() {
+        preferences.removeObject(forKey: numberKey)
+        preferences.removeObject(forKey: monthKey)
+        preferences.removeObject(forKey: yearKey)
+        preferences.removeObject(forKey: cvvKey)
     }
 }
 

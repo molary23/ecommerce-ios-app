@@ -10,16 +10,15 @@ import SwiftUI
 struct Brand: View {
     var body: some View {
         HStack {
-            Circle()
-                .frame(width: 50, height: 50)
-                .foregroundColor(Color.red)
-            Text(PAGE_TEXT["text"]![0])
-                .font(.largeTitle)
-                .fontWeight(.black)
-                .foregroundColor(Color.white)
-                .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 2)
+            Image("app-icon")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .clipped()
+                .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 1)
+               
         }
-        .frame(maxWidth: .infinity)
+      //  .padding(.horizontal, 20)
+        .frame(maxWidth: 200, alignment: .center)
     }
 }
 
