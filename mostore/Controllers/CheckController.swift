@@ -13,11 +13,11 @@ class CheckController: ObservableObject {
     @Published var cvv: String = ""
     @Published var cardNumber: String = ""
     @Published var response: Any = false
-    @Published var total: Double = 0
-    @Published var tax: Double = 0
-    @Published var amount: Double = 0
+    @Published var total: Double = 0.0
+    @Published var tax: Double = 0.0
+    @Published var amount: Double = 0.0
     @Published var savePayment: Bool = false
-    @Published var isSheetActive: Bool = false
+    @Published var isSheetActive: Bool = true
     @Published var alreadySaved: Bool = false
     @Published var isPaid: Bool = false
     @Published var isFailed: Bool = false
@@ -30,9 +30,12 @@ class CheckController: ObservableObject {
 
     func getAmount() {
         loadTotal { amount in
-            self.amount = amount
-            self.tax = (amount * 13) / 100
-            self.total = self.amount + self.tax
+            print(amount)
+            if amount > 0 {
+                self.amount = amount
+                self.tax = (amount * 13) / 100
+                self.total = self.amount + self.tax
+            }
         }
     }
 
@@ -45,6 +48,7 @@ class CheckController: ObservableObject {
     func getCard() {
         loadCard { card in
             if card.number != nil {
+                print(card)
                 self.card = card
                 self.isSheetActive = true
             } else {

@@ -42,11 +42,8 @@ struct LoginView: View {
 
                             VStack(spacing: 30, content: {
                                 VStack(spacing: 15, content: {
-                                    ExtTextFieldView(placeholder: "\(PAGE_TEXT["input"]![0])/\(PAGE_TEXT["input"]![1])", placement: .leading, id: "login__email", value: $loginController.username)
+                                    TextFieldView(placeholder: "\(PAGE_TEXT["input"]![0])/\(PAGE_TEXT["input"]![1])", placement: .leading, id: "login__email", value: $loginController.username)
                                         .textFieldStyle(.roundedBorder)
-                                        .autocapitalization(.none)
-                                        .autocorrectionDisabled()
-
                                     SecureField(PAGE_TEXT["input"]![2], text: $loginController.password)
                                         .accessibilityLabel(PAGE_TEXT["input"]![2])
                                         .id("login__password")
@@ -54,26 +51,14 @@ struct LoginView: View {
 
                                 })
                                 VStack(spacing: 15, content: {
-                                    Button(action: {
-                                        loginController.login()
-                                    }, label: {
-                                        if loginController.isLoading {
+                                    NavigationButton(name:
+                                        loginController.isLoading ?
                                             ProgressView()
-                                                .tint(.white)
-                                                .frame(maxWidth: .infinity)
-                                        } else {
-                                            Text("\(PAGE_TEXT["title"]![0])")
-                                                .frame(maxWidth: .infinity)
-                                        }
+                                            .tint(.white)
+                                            .frame(maxWidth: .infinity) : Text("\(PAGE_TEXT["title"]![0])")
+                                            .frame(maxWidth: .infinity)
+                                        , destination: AnyView(ProductView()), topPadding: 8, acColor: .white, bgColor: .blue, corner: 20, fontSize: .body, isMovable: $loginController.isSignedIn, action: { loginController.login() })
 
-                                    })
-                                    .padding(.vertical, 8)
-                                    .accentColor(.white)
-                                    .background(.blue)
-                                    .cornerRadius(20)
-                                    .fontWeight(.bold)
-                                    .frame(maxWidth: .infinity)
-                                    .navigationDestination(isPresented: $loginController.isSignedIn, destination: { ProductView() })
                                     VStack {
                                         Text("Are you new here?")
                                             .bold()

@@ -56,26 +56,13 @@ struct RegisterView: View {
 
                             VStack(spacing: 30, content: {
                                 VStack(spacing: 15, content: {
-                                    TextField(PAGE_TEXT["input"]![0], text: $registerController.username)
-                                        .textFieldStyle(.roundedBorder)
-                                        .accessibilityLabel(PAGE_TEXT["input"]![0])
-                                        .id("register__username")
-                                        .autocapitalization(.none)
-                                        .autocorrectionDisabled()
+                                    TextFieldView(placeholder: "\(PAGE_TEXT["input"]![0])", placement: .leading, id: "register__username", value: $registerController.username).textFieldStyle(.roundedBorder)
 
-                                    TextField(PAGE_TEXT["input"]![3], text: $registerController.phone)
+                                    TextFieldView(placeholder: "\(PAGE_TEXT["input"]![3])", placement: .leading, id: "register__phone", value: $registerController.phone)
                                         .textFieldStyle(.roundedBorder)
-                                        .accessibilityLabel(PAGE_TEXT["input"]![3])
-                                        .id("register__phone")
-                                        .autocapitalization(.none)
-                                        .autocorrectionDisabled()
 
-                                    TextField(PAGE_TEXT["input"]![1], text: $registerController.emailAddress)
+                                    TextFieldView(placeholder: "\(PAGE_TEXT["input"]![1])", placement: .leading, id: "register__email", value: $registerController.emailAddress)
                                         .textFieldStyle(.roundedBorder)
-                                        .accessibilityLabel(PAGE_TEXT["input"]![0])
-                                        .id("register__email")
-                                        .autocapitalization(.none)
-                                        .autocorrectionDisabled()
 
                                     SecureField(PAGE_TEXT["input"]![2], text: $registerController.password)
                                         .accessibilityLabel(PAGE_TEXT["input"]![2])
@@ -89,26 +76,13 @@ struct RegisterView: View {
 
                                 })
                                 VStack(spacing: 15, content: {
-                                    Button(action: {
-                                        registerController.registerUser()
-                                    }, label: {
-                                        if registerController.isLoading {
+                                    NavigationButton(name:
+                                        registerController.isLoading ?
                                             ProgressView()
-                                                .tint(.white)
-                                                .frame(maxWidth: .infinity)
-                                        } else {
-                                            Text("\(PAGE_TEXT["title"]![1])")
-                                                .frame(maxWidth: .infinity)
-                                        }
-
-                                    })
-                                    .padding(.vertical, 8)
-                                    .accentColor(.white)
-                                    .background(.blue)
-                                    .cornerRadius(20)
-                                    .fontWeight(.bold)
-                                    .frame(maxWidth: .infinity)
-                                    .navigationDestination(isPresented: $registerController.navigate, destination: { HomeView() })
+                                            .tint(.white)
+                                            .frame(maxWidth: .infinity) : Text("\(PAGE_TEXT["title"]![1])")
+                                            .frame(maxWidth: .infinity)
+                                        , destination: AnyView(HomeView()), topPadding: 8, acColor: .white, bgColor: .blue, corner: 20, fontSize: .body, isMovable: $registerController.navigate, action: { registerController.registerUser() })
 
                                     VStack {
                                         Text("Already a member?")

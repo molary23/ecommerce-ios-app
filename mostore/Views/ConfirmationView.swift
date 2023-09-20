@@ -7,21 +7,8 @@
 
 import SwiftUI
 
-struct RoundedCorner: Shape {
-    var radius: CGFloat = .infinity
-    var corners: UIRectCorner = .allCorners
 
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-        return Path(path.cgPath)
-    }
-}
 
-extension View {
-    func roundedCorner(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape(RoundedCorner(radius: radius, corners: corners))
-    }
-}
 
 struct ConfirmationView: View {
     @State private var goHome: Bool = false
@@ -66,7 +53,22 @@ struct ConfirmationView: View {
 
                     Spacer()
 
-                    ExtNavButtonView(name: "\(PAGE_TEXT["button"]![1])", isMovable: $goHome, isActive: continueShopping(), destination: AnyView(ProductView()), topPadding: 15.0, acColor: .white, bgColor: .blue, corner: 40, size: .title2)
+                  /*  ExtNavButtonView(name: "\(PAGE_TEXT["button"]![1])", isMovable: $goHome, isActive: continueShopping(), destination: AnyView(ProductView()), topPadding: 15.0, acColor: .white, bgColor: .blue, corner: 40, size: .title2)
+                    */
+                    Button(action: {
+                        goHome = true
+                    }, label: {
+                       Text("\(PAGE_TEXT["button"]![1])")
+                            .frame(maxWidth: .infinity)
+                    })
+                    .padding(.vertical, 15)
+                    .accentColor(.white)
+                    .background(.blue)
+                    .cornerRadius(40)
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .greatestFiniteMagnitude)
+                    .navigationDestination(isPresented: $goHome, destination: { ProductView() })
 
                     Spacer()
                     Spacer()
@@ -88,9 +90,7 @@ struct ConfirmationView: View {
         }
     }
 
-    func continueShopping() -> Bool {
-        return true
-    }
+    
 }
 
 struct ConfirmationView_Previews: PreviewProvider {

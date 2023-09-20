@@ -8,20 +8,6 @@
 import SwiftUI
 
 struct CheckoutView: View {
-    /*  @State private var expiry: String = ""
-     @State private var cvv: String = ""
-     @State private var cardNumber: String = ""
-     @State private var response: Any = false
-     @State private var total: Double = 0
-     @State private var tax: Double = 0
-     @State private var amount: Double = 0
-     @State private var savePayment: Bool = false
-     @State private var isSheetActive: Bool = false
-     @State private var alreadySaved: Bool = false
-     @State private var isPaid: Bool = false
-     @State private var isFailed: Bool = false
-     @State private var card: Card = Card()*/
-
     @StateObject var checkController = CheckController()
     init() {
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.gray, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
@@ -47,7 +33,7 @@ struct CheckoutView: View {
                                         .font(.title)
                                 }
 
-                            ExtTextFieldView(placeholder: PAGE_TEXT["input"]![9], placement: .trailing, id: "cardNumber", value: $checkController.cardNumber).textFieldStyle(.plain)
+                            TextFieldView(placeholder: "\(PAGE_TEXT["input"]![9])", placement: .trailing, id: "cardNumber", value: $checkController.cardNumber).textFieldStyle(.plain)
 
                         }).padding()
                             .background(Color("off-white"))
@@ -69,16 +55,16 @@ struct CheckoutView: View {
 
                         HStack(content: {
                             HStack(spacing: 2) {
-                                ExtTextFieldView(placeholder: PAGE_TEXT["input"]![5], placement: .leading, id: "month", value: $checkController.month).textFieldStyle(.plain)
+                                TextFieldView(placeholder: "\(PAGE_TEXT["input"]![5])", placement: .leading, id: "month", value: $checkController.month).textFieldStyle(.plain)
                                     .frame(maxWidth: 30)
-
                                 Text("/")
                                     .foregroundColor(.gray)
-                                ExtTextFieldView(placeholder: PAGE_TEXT["input"]![10], placement: .leading, id: "year", value: $checkController.year).textFieldStyle(.plain)
+
+                                TextFieldView(placeholder: "\(PAGE_TEXT["input"]![10])", placement: .leading, id: "year", value: $checkController.year).textFieldStyle(.plain)
                                     .frame(maxWidth: 30)
                             }
 
-                            ExtTextFieldView(placeholder: PAGE_TEXT["input"]![6], placement: .trailing, id: "cvv", value: $checkController.cvv).textFieldStyle(.plain)
+                            TextFieldView(placeholder: "\(PAGE_TEXT["input"]![6])", placement: .trailing, id: "cvv", value: $checkController.cvv).textFieldStyle(.plain)
 
                         })
 
@@ -112,7 +98,6 @@ struct CheckoutView: View {
                 .alert(isPresented: $checkController.isFailed, content: getAlert)
                 .onAppear {
                     checkController.getAmount()
-
                     if storedNumber.isEmpty {
                         checkController.getCard()
                     } else {
@@ -124,45 +109,19 @@ struct CheckoutView: View {
             .padding(.horizontal, 20)
             .padding(.vertical, 10)
             .overlay(
-                Button(action: {
-                    checkController.makePayment()
-
-                }, label: {
+                NavigationButton(name:
                     Text("\(PAGE_TEXT["button"]![3])")
                         .frame(maxWidth: .greatestFiniteMagnitude)
-                })
-                .padding(.vertical, 15)
-                .accentColor(.white)
-                .background(.blue)
-                .cornerRadius(40)
-                .fontWeight(.bold)
-                .font(.title2)
-                .frame(maxWidth: .greatestFiniteMagnitude)
-                .navigationDestination(isPresented: $checkController.isPaid, destination: { ConfirmationView() })
-                .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude, alignment: .bottom)
-                .padding(.horizontal, 20)
-                .disabled(!checkController.validateCard())
+                    , destination: AnyView(ConfirmationView()), topPadding: 15, acColor: .white, bgColor: .blue, corner: 40, fontSize: .title2, isMovable: $checkController.isPaid, action: { checkController.makePayment() })
+
+                    .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude, alignment: .bottom)
+                    .padding(.horizontal, 20)
+                    .disabled(!checkController.validateCard())
             )
             .navigationBarTitle(PAGE_TEXT["title"]![3], displayMode: .inline)
         }
     }
 
-    /*
-     func makePayment() {
-         if savePayment {
-             CheckApi().saveCard(userId: storedId, number: cardNumber, month: expiry.components(separatedBy: "/")[0], year: expiry.components(separatedBy: "/")[1], cvv: cvv) { card in
-                 print(card)
-             }
-             CheckApi().makePayment(userId: storedId, amount: total, lastFour: "1234") { paid in
-                 isPaid = paid
-             }
-         } else {
-             CheckApi().makePayment(userId: storedId, amount: total, lastFour: "1234") { paid in
-                 isPaid = paid
-             }
-         }
-     }
-     */
     func getActionSheet() -> ActionSheet {
         let useSaved: ActionSheet.Button = .default(Text("Use Saved Card")) {
             checkController.cardNumber = checkController.card.number ?? ""
