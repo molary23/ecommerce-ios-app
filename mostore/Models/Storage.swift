@@ -26,4 +26,4 @@ var storedYear = preferences.string(forKey: yearKey) ?? ""
 var storedCVV = preferences.string(forKey: cvvKey) ?? ""
 
 
-let API_URL = "http://localhost:8080/api/"
+let API_URL = "https://ecommerce-spring.orangerock-dbb80cfc.eastus.azurecontainerapps.io/api/"

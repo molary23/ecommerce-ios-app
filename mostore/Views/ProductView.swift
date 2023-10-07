@@ -8,9 +8,6 @@
 import SwiftUI
 
 struct ProductView: View {
-  //  @EnvironmentObject var user: User
-//    @StateObject private var product = Product()
-
     @StateObject private var cartManager = CartManager()
 
     @StateObject var productController = ProductController()
@@ -24,42 +21,52 @@ struct ProductView: View {
 
     init() {
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.gray, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
-        // UINavigationBar.appearance().backgroundColor = UIColor.green
     }
 
     var body: some View {
         NavigationStack {
+            VStack{
+                Button(action: {
+                    toSearch = true
+                }, label: {
+                    HStack(alignment: .center, spacing: 40, content: {
+                        Image(systemName: "magnifyingglass")
+                            .renderingMode(.original)
+                            .aspectRatio(contentMode: .fit)
+                            .font(.body)
+                            .fontWeight(.bold)
+                            .clipped()
+                            .frame(maxWidth: 40)
+                        
+                        Text("\(PAGE_TEXT["input"]![7])")
+                            .fontWeight(.thin)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    })
+                    
+                })
+                .padding(8)
+                .padding(.horizontal, 40)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(.gray, lineWidth: 0.5)
+                        .frame(maxWidth: .infinity, maxHeight: 40)
+                       
+                )
+                .accentColor(Color.gray.opacity(0.7))
+                //.background(Color("off-white"))
+ 
+                
+                
+                
+                .navigationDestination(isPresented: $toSearch, destination: {
+                    SearchView()
+                })
+            }
+            .padding(8)
+            .padding(.horizontal, 10)
             ScrollView {
                 VStack(alignment: .leading, spacing: 20, content: {
-                    Button(action: {
-                        toSearch = true
-                    }, label: {
-                        HStack(alignment: .center, spacing: 40, content: {
-                            Image(systemName: "magnifyingglass")
-                                .renderingMode(.original)
-                                .aspectRatio(contentMode: .fit)
-                                .font(.body)
-                                .fontWeight(.bold)
-                                .clipped()
-                                .frame(maxWidth: 40)
-
-                            Text("\(PAGE_TEXT["input"]![7])")
-                                .fontWeight(.thin)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        })
-
-                    })
-                    .padding(8)
-                    .padding(.horizontal, 40)
-                    .frame(maxWidth: .infinity, maxHeight: 40)
-                    .accentColor(Color.gray.opacity(0.7))
-                    .background(Color("off-white"))
-                   
-                    .navigationDestination(isPresented: $toSearch, destination: {
-                        SearchView()
-                    })
-
-                    VStack(spacing: 20, content: {
+                                VStack(spacing: 20, content: {
                         VStack {
                             Text(PAGE_TEXT["text"]![16])
                                 .font(.title3)

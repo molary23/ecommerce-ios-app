@@ -66,7 +66,8 @@ class CheckController: ObservableObject {
             let httpResponse = response as? HTTPURLResponse
             if httpResponse!.statusCode == 200 {
                 let card = try! JSONDecoder().decode(CardModel.self, from: body!)
-                preferences.set(card.number, forKey: storedNumber)
+                let cardNumber = self.getLastFour(number: self.cardNumber)
+                preferences.set(cardNumber, forKey: storedNumber)
                 preferences.set(card.month, forKey: storedMonth)
                 preferences.set(card.year, forKey: storedYear)
                 preferences.set(card.cvv, forKey: storedCVV)
@@ -116,10 +117,15 @@ class CheckController: ObservableObject {
         guard validateCard() else {
             return
         }
-        let index = cardNumber.index(cardNumber.endIndex, offsetBy: -4)
-        pay(amount: amount, lastFour: String(cardNumber.suffix(from: index))) { status in
+        let lastFour = getLastFour(number:cardNumber)
+        pay(amount: amount, lastFour: lastFour) { status in
             self.isPaid = status
         }
+    }
+    
+    func getLastFour(number: String) -> String {
+        let index = number.index(cardNumber.endIndex, offsetBy: -4)
+        return String(number.suffix(from: index))
     }
 
     func pay(amount: Double, lastFour: String, completion: @escaping (Bool) -> Void) {

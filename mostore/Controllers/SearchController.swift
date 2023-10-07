@@ -26,12 +26,12 @@ class SearchController: ObservableObject {
         }
     }
 
-    func searchProduct(search: String, /* page: Int, limit: Int, */ completion: @escaping ([ProductModel]) -> Void) {
-        guard let url = URL(string: "\(API_URL)products/product?search=\(search)") else {
+    func searchProduct(search: String, completion: @escaping ([ProductModel]) -> Void) {
+        guard let url = URL(string: "\(API_URL)products/search?q=\(search)") else {
             print("Invalid url...")
             return
         }
-
+     
         URLSession.shared.dataTask(with: url) { data, response, _ in
             let httpResponse = response as? HTTPURLResponse
             if httpResponse!.statusCode == 200 {

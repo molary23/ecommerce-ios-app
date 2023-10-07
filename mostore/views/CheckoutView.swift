@@ -63,8 +63,11 @@ struct CheckoutView: View {
                                 TextFieldView(placeholder: "\(PAGE_TEXT["input"]![10])", placement: .leading, id: "year", value: $checkController.year).textFieldStyle(.plain)
                                     .frame(maxWidth: 30)
                             }
-
-                            TextFieldView(placeholder: "\(PAGE_TEXT["input"]![6])", placement: .trailing, id: "cvv", value: $checkController.cvv).textFieldStyle(.plain)
+                            
+                            SecureField("\(PAGE_TEXT["input"]![6])", text: $checkController.cvv)
+                                .textFieldStyle(.plain)
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                                .multilineTextAlignment(.trailing)
 
                         })
 
@@ -95,7 +98,7 @@ struct CheckoutView: View {
                 })
                 .actionSheet(isPresented: $checkController.isSheetActive, content: getActionSheet)
 
-                .alert(isPresented: $checkController.isFailed, content: getAlert)
+              //  .alert(isPresented: $checkController.isFailed, content: getAlert)
                 .onAppear {
                     checkController.getAmount()
                     if storedNumber.isEmpty {

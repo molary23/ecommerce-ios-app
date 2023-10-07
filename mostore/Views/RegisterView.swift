@@ -11,14 +11,7 @@ import SwiftUI
 struct RegisterView: View {
     @Environment(\.verticalSizeClass) private var verticalSizeClass: UserInterfaceSizeClass?
     @StateObject var registerController = RegisterController()
-
-    /*
-     @State private var emailAddress: String = ""
-     @State private var password: String = ""
-     @State private var confirmPassword: String = ""
-     @State private var phone: String = ""
-     @State private var username: String = ""*/
-
+ 
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
