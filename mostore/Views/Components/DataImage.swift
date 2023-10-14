@@ -34,6 +34,7 @@ struct DataImage: View {
                     .frame(width: size, height: size)
             }
         }
+        .padding()
         .frame(maxWidth: size, maxHeight: size)
         .background(.white)
         .clipShape(AnyShape(shape))

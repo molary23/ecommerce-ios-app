@@ -13,7 +13,6 @@ struct ProductView: View {
     @StateObject var productController = ProductController()
 
     @State private var gotoDetails: Bool = false
-    @State private var toSearch: Bool = false
     let columns: [GridItem] = [
         GridItem(.flexible(), spacing: 10, alignment: nil),
         GridItem(.flexible(), spacing: 10, alignment: nil),
@@ -26,9 +25,7 @@ struct ProductView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Button(action: {
-                    toSearch = true
-                }, label: {
+                NavigationLink(destination: SearchView(), label: {
                     HStack(alignment: .center, spacing: 40, content: {
                         Image(systemName: "magnifyingglass")
                             .renderingMode(.original)
@@ -52,9 +49,6 @@ struct ProductView: View {
                         .frame(maxWidth: .infinity, maxHeight: 40)
                 )
                 .accentColor(Color.gray.opacity(0.7))
-                .navigationDestination(isPresented: $toSearch, destination: {
-                    SearchView()
-                })
             }
             .padding(8)
             .padding(.horizontal, 10)
