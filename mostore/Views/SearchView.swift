@@ -7,39 +7,67 @@
 
 import SwiftUI
 
+enum FocusedField {
+    case search
+}
+
 struct SearchView: View {
+    @EnvironmentObject var cartManager: CartManager
+
     @StateObject var searchController = SearchController()
+
+    @FocusState private var focusedField: FocusedField?
+
+    @State private var toSearch: Bool = false
+
     var body: some View {
         NavigationStack {
             VStack {
-                TextField("\(PAGE_TEXT["input"]![7])", text: $searchController.search)
-                    .accessibilityLabel(PAGE_TEXT["input"]![7])
-                    .fontWeight(.semibold)
-                    .multilineTextAlignment(.center)
-                    .id("search_products")
-                    .frame(maxWidth: .infinity, maxHeight: 50, alignment: .center)
-                    .background(Color("off-white"))
-                    .onSubmit {
-                        searchController.getSearchedProduct()
-                    }
-            }
-            .padding(.vertical, 6)
-            .frame(maxHeight: 50, alignment: .top)
+                VStack {
+                    HStack(spacing: 10, content: {
+                        Image(systemName: "magnifyingglass")
+                            .renderingMode(.original)
+                            .aspectRatio(contentMode: .fit)
+                            .font(.body)
+                            .clipped()
+                            .frame(maxWidth: 60)
 
-            if searchController.searchedProducts.isEmpty && searchController.isSearchEmpty {
-                NoItemsFound(text: PAGE_TEXT["text"]![17])
-            }
+                        TextField("\(PAGE_TEXT["input"]![7])", text: $searchController.search)
+                            .accessibilityLabel(PAGE_TEXT["input"]![7])
+                            .id("search_products")
+                            .frame(maxWidth: .infinity, maxHeight: 60, alignment: .center)
+                            .focused($focusedField, equals: .search)
+                            .onSubmit {
+                                searchController.getSearchedProduct()
+                            }
 
-            ScrollView(showsIndicators: false) {
-                ForEach(searchController.searchedProducts) { item in
-                    SearchProductLink(item: item, action: { searchController.viewProductDetails(content: item) })
-                        .navigationDestination(isPresented: $searchController.viewDetails) {
-                            DetailsView(productDetails: searchController.product)
-                        }
+                    })
+                    .padding(.horizontal, 10)
+                    Divider()
+                        .frame(height: 1)
+                        .padding(.horizontal, 30)
+                        .background(Color.gray.opacity(0.6))
                 }
-            }
-            .padding(.horizontal, 8)
+                .padding(.vertical, 6)
+                .padding(.horizontal, 16)
+                .frame(maxHeight: 50, alignment: .top)
+                .onAppear {
+                    focusedField = .search
+                }
 
+                if searchController.searchedProducts.isEmpty && searchController.isSearchEmpty {
+                    NoItemsFound(text: PAGE_TEXT["text"]![17])
+                }
+
+                ScrollView(showsIndicators: false) {
+                    LazyVStack(spacing: 20, content: {
+                        ForEach(searchController.searchedProducts) { item in
+                            ProductSearchLink(item: item)
+                        }
+                    })
+                }
+                .padding(.horizontal, 8)
+            }
             .navigationBarTitle(PAGE_TEXT["title"]![7], displayMode: .inline)
         }
     }
@@ -48,5 +76,6 @@ struct SearchView: View {
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
         SearchView()
+            .environmentObject(CartManager())
     }
 }

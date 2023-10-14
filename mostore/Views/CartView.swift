@@ -37,13 +37,18 @@ struct CartView: View {
                         .listRowSeparator(.hidden)
                         .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 }
+                 .frame(maxHeight: .greatestFiniteMagnitude)
 
-                .frame(maxHeight: .greatestFiniteMagnitude)
+                
+                   
 
-                CartSubTotal(total: cartManager.products.map({ $0.price }).reduce(0, +))
-
-                //   .alert(isPresented: $cartController.showAlert, content: getAlert)
+                // .alert(isPresented: $cartController.showAlert, content: getAlert)
             }
+            .overlay(
+                CartSubTotal(total: cartManager.products.map({ $0.price }).reduce(0, +))
+                    .frame(maxHeight: 50)
+                , alignment: .bottom)
+            
 
             .navigationBarTitle(PAGE_TEXT["text"]![11], displayMode: .inline)
             .toolbar {

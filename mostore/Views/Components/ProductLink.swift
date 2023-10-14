@@ -13,10 +13,7 @@ struct ProductLink: View {
     let image: String
     let size: CGFloat
     let shape: any Shape
-    //  let destination: AnyView
-    //  let destinationExtra: [String : Any]
     let action: () -> Void
-    //  @State var toDetails: Bool
 
     var body: some View {
         Button(action: { action() }, label: {
@@ -44,7 +41,6 @@ struct ProductLink_Previews: PreviewProvider {
             image: "",
             size: 100,
             shape: Circle()
-            //   width: 150
         ) {}
     }
 }

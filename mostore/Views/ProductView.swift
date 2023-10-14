@@ -25,7 +25,7 @@ struct ProductView: View {
 
     var body: some View {
         NavigationStack {
-            VStack{
+            VStack {
                 Button(action: {
                     toSearch = true
                 }, label: {
@@ -37,12 +37,12 @@ struct ProductView: View {
                             .fontWeight(.bold)
                             .clipped()
                             .frame(maxWidth: 40)
-                        
+
                         Text("\(PAGE_TEXT["input"]![7])")
                             .fontWeight(.thin)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     })
-                    
+
                 })
                 .padding(8)
                 .padding(.horizontal, 40)
@@ -50,14 +50,8 @@ struct ProductView: View {
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(.gray, lineWidth: 0.5)
                         .frame(maxWidth: .infinity, maxHeight: 40)
-                       
                 )
                 .accentColor(Color.gray.opacity(0.7))
-                //.background(Color("off-white"))
- 
-                
-                
-                
                 .navigationDestination(isPresented: $toSearch, destination: {
                     SearchView()
                 })
@@ -66,7 +60,7 @@ struct ProductView: View {
             .padding(.horizontal, 10)
             ScrollView {
                 VStack(alignment: .leading, spacing: 20, content: {
-                                VStack(spacing: 20, content: {
+                    VStack(spacing: 20, content: {
                         VStack {
                             Text(PAGE_TEXT["text"]![16])
                                 .font(.title3)
@@ -141,12 +135,10 @@ struct ProductView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination:
                         CartView(), label: {
-                        
-                        CartButton(numberOfProduct: cartManager.singleProductOccurence.count)
+                            CartButton(numberOfProduct: cartManager.singleProductOccurence.count)
 
                         })
                 }
-
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: SettingsView(), label: {
                         Image(systemName: "gear")
