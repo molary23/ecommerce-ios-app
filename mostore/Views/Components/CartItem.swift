@@ -47,8 +47,6 @@ struct CartItem: View {
                         Button(action: {
                             cartItemController.removeQty(productId: item.id)
                             cartManager.removeFromCart(product: item)
-                            //  cartItemController.cartItem.quantity -= 1
-                            //   cartController.getCartItems()
                         }, label: {
                             Image(systemName: "minus")
 
@@ -88,8 +86,7 @@ struct CartItem: View {
         .padding()
         .background(.white)
         .border(Color("off-white"))
-        .cornerRadius(8)
-       // .shadow(color: Color.black.opacity(0.5), radius: 3, x: 0, y: 2)
+        .cornerRadius(12)
     }
 }
 

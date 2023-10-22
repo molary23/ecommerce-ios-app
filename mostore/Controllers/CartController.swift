@@ -14,7 +14,7 @@ class CartController: ObservableObject {
     @Published var carts: [CartModel] = []
     @Published var isCartEmpty: Bool = true
     @Published var quantity: String = ""
-    @Published var showAlert: Bool = true
+    @Published var showAlert: Bool = false
     init() {
         // getCartItems()
     }

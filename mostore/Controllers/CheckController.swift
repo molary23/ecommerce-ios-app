@@ -48,7 +48,6 @@ class CheckController: ObservableObject {
     func getCard() {
         loadCard { card in
             if card.number != nil {
-                print(card)
                 self.card = card
                 self.isSheetActive = true
             } else {
@@ -124,7 +123,10 @@ class CheckController: ObservableObject {
     }
     
     func getLastFour(number: String) -> String {
-        let index = number.index(cardNumber.endIndex, offsetBy: -4)
+        guard !number.isEmpty else {
+            return ""
+        }
+        let index = number.index(number.endIndex, offsetBy: -4)
         return String(number.suffix(from: index))
     }
 
@@ -158,7 +160,6 @@ class CheckController: ObservableObject {
         guard cardNumber.count == 16 && month.count == 2 && year.count == 2 && cvv.count == 3 else {
             return false
         }
-        print(true)
         return true
     }
 }

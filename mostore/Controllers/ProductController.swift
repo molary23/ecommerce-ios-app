@@ -21,16 +21,6 @@ class ProductController: ObservableObject {
         loadProduct(page: 1, limit: 5, section: "recommended")
     }
 
-    func viewProductDetails(content: ProductModel, section: String) {
-         product = content
-        if section == "recommended" {
-            recommendedDetails = true
-        } else if section == "best" {
-            bestDetails = true
-        } else {
-            dealDetails = true
-        }
-    }
 
     func loadProduct(page: Int, limit: Int, section: String) {
         getProduct(page: page, limit: limit) { products in

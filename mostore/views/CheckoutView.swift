@@ -98,7 +98,7 @@ struct CheckoutView: View {
                 })
                 .actionSheet(isPresented: $checkController.isSheetActive, content: getActionSheet)
 
-              //  .alert(isPresented: $checkController.isFailed, content: getAlert)
+                .alert(isPresented: $checkController.isFailed, content: getAlert)
                 .onAppear {
                     checkController.getAmount()
                     if storedNumber.isEmpty {
@@ -127,7 +127,7 @@ struct CheckoutView: View {
 
     func getActionSheet() -> ActionSheet {
         let useSaved: ActionSheet.Button = .default(Text("Use Saved Card")) {
-            checkController.cardNumber = checkController.card.number ?? ""
+            checkController.cardNumber = "************" + checkController.getLastFour(number: checkController.card.number ?? "")
             checkController.month = "\(checkController.card.month ?? "")"
             checkController.year = "\(checkController.card.year ?? "")"
             checkController.cvv = checkController.card.cvv ?? ""

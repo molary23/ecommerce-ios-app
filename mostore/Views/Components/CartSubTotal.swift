@@ -11,7 +11,7 @@ struct CartSubTotal: View {
     let total: Double
 
     var body: some View {
-        HStack(spacing: 30) {
+        HStack(spacing: 10) {
             Text("Subtotal:")
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
 
@@ -23,7 +23,7 @@ struct CartSubTotal: View {
                 Text(PAGE_TEXT["button"]![2])
                     .padding(.vertical, 10)
                     .frame(maxWidth: .greatestFiniteMagnitude)
-                    .background(Color.blue)
+                    .background(total > 0 ? Color.blue : Color.gray)
                     .cornerRadius(40)
                     .foregroundColor(Color.white)
                     .fontWeight(.bold)

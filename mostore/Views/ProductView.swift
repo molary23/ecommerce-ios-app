@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProductView: View {
-    @StateObject private var cartManager = CartManager()
+    @EnvironmentObject var cartManager: CartManager
 
     @StateObject var productController = ProductController()
 
@@ -63,10 +63,7 @@ struct ProductView: View {
                                 LazyHStack(spacing: 20, content: {
                                     ForEach(productController.recommendedProducts) { product in
                                         VStack(content: {
-                                            ProductLink(name: product.name, price: product.price, image: product.image, size: 150, shape: Circle(), action: { productController.viewProductDetails(content: product, section: "recommended") })
-                                                .navigationDestination(isPresented: $productController.recommendedDetails) {
-                                                    DetailsView(productDetails: productController.product)
-                                                }
+                                            ProductLink(item: product, size: 150, shape: Circle())
                                         })
                                     }
 
@@ -82,11 +79,7 @@ struct ProductView: View {
                             ScrollView(.horizontal, showsIndicators: false, content: {
                                 LazyHStack(spacing: 20, content: {
                                     ForEach(productController.bestProducts) { product in
-
-                                        ProductLink(name: product.name, price: product.price, image: product.image, size: 350, shape: RoundedRectangle(cornerRadius: 8), action: { productController.viewProductDetails(content: product, section: "best") })
-                                            .navigationDestination(isPresented: $productController.bestDetails) {
-                                                DetailsView(productDetails: productController.product)
-                                            }
+                                        ProductLink(item: product, size: 350, shape: RoundedRectangle(cornerRadius: 8))
                                     }
 
                                 })
@@ -101,10 +94,7 @@ struct ProductView: View {
                             LazyVGrid(columns: columns, alignment: .center, spacing: 20, pinnedViews: [], content: {
                                 ForEach(productController.dealProducts) { product in
                                     HStack(spacing: 30, content: {
-                                        ProductLink(name: product.name, price: product.price, image: product.image, size: 150, shape: RoundedRectangle(cornerRadius: 8), action: { productController.viewProductDetails(content: product, section: "deal") })
-                                            .navigationDestination(isPresented: $productController.dealDetails) {
-                                                DetailsView(productDetails: productController.product)
-                                            }
+                                        ProductLink(item: product, size: 150, shape: RoundedRectangle(cornerRadius: 8))
                                     })
                                 }
                             })
@@ -130,7 +120,6 @@ struct ProductView: View {
                     NavigationLink(destination:
                         CartView(), label: {
                             CartButton(numberOfProduct: cartManager.singleProductOccurence.count)
-
                         })
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -147,12 +136,13 @@ struct ProductView: View {
                 }
             }
         }
-        .environmentObject(cartManager)
+        //  .environmentObject(cartManager)
     }
 }
 
 struct ProductView_Previews: PreviewProvider {
     static var previews: some View {
         ProductView()
+            .environmentObject(CartManager())
     }
 }

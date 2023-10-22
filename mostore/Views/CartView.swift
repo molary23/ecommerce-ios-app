@@ -21,34 +21,31 @@ struct CartView: View {
                 }
 
                 List(cartManager.singleProductOccurence) { item in
+
                     CartItem(item: item, quantity: cartManager.products.filter { $0.id == item.id }.count)
                         .buttonStyle(.borderless)
-                        .padding(.bottom, 8)
                         .listRowBackground(Color.clear)
 
+                        .listStyle(InsetGroupedListStyle())
+                        .listRowSeparator(.hidden)
+                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
+
                         .swipeActions(content: {
-                            Button("Delete") {
+                            Button(role: .destructive) {
                                 cartManager.removeProductFromCart(product: item)
                                 cartController.removeProductFromCart(productId: item.id)
-                            }.tint(.red)
-
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
                         })
-
-                        .listRowSeparator(.hidden)
-                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 }
-                 .frame(maxHeight: .greatestFiniteMagnitude)
-
-                
-                   
-
-                // .alert(isPresented: $cartController.showAlert, content: getAlert)
+                .frame(maxHeight: .greatestFiniteMagnitude)
+                .alert(isPresented: $cartController.showAlert, content: getAlert)
             }
             .overlay(
                 CartSubTotal(total: cartManager.products.map({ $0.price }).reduce(0, +))
                     .frame(maxHeight: 50)
                 , alignment: .bottom)
-            
 
             .navigationBarTitle(PAGE_TEXT["text"]![11], displayMode: .inline)
             .toolbar {

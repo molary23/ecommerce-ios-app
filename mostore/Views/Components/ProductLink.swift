@@ -8,23 +8,21 @@
 import SwiftUI
 
 struct ProductLink: View {
-    let name: String
-    let price: Double
-    let image: String
+    let item: ProductModel
     let size: CGFloat
     let shape: any Shape
-    let action: () -> Void
+
 
     var body: some View {
-        Button(action: { action() }, label: {
+        NavigationLink(destination: DetailsView(productDetails: item), label: {
             VStack {
-                DataImage(imageURL: image.components(separatedBy: "|")[0], size: size, shape: shape)
+                DataImage(imageURL: item.image.components(separatedBy: "|")[0], size: size, shape: shape)
 
-                Text("\(name)")
+                Text("\(item.name)")
                     .font(.system(size: 14))
                     .fontWeight(.semibold)
 
-                Text("$\(price, specifier: "%.2f")")
+                Text("$\(item.price, specifier: "%.2f")")
                     .font(.body)
                     .fontWeight(.bold)
             }
@@ -36,11 +34,9 @@ struct ProductLink: View {
 struct ProductLink_Previews: PreviewProvider {
     static var previews: some View {
         ProductLink(
-            name: "Product Name",
-            price: 0.0,
-            image: "",
+            item: .init(id: "123", name: "name", description: "description", price: 0.0, image: "", rating: 0.0, createdAt: "\(Date())", updatedAt: "\(Date())"),
             size: 100,
             shape: Circle()
-        ) {}
+        )
     }
 }
