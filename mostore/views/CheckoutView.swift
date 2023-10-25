@@ -9,9 +9,9 @@ import SwiftUI
 
 struct CheckoutView: View {
     @StateObject var checkController = CheckController()
+    @EnvironmentObject var cartManager : CartManager
     init() {
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.gray, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
-        // UINavigationBar.appearance().backgroundColor = UIColor.green
     }
 
     var body: some View {
@@ -107,6 +107,11 @@ struct CheckoutView: View {
                         checkController.isSheetActive = true
                     }
                 }
+                .onDisappear(perform: {
+                    if(checkController.isPaid){
+                        cartManager.removeAllFromCart()
+                    }
+                })
 
             })
             .padding(.horizontal, 20)
@@ -121,7 +126,13 @@ struct CheckoutView: View {
                     .padding(.horizontal, 20)
                     .disabled(!checkController.validateCard())
             )
-            .navigationBarTitle(PAGE_TEXT["title"]![3], displayMode: .inline)
+            
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    TitleToolBarItem(title: PAGE_TEXT["title"]![3])
+                }
+            }
         }
     }
 
@@ -151,5 +162,6 @@ struct CheckoutView: View {
 struct CheckoutView_Previews: PreviewProvider {
     static var previews: some View {
         CheckoutView()
+            .environmentObject(CartManager())
     }
 }

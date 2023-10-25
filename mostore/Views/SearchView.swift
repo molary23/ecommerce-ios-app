@@ -68,7 +68,12 @@ struct SearchView: View {
                 }
                 .padding(.horizontal, 8)
             }
-            .navigationBarTitle(PAGE_TEXT["title"]![7], displayMode: .inline)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    TitleToolBarItem(title: PAGE_TEXT["title"]![7])
+                }
+            }
         }
     }
 }

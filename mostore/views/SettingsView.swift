@@ -46,9 +46,13 @@ struct SettingsView: View {
                     .accentColor(.red)
                 })
             })
-            
 
-            .navigationBarTitle(PAGE_TEXT["title"]![5], displayMode: .inline)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    TitleToolBarItem(title: PAGE_TEXT["title"]![5])
+                }
+            }
         }
     }
 
@@ -67,8 +71,6 @@ struct SettingsView: View {
         preferences.removeObject(forKey: yearKey)
         preferences.removeObject(forKey: cvvKey)
     }
-
-    
 }
 
 struct SettingsView_Previews: PreviewProvider {

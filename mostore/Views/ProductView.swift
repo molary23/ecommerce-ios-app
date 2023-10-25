@@ -19,13 +19,12 @@ struct ProductView: View {
     ]
 
     init() {
-        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.gray, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
     }
 
     var body: some View {
         NavigationStack {
             VStack {
-                NavigationLink(destination: SearchView(), label: {
+                NavigationLink(destination: ConfirmationView(), label: {
                     HStack(alignment: .center, spacing: 40, content: {
                         Image(systemName: "magnifyingglass")
                             .renderingMode(.original)
@@ -113,9 +112,12 @@ struct ProductView: View {
                     .ignoresSafeArea()
             )
 
-            .navigationBarTitle(PAGE_TEXT["title"]![6], displayMode: .inline)
+            .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                    TitleToolBarItem(title: PAGE_TEXT["title"]![6])
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination:
                         CartView(), label: {
@@ -136,7 +138,6 @@ struct ProductView: View {
                 }
             }
         }
-        //  .environmentObject(cartManager)
     }
 }
 

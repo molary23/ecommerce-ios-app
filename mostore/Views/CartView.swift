@@ -47,8 +47,12 @@ struct CartView: View {
                     .frame(maxHeight: 50)
                 , alignment: .bottom)
 
-            .navigationBarTitle(PAGE_TEXT["text"]![11], displayMode: .inline)
+            .navigationBarTitleDisplayMode(.inline)
+            
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                    TitleToolBarItem(title: PAGE_TEXT["title"]![3])
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         cartController.showAlert = true

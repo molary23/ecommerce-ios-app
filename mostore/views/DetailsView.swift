@@ -89,6 +89,7 @@ struct DetailsView: View {
 
                         })
                         .padding()
+                        .padding(.horizontal, 10)
                     }
                 }
                 .overlay(

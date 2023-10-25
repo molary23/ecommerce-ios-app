@@ -17,7 +17,6 @@ struct Brand: View {
                 .shadow(color: Color.black.opacity(0.8), radius: 1, x: 1, y: 1)
                
         }
-      //  .padding(.horizontal, 20)
         .frame(maxWidth: 200, alignment: .center)
     }
 }

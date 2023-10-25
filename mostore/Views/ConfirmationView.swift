@@ -10,7 +10,6 @@ import SwiftUI
 struct ConfirmationView: View {
     @State private var goHome: Bool = false
     init() {
-        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
     }
 
     var body: some View {
@@ -79,8 +78,13 @@ struct ConfirmationView: View {
             .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
             .background(Color.blue)
 
-            .navigationBarTitle(PAGE_TEXT["title"]![4], displayMode: .inline)
+            .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    TitleToolBarItem(title: PAGE_TEXT["title"]![4], color: .white)
+                }
+            }
         }
     }
 }
@@ -88,7 +92,5 @@ struct ConfirmationView: View {
 struct ConfirmationView_Previews: PreviewProvider {
     static var previews: some View {
         ConfirmationView()
-
-        // .environmentObject(User())
     }
 }
