@@ -24,7 +24,7 @@ struct ProductView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                NavigationLink(destination: ConfirmationView(), label: {
+                NavigationLink(destination: SearchView(), label: {
                     HStack(alignment: .center, spacing: 40, content: {
                         Image(systemName: "magnifyingglass")
                             .renderingMode(.original)

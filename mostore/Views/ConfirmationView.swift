@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ConfirmationView: View {
-    @State private var goHome: Bool = false
     init() {
     }
 
@@ -23,12 +22,14 @@ struct ConfirmationView: View {
                     .bold()
 
                 VStack(alignment: .center, spacing: 20, content: {
-                    Image(systemName: "hand.thumbsup")
-                        .renderingMode(.original)
-                        .aspectRatio(contentMode: .fit)
-                        .font(.custom("checkmark", fixedSize: 100))
-                        .foregroundColor(Color.orange)
-                        .clipped()
+                    VStack {
+                        Image(systemName: "hand.thumbsup")
+                            .renderingMode(.original)
+                            .aspectRatio(contentMode: .fit)
+                            .font(.custom("checkmark", fixedSize: 100))
+                            .foregroundColor(Color.orange)
+                            .clipped()
+                    }
 
                     Spacer()
 
@@ -48,35 +49,30 @@ struct ConfirmationView: View {
 
                     Spacer()
 
-                    Button(action: {
-                        goHome = true
-                    }, label: {
+                    NavigationLink(destination: ProductView(), label: {
                         Text("\(PAGE_TEXT["button"]![1])")
                             .frame(maxWidth: .infinity)
+                            .font(.title2)
+                            .bold()
+
                     })
+                    .padding(.horizontal, 8)
                     .padding(.vertical, 15)
-                    .accentColor(.white)
                     .background(.blue)
                     .cornerRadius(40)
-                    .font(.title2)
-                    .fontWeight(.bold)
+                    .accentColor(.white)
                     .frame(maxWidth: .greatestFiniteMagnitude)
-                    .navigationDestination(isPresented: $goHome, destination: { ProductView() })
-
-                    Spacer()
-                    Spacer()
-                    Spacer()
-                    Spacer()
 
                 })
                 .padding(.vertical, 40)
                 .padding(.horizontal, 20)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                .frame(maxWidth: .infinity, maxHeight: UIScreen.main.bounds.height * 0.5, alignment: .bottom)
                 .background(.white)
-                .roundedCorner(80, corners: [.topLeft, .topRight])
+                .roundedCorner(120, corners: [.topLeft, .topRight])
             }
             .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
             .background(Color.blue)
+            .ignoresSafeArea(edges: .bottom)
 
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
