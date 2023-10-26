@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CheckoutView: View {
     @StateObject var checkController = CheckController()
-    @EnvironmentObject var cartManager : CartManager
+    @EnvironmentObject var cartManager: CartManager
     init() {
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.gray, .font: UIFont.systemFont(ofSize: 20, weight: .bold)]
     }
@@ -63,7 +63,7 @@ struct CheckoutView: View {
                                 TextFieldView(placeholder: "\(PAGE_TEXT["input"]![10])", placement: .leading, id: "year", value: $checkController.year).textFieldStyle(.plain)
                                     .frame(maxWidth: 30)
                             }
-                            
+
                             SecureField("\(PAGE_TEXT["input"]![6])", text: $checkController.cvv)
                                 .textFieldStyle(.plain)
                                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -108,7 +108,7 @@ struct CheckoutView: View {
                     }
                 }
                 .onDisappear(perform: {
-                    if(checkController.isPaid){
+                    if checkController.isPaid {
                         cartManager.removeAllFromCart()
                     }
                 })
@@ -126,7 +126,7 @@ struct CheckoutView: View {
                     .padding(.horizontal, 20)
                     .disabled(!checkController.validateCard())
             )
-            
+
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {

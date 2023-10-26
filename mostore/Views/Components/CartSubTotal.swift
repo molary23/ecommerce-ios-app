@@ -11,13 +11,17 @@ struct CartSubTotal: View {
     let total: Double
 
     var body: some View {
-        HStack(spacing: 10) {
-            Text("Subtotal:")
-                .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
-
-            Text("$\(total, specifier: "%.2f")")
-                .bold()
-                .frame(maxWidth: .greatestFiniteMagnitude, alignment: .trailing)
+        HStack(spacing: 20) {
+            HStack(spacing: 20, content: {
+                Text("Subtotal:")
+                    .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+                
+                Text("$\(total, specifier: "%.2f")")
+                    .bold()
+                    .frame(maxWidth: .greatestFiniteMagnitude, alignment: .trailing)
+            })
+            .frame(width: UIScreen.main.bounds.width * 0.5)
+         
 
             NavigationLink(destination: CheckoutView(), label: {
                 Text(PAGE_TEXT["button"]![2])

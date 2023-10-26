@@ -51,7 +51,7 @@ struct CartView: View {
             
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    TitleToolBarItem(title: PAGE_TEXT["title"]![3])
+                    TitleToolBarItem(title: PAGE_TEXT["title"]![2])
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {

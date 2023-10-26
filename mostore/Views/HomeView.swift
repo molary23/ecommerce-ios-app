@@ -9,11 +9,14 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var homeController = HomeController()
-    @StateObject var cartManager = CartManager()
+  //  @StateObject var cartManager = CartManager()
+    
+    var next: Bool
+    
     var body: some View {
-        if !homeController.currentUserId.isEmpty && homeController.isSignedIn {
+        if !homeController.currentUserId.isEmpty || next {
             ProductView()
-                .environmentObject(CartManager())
+              //  .environmentObject(CartManager())
             
         } else {
             LoginView()
@@ -23,6 +26,6 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        HomeView(next: false)
     }
 }

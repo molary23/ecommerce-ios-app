@@ -75,7 +75,7 @@ struct RegisterView: View {
                                             .tint(.white)
                                             .frame(maxWidth: .infinity) : Text("\(PAGE_TEXT["title"]![1])")
                                             .frame(maxWidth: .infinity)
-                                        , destination: AnyView(HomeView()), topPadding: 8, acColor: .white, bgColor: .blue, corner: 20, fontSize: .body, isMovable: $registerController.navigate, action: { registerController.registerUser() })
+                                                     , destination: AnyView(HomeView(next: true)), topPadding: 8, acColor: .white, bgColor: .blue, corner: 20, fontSize: .body, isMovable: $registerController.navigate, action: { registerController.registerUser() })
 
                                     VStack {
                                         Text("Already a member?")

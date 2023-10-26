@@ -57,7 +57,7 @@ struct LoginView: View {
                                             .tint(.white)
                                             .frame(maxWidth: .infinity) : Text("\(PAGE_TEXT["title"]![0])")
                                             .frame(maxWidth: .infinity)
-                                        , destination: AnyView(ProductView()), topPadding: 8, acColor: .white, bgColor: .blue, corner: 20, fontSize: .body, isMovable: $loginController.isSignedIn, action: { loginController.login() })
+                                                     , destination: AnyView(HomeView(next: true)), topPadding: 8, acColor: .white, bgColor: .blue, corner: 20, fontSize: .body, isMovable: $loginController.isSignedIn, action: { loginController.login() })
 
                                     VStack {
                                         Text("Are you new here?")

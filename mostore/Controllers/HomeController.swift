@@ -14,7 +14,4 @@ class HomeController: ObservableObject {
         currentUserId = storedId
     }
 
-    public var isSignedIn: Bool {
-        return !storedId.isEmpty
-    }
 }

@@ -10,9 +10,11 @@ import SwiftUI
 @main
 struct mostoreApp: App {
     @AppStorage("appTheme") private var isDarkModeOn = false
+    @StateObject var cartManager = CartManager()
     var body: some Scene {
         WindowGroup {
-           HomeView()
+            HomeView(next: false)
+                .environmentObject(CartManager())
                 .preferredColorScheme(isDarkModeOn ? .dark : .light)
         }
     }

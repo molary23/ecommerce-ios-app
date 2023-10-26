@@ -56,6 +56,10 @@ class LoginController: ObservableObject {
                     self.isSignedIn = true
                     self.isLoading = false
                 }
+            }else{
+                self.isLoading = false
+                self.errorMessage = "Wrong info supplied"
+                self.showAlert = true
             }
         }.resume()
     }

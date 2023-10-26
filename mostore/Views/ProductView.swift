@@ -9,8 +9,9 @@ import SwiftUI
 
 struct ProductView: View {
     @EnvironmentObject var cartManager: CartManager
-
     @StateObject var productController = ProductController()
+    
+ //   @StateObject var cartManager = CartManager()
 
     @State private var gotoDetails: Bool = false
     let columns: [GridItem] = [

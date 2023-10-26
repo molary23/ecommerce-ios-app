@@ -28,7 +28,6 @@ struct DetailsView: View {
         image = productDetails.image
         price = productDetails.price
         rating = productDetails.rating
-        // UINavigationBar.appearance().backgroundColor = UIColor.blue
     }
 
     var body: some View {
@@ -82,7 +81,7 @@ struct DetailsView: View {
                                     .fontWeight(.bold)
                                     .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
 
-                                LabelAlignment(text: "\(description)", textAlignmentStyle: .justified, width: UIScreen.main.bounds.width - 20, size: 20.0)
+                                LabelAlignment(text: "\(description)", textAlignmentStyle: .justified, width: UIScreen.main.bounds.width - 40, size: 20.0)
 
                             })
                             .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
