@@ -22,8 +22,8 @@ class CheckController: ObservableObject {
     @Published var isPaid: Bool = false
     @Published var isFailed: Bool = false
     @Published var card: CardModel = CardModel()
-
     @Published var isSaved = Bool()
+    let storedId = preferences.string(forKey: idKey) ?? ""
 
     init() {
     }
@@ -66,13 +66,14 @@ class CheckController: ObservableObject {
             if httpResponse!.statusCode == 200 {
                 let card = try! JSONDecoder().decode(CardModel.self, from: body!)
                 let cardNumber = self.getLastFour(number: self.cardNumber)
-                preferences.set(cardNumber, forKey: storedNumber)
-                preferences.set(card.month, forKey: storedMonth)
-                preferences.set(card.year, forKey: storedYear)
-                preferences.set(card.cvv, forKey: storedCVV)
+                preferences.set(cardNumber, forKey: numberKey)
+                preferences.set(card.month, forKey: monthKey)
+                preferences.set(card.year, forKey: yearKey)
+                preferences.set(card.cvv, forKey: cvvKey)
                 DispatchQueue.main.async {
                     completion(card)
                 }
+                
             }
 
         }.resume()

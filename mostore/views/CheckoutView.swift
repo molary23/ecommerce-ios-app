@@ -101,6 +101,7 @@ struct CheckoutView: View {
                 .alert(isPresented: $checkController.isFailed, content: getAlert)
                 .onAppear {
                     checkController.getAmount()
+                    let storedNumber = preferences.string(forKey: numberKey) ?? ""
                     if storedNumber.isEmpty {
                         checkController.getCard()
                     } else {

@@ -9,6 +9,7 @@ import Foundation
 
 class DetailsController: ObservableObject {
     @Published var showAlert: Bool = false
+    let storedId = preferences.string(forKey: idKey) ?? ""
 
     func addToCart(id: String) {
         addProductToCart(productId: id, finish: finishPost)
@@ -19,6 +20,8 @@ class DetailsController: ObservableObject {
 
     func addProductToCart(productId: String, finish: @escaping (Bool) -> Void) {
         let data: Data = "userId=\(storedId)&productId=\(productId)".data(using: .utf8)!
+        print("dummy")
+        print("Fired", preferences.string(forKey: idKey) ?? "")
 
         var request = URLRequest(url: URL(string: "\(API_URL)orders/add")!)
         request.httpMethod = "POST"

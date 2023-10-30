@@ -9,15 +9,21 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var homeController = HomeController()
-  //  @StateObject var cartManager = CartManager()
-    
+    //  @StateObject var cartManager = CartManager()
+    @EnvironmentObject var cartManager: CartManager
+
     var next: Bool
-    
+
+    let storedId: String = preferences.string(forKey: idKey) ?? ""
+
     var body: some View {
-        if !homeController.currentUserId.isEmpty || next {
+        if !storedId.isEmpty || next {
             ProductView()
-              //  .environmentObject(CartManager())
-            
+                //  .environmentObject(CartManager())
+                .onAppear(perform: {
+                    cartManager.getCartItems()
+                })
+
         } else {
             LoginView()
         }
@@ -27,5 +33,6 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView(next: false)
+            .environmentObject(CartManager())
     }
 }

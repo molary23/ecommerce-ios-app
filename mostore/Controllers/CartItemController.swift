@@ -9,6 +9,7 @@ import Foundation
 
 class CartItemController: ObservableObject {
     // @Published var cartItem: CartModel
+    let storedId = preferences.string(forKey: idKey) ?? ""
     init() {
     }
 

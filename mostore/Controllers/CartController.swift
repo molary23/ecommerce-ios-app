@@ -15,6 +15,7 @@ class CartController: ObservableObject {
     @Published var isCartEmpty: Bool = true
     @Published var quantity: String = ""
     @Published var showAlert: Bool = false
+    let storedId = preferences.string(forKey: idKey) ?? ""
     init() {
         // getCartItems()
     }

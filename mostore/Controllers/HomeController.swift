@@ -11,7 +11,7 @@ class HomeController: ObservableObject {
     @Published var currentUserId: String = ""
 
     init() {
-        currentUserId = storedId
+        currentUserId = preferences.string(forKey: idKey) ?? ""
     }
 
 }

@@ -10,12 +10,13 @@ import Foundation
 class CartManager: ObservableObject {
     @Published private(set) var products: [ProductModel] = []
     @Published private(set) var singleProductOccurence: [ProductModel] = []
-
+    let storedId = preferences.string(forKey: idKey) ?? ""
     init() {
-        getCartItems()
+        //  getCartItems()
     }
 
     func getCartItems() {
+        print("called")
         loadCartData(userId: storedId) { items in
             for item in items {
                 var x = 0
